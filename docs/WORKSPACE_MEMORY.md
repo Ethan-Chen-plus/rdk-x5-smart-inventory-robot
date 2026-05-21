@@ -1,0 +1,76 @@
+# Workspace Memory
+
+Updated: 2026-05-21
+
+## Challenge
+
+- Event: Robotics Dream Keeper Challenge
+- Official repo: https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/tree/develop
+- Personal repo: https://github.com/Suibian-YY-pro/rdk-x5-smart-inventory-robot
+- Official Stage 1 PR: https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/pull/1
+- Discord thread: https://discord.com/channels/1300358874280230994/1503706103752429618/threads/1506248828523905105
+
+## Local Paths
+
+- Personal project: `C:\Users\kewei\Documents\2026\12相关比赛\rdk-x5-smart-inventory-robot`
+- Official challenge clone: `C:\Users\kewei\Documents\2026\12相关比赛\Robotics-Dream-Keeper-Challenge`
+- Discord automation skill: `C:\Users\kewei\.codex\skills\discord-rdk-challenge`
+
+## Board
+
+- SSH: `ssh sunrise@192.168.127.10`
+- OS: Ubuntu 22.04.5 LTS, aarch64
+- Desktop: XFCE on X display `:0`
+- Wi-Fi: connected on `wlan0`, observed IP `192.168.8.128/24`
+- Ethernet direct link: `eth0`, observed IP `192.168.127.10/24`
+- MagicBox wrapper: `/home/sunrise/openclaw_magicbox/bin/magicboxctl`
+
+## Stage 1 Completed
+
+- Application form submitted.
+- Discord self-introduction thread created.
+- RDK Studio registered.
+- Public GitHub repository created and pushed.
+- Official showcase PR created.
+- Stage 1 Discord progress update posted on 2026-05-21.
+- Board SSH verified.
+- Board Wi-Fi internet verified with `ping github.com`.
+- Board desktop screenshot captured via:
+
+```bash
+DISPLAY=:0 XAUTHORITY=/var/run/lightdm/root/:0 xfce4-screenshooter -f -s /tmp/rdk_desktop.png
+```
+
+- MIPI camera + live BPU YOLO verified.
+- Static BPU YOLO sample verified.
+- Microphone recording verified.
+
+## Key Evidence
+
+- `assets/stage1_rdk_desktop.png`
+- `assets/stage1_yolov5_output_image.jpg`
+- `assets/stage1_magicbox_mic_test.wav`
+- `evidence/stage1_board_network_ssh.txt`
+- `evidence/stage1_static_yolov5_bpu_output.txt`
+- `evidence/stage1_live_yolo_mipi_bpu_log.txt`
+- `evidence/stage1_ros_detection_topic.txt`
+- `docs/STAGE1_SUBMISSION.md`
+
+## Stage 2 Next
+
+Prepare a formal proposal with:
+
+- scenario and measurable goals
+- AI system architecture
+- ROS 2 node graph
+- compute allocation between BPU and CPU
+- BOM
+- week-by-week roadmap
+- risk analysis
+- Feishu Bitable schema
+- real robotic arm integration plan
+
+## Security Note
+
+Do not store Discord cookies, Discord tokens, GitHub tokens, Wi-Fi passwords, or account passwords in this repository, skill files, or memory files. Use browser login state and manual 2FA/captcha completion when needed.
+
