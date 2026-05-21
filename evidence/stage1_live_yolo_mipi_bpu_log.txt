@@ -1,0 +1,160 @@
+﻿[example-3] [WARN] [0946690692.294156519] [dnn_example_node]: Sub img fps: 29.76, Smart fps: 30.36, recved img time delay ms: 27, pre process time ms: 9, infer time ms: 29, post process time ms: 14, pipeline time ms: 82
+[hobot_codec_republish-2] [WARN] [0946690692.513234814] [hobot_codec_encoder]: Pub img fps [30.02]
+[example-3] [WARN] [0946690693.293969879] [dnn_example_node]: Sub img fps: 30.24, Smart fps: 30.00, recved img time delay ms: 31, pre process time ms: 7, infer time ms: 28, post process time ms: 13, pipeline time ms: 81
+[example-3] [WARN] [0946690694.267543803] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 2536, stamp: 946690694_245332352, data size: 783360, comm delay [22.1987]ms
+[example-3] [WARN] [0946690694.315151673] [dnn_example_node]: Sub img fps: 29.94, Smart fps: 30.48, recved img time delay ms: 22, pre process time ms: 4, infer time ms: 25, post process time ms: 17, pipeline time ms: 70
+[example-3] [WARN] [0946690695.334428799] [dnn_example_node]: Sub img fps: 30.07, Smart fps: 29.53, recved img time delay ms: 32, pre process time ms: 5, infer time ms: 31, post process time ms: 20, pipeline time ms: 89
+[example-3] [WARN] [0946690696.334403951] [dnn_example_node]: Sub img fps: 29.91, Smart fps: 29.94, recved img time delay ms: 31, pre process time ms: 6, infer time ms: 33, post process time ms: 17, pipeline time ms: 89
+[example-3] [WARN] [0946690697.275359183] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 2626, stamp: 946690697_245352832, data size: 783360, comm delay [29.9796]ms
+[hobot_codec_republish-2] [WARN] [0946690697.279176144] [hobot_codec_encoder]: sub nv12 960x544, fps: 30.0971, pub jpeg, fps: 30.0971, comm delay [28.3548]ms, codec delay [2.5161]ms
+[example-3] [WARN] [0946690697.339102108] [dnn_example_node]: Sub img fps: 29.97, Smart fps: 29.85, recved img time delay ms: 30, pre process time ms: 10, infer time ms: 34, post process time ms: 16, pipeline time ms: 93
+[hobot_codec_republish-2] [WARN] [0946690697.543314266] [hobot_codec_encoder]: Pub img fps [30.03]
+[example-3] [WARN] [0946690698.362639112] [dnn_example_node]: Sub img fps: 30.04, Smart fps: 30.39, recved img time delay ms: 29, pre process time ms: 5, infer time ms: 28, post process time ms: 20, pipeline time ms: 84
+[example-3] [WARN] [0946690699.372385605] [dnn_example_node]: Sub img fps: 30.07, Smart fps: 29.64, recved img time delay ms: 30, pre process time ms: 9, infer time ms: 35, post process time ms: 17, pipeline time ms: 94
+[example-3] [WARN] [0946690700.304780747] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 2717, stamp: 946690700_278657792, data size: 783360, comm delay [26.1000]ms
+[example-3] [WARN] [0946690700.400208487] [dnn_example_node]: Sub img fps: 29.94, Smart fps: 30.19, recved img time delay ms: 25, pre process time ms: 9, infer time ms: 34, post process time ms: 17, pipeline time ms: 89
+[example-3] [WARN] [0946690701.403589934] [dnn_example_node]: Sub img fps: 29.94, Smart fps: 29.91, recved img time delay ms: 35, pre process time ms: 5, infer time ms: 33, post process time ms: 17, pipeline time ms: 92
+[hobot_codec_republish-2] [WARN] [0946690702.378880734] [hobot_codec_encoder]: sub nv12 960x544, fps: 30.1556, pub jpeg, fps: 30.1556, comm delay [28.3226]ms, codec delay [2.6129]ms
+[example-3] [WARN] [0946690702.404086045] [dnn_example_node]: Sub img fps: 29.97, Smart fps: 29.97, recved img time delay ms: 30, pre process time ms: 10, infer time ms: 33, post process time ms: 16, pipeline time ms: 92
+[hobot_codec_republish-2] [WARN] [0946690702.581165641] [hobot_codec_encoder]: Pub img fps [29.98]
+[example-3] [WARN] [0946690703.335399394] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 2808, stamp: 946690703_311983872, data size: 783360, comm delay [23.3953]ms
+[example-3] [WARN] [0946690703.431070260] [dnn_example_node]: Sub img fps: 30.13, Smart fps: 30.19, recved img time delay ms: 31, pre process time ms: 4, infer time ms: 32, post process time ms: 17, pipeline time ms: 86
+[example-3] [WARN] [0946690704.437087251] [dnn_example_node]: Sub img fps: 30.00, Smart fps: 29.85, recved img time delay ms: 28, pre process time ms: 10, infer time ms: 34, post process time ms: 16, pipeline time ms: 91
+[example-3] [WARN] [0946690705.461248506] [dnn_example_node]: Sub img fps: 30.07, Smart fps: 30.30, recved img time delay ms: 23, pre process time ms: 8, infer time ms: 32, post process time ms: 17, pipeline time ms: 83
+[example-3] [WARN] [0946690706.337396728] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 2898, stamp: 946690706_311984128, data size: 783360, comm delay [25.3797]ms
+[example-3] [WARN] [0946690706.471061791] [dnn_example_node]: Sub img fps: 29.97, Smart fps: 29.73, recved img time delay ms: 32, pre process time ms: 7, infer time ms: 35, post process time ms: 16, pipeline time ms: 92
+[example-3] [WARN] [0946690707.473026111] [dnn_example_node]: Sub img fps: 29.91, Smart fps: 29.94, recved img time delay ms: 31, pre process time ms: 10, infer time ms: 34, post process time ms: 16, pipeline time ms: 94
+[hobot_codec_republish-2] [WARN] [0946690707.480228159] [hobot_codec_encoder]: sub nv12 960x544, fps: 30.0388, pub jpeg, fps: 30.0388, comm delay [28.4194]ms, codec delay [2.6774]ms
+[hobot_codec_republish-2] [WARN] [0946690707.612214470] [hobot_codec_encoder]: Pub img fps [30.02]
+[example-3] [WARN] [0946690708.499254868] [dnn_example_node]: Sub img fps: 30.01, Smart fps: 30.24, recved img time delay ms: 26, pre process time ms: 9, infer time ms: 32, post process time ms: 18, pipeline time ms: 88
+[example-3] [WARN] [0946690709.338737520] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 2988, stamp: 946690709_311983616, data size: 783360, comm delay [26.7301]ms
+[example-3] [WARN] [0946690709.536135674] [dnn_example_node]: Sub img fps: 30.07, Smart fps: 29.89, recved img time delay ms: 32, pre process time ms: 7, infer time ms: 33, post process time ms: 17, pipeline time ms: 91
+[example-3] [WARN] [0946690710.542492581] [dnn_example_node]: Sub img fps: 29.94, Smart fps: 29.82, recved img time delay ms: 31, pre process time ms: 9, infer time ms: 36, post process time ms: 17, pipeline time ms: 97
+[example-3] [WARN] [0946690711.560518039] [dnn_example_node]: Sub img fps: 30.00, Smart fps: 30.45, recved img time delay ms: 27, pre process time ms: 4, infer time ms: 32, post process time ms: 17, pipeline time ms: 82
+[example-3] [WARN] [0946690712.377496299] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 3079, stamp: 946690712_345303552, data size: 783360, comm delay [32.1788]ms
+[example-3] [WARN] [0946690712.571688367] [dnn_example_node]: Sub img fps: 30.24, Smart fps: 29.67, recved img time delay ms: 30, pre process time ms: 9, infer time ms: 34, post process time ms: 16, pipeline time ms: 93
+[hobot_codec_republish-2] [WARN] [0946690712.578252622] [hobot_codec_encoder]: sub nv12 960x544, fps: 29.8805, pub jpeg, fps: 29.8805, comm delay [28.2000]ms, codec delay [2.2333]ms
+[hobot_codec_republish-2] [WARN] [0946690712.639462003] [hobot_codec_encoder]: Pub img fps [30.04]
+[example-3] [WARN] [0946690713.572594062] [dnn_example_node]: Sub img fps: 29.85, Smart fps: 30.00, recved img time delay ms: 31, pre process time ms: 9, infer time ms: 34, post process time ms: 17, pipeline time ms: 94
+[example-3] [WARN] [0946690714.586114308] [dnn_example_node]: Sub img fps: 30.00, Smart fps: 30.57, recved img time delay ms: 28, pre process time ms: 4, infer time ms: 25, post process time ms: 16, pipeline time ms: 75
+[example-3] [WARN] [0946690715.402512318] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 3170, stamp: 946690715_378641792, data size: 783360, comm delay [23.8474]ms
+[example-3] [WARN] [0946690715.606353518] [dnn_example_node]: Sub img fps: 30.27, Smart fps: 29.44, recved img time delay ms: 31, pre process time ms: 9, infer time ms: 34, post process time ms: 17, pipeline time ms: 95
+[example-3] [WARN] [0946690716.639909113] [dnn_example_node]: Sub img fps: 29.73, Smart fps: 30.01, recved img time delay ms: 30, pre process time ms: 9, infer time ms: 35, post process time ms: 17, pipeline time ms: 94
+[hobot_codec_republish-2] [WARN] [0946690717.646922771] [hobot_codec_encoder]: Pub img fps [29.96]
+[hobot_codec_republish-2] [WARN] [0946690717.647252438] [hobot_codec_encoder]: sub nv12 960x544, fps: 29.97, pub jpeg, fps: 29.97, comm delay [28.1667]ms, codec delay [2.3333]ms
+[example-3] [WARN] [0946690717.661356532] [dnn_example_node]: Sub img fps: 30.04, Smart fps: 30.33, recved img time delay ms: 24, pre process time ms: 8, infer time ms: 32, post process time ms: 16, pipeline time ms: 83
+[example-3] [WARN] [0946690718.444867975] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 3261, stamp: 946690718_411970944, data size: 783360, comm delay [32.8745]ms
+[example-3] [WARN] [0946690718.673321028] [dnn_example_node]: Sub img fps: 30.07, Smart fps: 29.70, recved img time delay ms: 31, pre process time ms: 9, infer time ms: 34, post process time ms: 17, pipeline time ms: 95
+[example-3] [WARN] [0946690719.673254972] [dnn_example_node]: Sub img fps: 29.94, Smart fps: 30.00, recved img time delay ms: 31, pre process time ms: 9, infer time ms: 35, post process time ms: 16, pipeline time ms: 95
+[example-3] [WARN] [0946690720.674142250] [dnn_example_node]: Sub img fps: 30.00, Smart fps: 30.00, recved img time delay ms: 31, pre process time ms: 9, infer time ms: 35, post process time ms: 17, pipeline time ms: 96
+[example-3] [WARN] [0946690721.474587164] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 3352, stamp: 946690721_445297408, data size: 783360, comm delay [29.2664]ms
+[example-3] [WARN] [0946690721.698982963] [dnn_example_node]: Sub img fps: 30.04, Smart fps: 30.24, recved img time delay ms: 32, pre process time ms: 5, infer time ms: 32, post process time ms: 16, pipeline time ms: 87
+[hobot_codec_republish-2] [WARN] [0946690722.678461308] [hobot_codec_encoder]: Pub img fps [30.01]
+[example-3] [WARN] [0946690722.703855036] [dnn_example_node]: Sub img fps: 30.04, Smart fps: 29.88, recved img time delay ms: 31, pre process time ms: 9, infer time ms: 34, post process time ms: 16, pipeline time ms: 92
+[hobot_codec_republish-2] [WARN] [0946690722.743440900] [hobot_codec_encoder]: sub nv12 960x544, fps: 30.0679, pub jpeg, fps: 30.0679, comm delay [28.2903]ms, codec delay [2.5484]ms
+[example-3] [WARN] [0946690723.735988464] [dnn_example_node]: Sub img fps: 30.07, Smart fps: 30.07, recved img time delay ms: 34, pre process time ms: 5, infer time ms: 32, post process time ms: 17, pipeline time ms: 90
+[example-3] [WARN] [0946690724.474751330] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 3442, stamp: 946690724_445293696, data size: 783360, comm delay [29.4460]ms
+[example-3] [WARN] [0946690724.736996700] [dnn_example_node]: Sub img fps: 29.91, Smart fps: 29.97, recved img time delay ms: 32, pre process time ms: 7, infer time ms: 34, post process time ms: 17, pipeline time ms: 91
+[example-3] [WARN] [0946690725.738433479] [dnn_example_node]: Sub img fps: 30.04, Smart fps: 29.97, recved img time delay ms: 29, pre process time ms: 10, infer time ms: 34, post process time ms: 17, pipeline time ms: 93
+[example-3] [WARN] [0946690726.762772025] [dnn_example_node]: Sub img fps: 30.10, Smart fps: 30.27, recved img time delay ms: 25, pre process time ms: 8, infer time ms: 31, post process time ms: 17, pipeline time ms: 84
+[example-3] [WARN] [0946690727.501533683] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 3533, stamp: 946690727_478621440, data size: 783360, comm delay [22.8813]ms
+[hobot_codec_republish-2] [WARN] [0946690727.707738760] [hobot_codec_encoder]: Pub img fps [30.03]
+[example-3] [WARN] [0946690727.785777112] [dnn_example_node]: Sub img fps: 29.94, Smart fps: 30.30, recved img time delay ms: 26, pre process time ms: 4, infer time ms: 26, post process time ms: 16, pipeline time ms: 74
+[hobot_codec_republish-2] [WARN] [0946690727.847359743] [hobot_codec_encoder]: sub nv12 960x544, fps: 29.9807, pub jpeg, fps: 29.9807, comm delay [27.8387]ms, codec delay [2.3226]ms
+[example-3] [WARN] [0946690728.802976611] [dnn_example_node]: Sub img fps: 30.01, Smart fps: 29.50, recved img time delay ms: 32, pre process time ms: 9, infer time ms: 33, post process time ms: 16, pipeline time ms: 91
+[example-3] [WARN] [0946690729.821209903] [dnn_example_node]: Sub img fps: 30.00, Smart fps: 30.48, recved img time delay ms: 23, pre process time ms: 3, infer time ms: 30, post process time ms: 17, pipeline time ms: 76
+[example-3] [WARN] [0946690730.503635100] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 3623, stamp: 946690730_478617088, data size: 783360, comm delay [24.9802]ms
+[example-3] [WARN] [0946690730.827430810] [dnn_example_node]: Sub img fps: 30.04, Smart fps: 29.79, recved img time delay ms: 23, pre process time ms: 9, infer time ms: 30, post process time ms: 16, pipeline time ms: 82
+[example-3] [WARN] [0946690731.838902055] [dnn_example_node]: Sub img fps: 30.00, Smart fps: 29.70, recved img time delay ms: 28, pre process time ms: 10, infer time ms: 35, post process time ms: 17, pipeline time ms: 93
+[hobot_codec_republish-2] [WARN] [0946690732.709200523] [hobot_codec_encoder]: Pub img fps [29.99]
+[example-3] [WARN] [0946690732.872411067] [dnn_example_node]: Sub img fps: 30.07, Smart fps: 30.01, recved img time delay ms: 34, pre process time ms: 8, infer time ms: 33, post process time ms: 17, pipeline time ms: 94
+[hobot_codec_republish-2] [WARN] [0946690732.914628766] [hobot_codec_encoder]: sub nv12 960x544, fps: 30, pub jpeg, fps: 30, comm delay [28.6333]ms, codec delay [2.4667]ms
+[example-3] [WARN] [0946690733.508538436] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 3713, stamp: 946690733_478612992, data size: 783360, comm delay [29.9024]ms
+[example-3] [WARN] [0946690733.906423162] [dnn_example_node]: Sub img fps: 29.91, Smart fps: 30.01, recved img time delay ms: 31, pre process time ms: 9, infer time ms: 35, post process time ms: 17, pipeline time ms: 95
+[example-3] [WARN] [0946690734.933963336] [dnn_example_node]: Sub img fps: 30.10, Smart fps: 30.19, recved img time delay ms: 33, pre process time ms: 4, infer time ms: 33, post process time ms: 16, pipeline time ms: 88
+[example-3] [WARN] [0946690735.938039367] [dnn_example_node]: Sub img fps: 29.91, Smart fps: 29.88, recved img time delay ms: 32, pre process time ms: 8, infer time ms: 34, post process time ms: 16, pipeline time ms: 92
+[example-3] [WARN] [0946690736.511380396] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 3803, stamp: 946690736_478600064, data size: 783360, comm delay [32.7623]ms
+[example-3] [WARN] [0946690736.949380362] [dnn_example_node]: Sub img fps: 30.07, Smart fps: 30.54, recved img time delay ms: 31, pre process time ms: 4, infer time ms: 22, post process time ms: 13, pipeline time ms: 71
+[hobot_codec_republish-2] [WARN] [0946690737.738153058] [hobot_codec_encoder]: Pub img fps [30.03]
+[example-3] [WARN] [0946690737.972825282] [dnn_example_node]: Sub img fps: 30.36, Smart fps: 29.44, recved img time delay ms: 30, pre process time ms: 10, infer time ms: 34, post process time ms: 16, pipeline time ms: 94
+[hobot_codec_republish-2] [WARN] [0946690738.012541147] [hobot_codec_encoder]: sub nv12 960x544, fps: 29.7915, pub jpeg, fps: 29.7915, comm delay [28.4667]ms, codec delay [2.4667]ms
+[example-3] [WARN] [0946690739.005359168] [dnn_example_node]: Sub img fps: 29.67, Smart fps: 30.07, recved img time delay ms: 27, pre process time ms: 11, infer time ms: 35, post process time ms: 17, pipeline time ms: 94
+[example-3] [WARN] [0946690739.544193879] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 3894, stamp: 946690739_511935360, data size: 783360, comm delay [32.2409]ms
+[example-3] [WARN] [0946690740.006247197] [dnn_example_node]: Sub img fps: 30.07, Smart fps: 29.97, recved img time delay ms: 31, pre process time ms: 9, infer time ms: 34, post process time ms: 17, pipeline time ms: 95
+[example-3] [WARN] [0946690741.037360915] [dnn_example_node]: Sub img fps: 29.97, Smart fps: 30.07, recved img time delay ms: 33, pre process time ms: 7, infer time ms: 33, post process time ms: 17, pipeline time ms: 92
+[example-3] [WARN] [0946690742.038581610] [dnn_example_node]: Sub img fps: 29.97, Smart fps: 30.00, recved img time delay ms: 29, pre process time ms: 9, infer time ms: 34, post process time ms: 17, pipeline time ms: 93
+[example-3] [WARN] [0946690742.568185772] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 3985, stamp: 946690742_545264768, data size: 783360, comm delay [22.9073]ms
+[hobot_codec_republish-2] [WARN] [0946690742.742546199] [hobot_codec_encoder]: Pub img fps [29.98]
+[example-3] [WARN] [0946690743.061688989] [dnn_example_node]: Sub img fps: 30.27, Smart fps: 30.36, recved img time delay ms: 27, pre process time ms: 7, infer time ms: 28, post process time ms: 18, pipeline time ms: 83
+[hobot_codec_republish-2] [WARN] [0946690743.116189906] [hobot_codec_encoder]: sub nv12 960x544, fps: 29.9401, pub jpeg, fps: 29.9401, comm delay [27.3000]ms, codec delay [2.2000]ms
+[example-3] [WARN] [0946690744.072569025] [dnn_example_node]: Sub img fps: 30.00, Smart fps: 29.62, recved img time delay ms: 33, pre process time ms: 10, infer time ms: 34, post process time ms: 16, pipeline time ms: 94
+[example-3] [WARN] [0946690745.100214615] [dnn_example_node]: Sub img fps: 29.79, Smart fps: 30.21, recved img time delay ms: 25, pre process time ms: 10, infer time ms: 33, post process time ms: 17, pipeline time ms: 89
+[example-3] [WARN] [0946690745.577755028] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 4075, stamp: 946690745_545259136, data size: 783360, comm delay [32.4581]ms
+[example-3] [WARN] [0946690746.130771417] [dnn_example_node]: Sub img fps: 30.07, Smart fps: 30.10, recved img time delay ms: 30, pre process time ms: 4, infer time ms: 32, post process time ms: 17, pipeline time ms: 85
+[example-3] [WARN] [0946690747.149891042] [dnn_example_node]: Sub img fps: 30.10, Smart fps: 30.39, recved img time delay ms: 28, pre process time ms: 3, infer time ms: 23, post process time ms: 16, pipeline time ms: 71
+[hobot_codec_republish-2] [WARN] [0946690747.743276670] [hobot_codec_encoder]: Pub img fps [30.00]
+[example-3] [WARN] [0946690748.175362339] [dnn_example_node]: Sub img fps: 30.27, Smart fps: 30.16, recved img time delay ms: 24, pre process time ms: 4, infer time ms: 22, post process time ms: 13, pipeline time ms: 64
+[hobot_codec_republish-2] [WARN] [0946690748.241213766] [hobot_codec_encoder]: sub nv12 960x544, fps: 30.1263, pub jpeg, fps: 30.1263, comm delay [26.4839]ms, codec delay [1.1613]ms
+[example-3] [WARN] [0946690748.603161464] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 4166, stamp: 946690748_578583936, data size: 783360, comm delay [24.5657]ms
+[example-3] [WARN] [0946690749.182177331] [dnn_example_node]: Sub img fps: 29.76, Smart fps: 29.82, recved img time delay ms: 31, pre process time ms: 3, infer time ms: 22, post process time ms: 13, pipeline time ms: 71
+[example-3] [WARN] [0946690750.211558964] [dnn_example_node]: Sub img fps: 30.19, Smart fps: 30.13, recved img time delay ms: 26, pre process time ms: 4, infer time ms: 22, post process time ms: 13, pipeline time ms: 66
+[example-3] [WARN] [0946690751.217485455] [dnn_example_node]: Sub img fps: 29.84, Smart fps: 29.85, recved img time delay ms: 32, pre process time ms: 4, infer time ms: 22, post process time ms: 13, pipeline time ms: 72
+[example-3] [WARN] [0946690751.609406134] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 4256, stamp: 946690751_578579328, data size: 783360, comm delay [30.8158]ms
+[example-3] [WARN] [0946690752.241519876] [dnn_example_node]: Sub img fps: 30.21, Smart fps: 30.30, recved img time delay ms: 22, pre process time ms: 4, infer time ms: 22, post process time ms: 13, pipeline time ms: 63
+[hobot_codec_republish-2] [WARN] [0946690752.769216869] [hobot_codec_encoder]: Pub img fps [30.05]
+[example-3] [WARN] [0946690753.246674866] [dnn_example_node]: Sub img fps: 29.94, Smart fps: 29.88, recved img time delay ms: 25, pre process time ms: 3, infer time ms: 24, post process time ms: 13, pipeline time ms: 68
+[hobot_codec_republish-2] [WARN] [0946690753.402690362] [hobot_codec_encoder]: sub nv12 960x544, fps: 30.303, pub jpeg, fps: 30.303, comm delay [26.5806]ms, codec delay [1.0323]ms
+[example-3] [WARN] [0946690754.251184272] [dnn_example_node]: Sub img fps: 29.91, Smart fps: 29.85, recved img time delay ms: 33, pre process time ms: 4, infer time ms: 22, post process time ms: 13, pipeline time ms: 73
+[example-3] [WARN] [0946690754.642804409] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 4347, stamp: 946690754_611906944, data size: 783360, comm delay [30.8855]ms
+[example-3] [WARN] [0946690755.278013737] [dnn_example_node]: Sub img fps: 30.19, Smart fps: 30.30, recved img time delay ms: 23, pre process time ms: 4, infer time ms: 22, post process time ms: 16, pipeline time ms: 66
+[example-3] [WARN] [0946690756.279125807] [dnn_example_node]: Sub img fps: 29.91, Smart fps: 29.88, recved img time delay ms: 27, pre process time ms: 4, infer time ms: 22, post process time ms: 13, pipeline time ms: 68
+[example-3] [WARN] [0946690757.287060007] [dnn_example_node]: Sub img fps: 29.92, Smart fps: 29.85, recved img time delay ms: 30, pre process time ms: 6, infer time ms: 22, post process time ms: 16, pipeline time ms: 76
+[example-3] [WARN] [0946690757.672955682] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 4438, stamp: 946690757_645238912, data size: 783360, comm delay [27.6915]ms
+[hobot_codec_republish-2] [WARN] [0946690757.770703716] [hobot_codec_encoder]: Pub img fps [29.99]
+[example-3] [WARN] [0946690758.304910715] [dnn_example_node]: Sub img fps: 30.13, Smart fps: 29.53, recved img time delay ms: 29, pre process time ms: 9, infer time ms: 34, post process time ms: 16, pipeline time ms: 93
+[hobot_codec_republish-2] [WARN] [0946690758.479644309] [hobot_codec_encoder]: sub nv12 960x544, fps: 30.0971, pub jpeg, fps: 30.0971, comm delay [28.6452]ms, codec delay [2.7097]ms
+[example-3] [WARN] [0946690759.337078267] [dnn_example_node]: Sub img fps: 29.73, Smart fps: 30.07, recved img time delay ms: 27, pre process time ms: 10, infer time ms: 34, post process time ms: 16, pipeline time ms: 91
+[example-3] [WARN] [0946690760.365091192] [dnn_example_node]: Sub img fps: 30.07, Smart fps: 30.21, recved img time delay ms: 28, pre process time ms: 9, infer time ms: 29, post process time ms: 18, pipeline time ms: 86
+[example-3] [WARN] [0946690760.673435931] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 4528, stamp: 946690760_645239552, data size: 783360, comm delay [28.1672]ms
+[example-3] [WARN] [0946690761.369258764] [dnn_example_node]: Sub img fps: 30.19, Smart fps: 29.82, recved img time delay ms: 30, pre process time ms: 9, infer time ms: 34, post process time ms: 16, pipeline time ms: 91
+[example-3] [WARN] [0946690762.400090565] [dnn_example_node]: Sub img fps: 29.97, Smart fps: 30.10, recved img time delay ms: 33, pre process time ms: 4, infer time ms: 33, post process time ms: 16, pipeline time ms: 88
+[hobot_codec_republish-2] [WARN] [0946690762.781480237] [hobot_codec_encoder]: Pub img fps [29.94]
+[example-3] [WARN] [0946690763.428278615] [dnn_example_node]: Sub img fps: 29.88, Smart fps: 30.19, recved img time delay ms: 25, pre process time ms: 8, infer time ms: 30, post process time ms: 18, pipeline time ms: 83
+[hobot_codec_republish-2] [WARN] [0946690763.579019982] [hobot_codec_encoder]: sub nv12 960x544, fps: 30, pub jpeg, fps: 30, comm delay [28.5667]ms, codec delay [2.7000]ms
+[example-3] [WARN] [0946690763.704228579] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 4619, stamp: 946690763_678562304, data size: 783360, comm delay [25.6287]ms
+[example-3] [WARN] [0946690764.432512771] [dnn_example_node]: Sub img fps: 29.98, Smart fps: 29.85, recved img time delay ms: 26, pre process time ms: 8, infer time ms: 34, post process time ms: 16, pipeline time ms: 87
+[example-3] [WARN] [0946690765.436999677] [dnn_example_node]: Sub img fps: 30.01, Smart fps: 29.91, recved img time delay ms: 30, pre process time ms: 9, infer time ms: 33, post process time ms: 17, pipeline time ms: 91
+[example-3] [WARN] [0946690766.450076964] [dnn_example_node]: Sub img fps: 30.30, Smart fps: 30.48, recved img time delay ms: 30, pre process time ms: 5, infer time ms: 22, post process time ms: 14, pipeline time ms: 72
+[example-3] [WARN] [0946690766.710920792] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 4709, stamp: 946690766_678554624, data size: 783360, comm delay [32.3535]ms
+[example-3] [WARN] [0946690767.466374504] [dnn_example_node]: Sub img fps: 29.88, Smart fps: 29.64, recved img time delay ms: 26, pre process time ms: 9, infer time ms: 33, post process time ms: 17, pipeline time ms: 88
+[hobot_codec_republish-2] [WARN] [0946690767.809201854] [hobot_codec_encoder]: Pub img fps [30.04]
+[example-3] [WARN] [0946690768.496804055] [dnn_example_node]: Sub img fps: 29.91, Smart fps: 30.10, recved img time delay ms: 24, pre process time ms: 9, infer time ms: 33, post process time ms: 16, pipeline time ms: 85
+[hobot_codec_republish-2] [WARN] [0946690768.638879749] [hobot_codec_encoder]: sub nv12 960x544, fps: 30.2439, pub jpeg, fps: 30.2439, comm delay [28.7742]ms, codec delay [2.6452]ms
+[example-3] [WARN] [0946690769.504986631] [dnn_example_node]: Sub img fps: 30.13, Smart fps: 29.79, recved img time delay ms: 33, pre process time ms: 7, infer time ms: 34, post process time ms: 16, pipeline time ms: 93
+[example-3] [WARN] [0946690769.742387524] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 4800, stamp: 946690769_711889792, data size: 783360, comm delay [30.4599]ms
+[example-3] [WARN] [0946690770.505625409] [dnn_example_node]: Sub img fps: 29.85, Smart fps: 30.00, recved img time delay ms: 31, pre process time ms: 9, infer time ms: 34, post process time ms: 17, pipeline time ms: 94
+[example-3] [WARN] [0946690771.506647104] [dnn_example_node]: Sub img fps: 30.13, Smart fps: 30.00, recved img time delay ms: 31, pre process time ms: 9, infer time ms: 35, post process time ms: 17, pipeline time ms: 95
+[example-3] [WARN] [0946690772.535115362] [dnn_example_node]: Sub img fps: 30.16, Smart fps: 30.13, recved img time delay ms: 31, pre process time ms: 8, infer time ms: 33, post process time ms: 16, pipeline time ms: 89
+[example-3] [WARN] [0946690772.744709025] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 4890, stamp: 946690772_711882496, data size: 783360, comm delay [32.8004]ms
+[hobot_codec_republish-2] [WARN] [0946690772.813022119] [hobot_codec_encoder]: Pub img fps [29.98]
+[example-3] [WARN] [0946690773.558520866] [dnn_example_node]: Sub img fps: 29.88, Smart fps: 30.30, recved img time delay ms: 32, pre process time ms: 5, infer time ms: 25, post process time ms: 16, pipeline time ms: 80
+[hobot_codec_republish-2] [WARN] [0946690773.711199943] [hobot_codec_encoder]: sub nv12 960x544, fps: 29.8211, pub jpeg, fps: 29.8211, comm delay [28.3000]ms, codec delay [1.9333]ms
+[example-3] [WARN] [0946690774.579662785] [dnn_example_node]: Sub img fps: 30.01, Smart fps: 30.33, recved img time delay ms: 24, pre process time ms: 4, infer time ms: 24, post process time ms: 14, pipeline time ms: 68
+[example-3] [WARN] [0946690775.598692160] [dnn_example_node]: Sub img fps: 30.30, Smart fps: 29.56, recved img time delay ms: 33, pre process time ms: 6, infer time ms: 28, post process time ms: 18, pipeline time ms: 87
+[example-3] [WARN] [0946690775.769737085] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 4981, stamp: 946690775_745215360, data size: 783360, comm delay [24.4975]ms
+[example-3] [WARN] [0946690776.603899650] [dnn_example_node]: Sub img fps: 29.73, Smart fps: 29.79, recved img time delay ms: 31, pre process time ms: 9, infer time ms: 33, post process time ms: 16, pipeline time ms: 92
+[example-3] [WARN] [0946690777.622493567] [dnn_example_node]: Sub img fps: 30.04, Smart fps: 30.45, recved img time delay ms: 25, pre process time ms: 4, infer time ms: 30, post process time ms: 16, pipeline time ms: 77
+[hobot_codec_republish-2] [WARN] [0946690777.843474989] [hobot_codec_encoder]: Pub img fps [30.02]
+[example-3] [WARN] [0946690778.640378317] [dnn_example_node]: Sub img fps: 29.94, Smart fps: 29.53, recved img time delay ms: 31, pre process time ms: 9, infer time ms: 34, post process time ms: 17, pipeline time ms: 95
+[example-3] [WARN] [0946690778.811409075] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 5072, stamp: 946690778_778541440, data size: 783360, comm delay [32.8450]ms
+[hobot_codec_republish-2] [WARN] [0946690778.814964077] [hobot_codec_encoder]: sub nv12 960x544, fps: 29.9103, pub jpeg, fps: 29.9103, comm delay [27.5000]ms, codec delay [2.7333]ms
+[example-3] [WARN] [0946690779.665428030] [dnn_example_node]: Sub img fps: 30.21, Smart fps: 30.21, recved img time delay ms: 27, pre process time ms: 9, infer time ms: 33, post process time ms: 16, pipeline time ms: 87
+[example-3] [WARN] [0946690780.671033437] [dnn_example_node]: Sub img fps: 29.94, Smart fps: 29.85, recved img time delay ms: 28, pre process time ms: 10, infer time ms: 34, post process time ms: 16, pipeline time ms: 92
+[example-3] [WARN] [0946690781.702632614] [dnn_example_node]: Sub img fps: 29.94, Smart fps: 30.07, recved img time delay ms: 28, pre process time ms: 9, infer time ms: 34, post process time ms: 16, pipeline time ms: 91
+[example-3] [WARN] [0946690781.842544390] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 5163, stamp: 946690781_811873280, data size: 783360, comm delay [30.6475]ms
+[example-3] [WARN] [0946690782.707519937] [dnn_example_node]: Sub img fps: 29.94, Smart fps: 29.88, recved img time delay ms: 32, pre process time ms: 9, infer time ms: 34, post process time ms: 17, pipeline time ms: 96
+[hobot_codec_republish-2] [WARN] [0946690782.845463711] [hobot_codec_encoder]: Pub img fps [29.99]
+[example-3] [WARN] [0946690783.730623691] [dnn_example_node]: Sub img fps: 29.97, Smart fps: 30.30, recved img time delay ms: 25, pre process time ms: 8, infer time ms: 32, post process time ms: 17, pipeline time ms: 85
+[hobot_codec_republish-2] [WARN] [0946690783.879102681] [hobot_codec_encoder]: sub nv12 960x544, fps: 30, pub jpeg, fps: 30, comm delay [28.1333]ms, codec delay [2.8333]ms
+[example-3] [WARN] [0946690784.737125265] [dnn_example_node]: Sub img fps: 30.00, Smart fps: 29.79, recved img time delay ms: 28, pre process time ms: 10, infer time ms: 34, post process time ms: 16, pipeline time ms: 91
+[example-3] [WARN] [0946690784.842617180] [dnn_example_node]: Recved img encoding: nv12, h: 544, w: 960, step: 960, index: 5253, stamp: 946690784_811865728, data size: 783360, comm delay [30.7398]ms

@@ -1,0 +1,70 @@
+﻿yolo is not running
+started yolo
+/hbmem_img
+/hbmem_img/camera_info
+/hobot_dnn_detection
+/hobot_dnn_detection_info
+/image
+/parameter_events
+/rosout
+/tts_text
+--- detection sample
+header:
+  stamp:
+    sec: 1779356545
+    nanosec: 180455424
+  frame_id: '333'
+fps: 29
+perfs:
+- type: yolo26s_bayese_640x640_nv12_recvedimg
+  stamp_start:
+    sec: 1779356545
+    nanosec: 180455424
+  stamp_end:
+    sec: 1779356545
+    nanosec: 206207422
+  time_ms_duration: 26.0
+- type: yolo26s_bayese_640x640_nv12_preprocess
+  stamp_start:
+    sec: 1779356545
+    nanosec: 206207422
+  stamp_end:
+    sec: 1779356545
+    nanosec: 210058658
+  time_ms_duration: 4.0
+- type: yolo26s_bayese_640x640_nv12_predict_infer
+  stamp_start:
+    sec: 1779356545
+    nanosec: 210455906
+  stamp_end:
+    sec: 1779356545
+    nanosec: 237566475
+  time_ms_duration: 26.0
+- type: yolo26s_bayese_640x640_nv12_predict_parse
+  stamp_start:
+    sec: 0
+    nanosec: 0
+  stamp_end:
+    sec: 0
+    nanosec: 0
+  time_ms_duration: 0.0
+- type: yolo26s_bayese_640x640_nv12_postprocess
+  stamp_start:
+    sec: 1779356545
+    nanosec: 237778683
+  stamp_end:
+    sec: 1779356545
+    nanosec: 253890791
+  time_ms_duration: 16.0
+- type: yolo26s_bayese_640x640_nv12_pipeline
+  stamp_start:
+    sec: 1779356545
+    nanosec: 180455424
+  stamp_end:
+    sec: 1779356545
+    nanosec: 253890791
+  time_ms_duration: 73.0
+targets: []
+disappeared_targets: []
+---
+stopped yolo

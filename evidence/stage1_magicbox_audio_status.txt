@@ -1,0 +1,31 @@
+﻿**** List of CAPTURE Hardware Devices ****
+card 0: duplexaudioi2s1 [duplex-audio-i2s1], device 0: i2s1-voicehat-hifi voicehat-hifi-0 [i2s1-voicehat-hifi voicehat-hifi-0]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+card 1: duplexaudio [duplex-audio], device 0: i2s0-(null) ES8326 HiFi-0 [i2s0-(null) ES8326 HiFi-0]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+---
+**** List of PLAYBACK Hardware Devices ****
+card 0: duplexaudioi2s1 [duplex-audio-i2s1], device 0: i2s1-voicehat-hifi voicehat-hifi-0 [i2s1-voicehat-hifi voicehat-hifi-0]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+card 1: duplexaudio [duplex-audio], device 0: i2s0-(null) ES8326 HiFi-0 [i2s0-(null) ES8326 HiFi-0]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+--- magicbox
+Install root: /userdata/magicclaw
+U disk usage:
+/dev/root        29G   21G  6.8G  75% /
+
+Magicbox boot service:
+inactive
+MagicClaw service:
+activating
+
+stereo: stopped
+gesture: stopped
+voice: stopped
+yolo: stopped
+
+Speaker volume: 79%
