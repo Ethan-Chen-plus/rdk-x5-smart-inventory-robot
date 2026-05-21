@@ -13,6 +13,7 @@ The project goal is to build a complete smart life robotics workflow:
 
 - Event: Robotics Dream Keeper Challenge
 - Track: Smart Life Robotics
+- Repository: https://github.com/Suibian-YY-pro/rdk-x5-smart-inventory-robot
 - Discord thread: https://discord.com/channels/1300358874280230994/1503706103752429618/threads/1506248828523905105
 - Official repository: https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/tree/develop
 

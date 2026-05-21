@@ -7,6 +7,7 @@ Updated: 2026-05-21
 - Name: Kewei Chen
 - Project: RDK X5 Smart Household Inventory Robot
 - Track: Smart Life Robotics
+- Repository: https://github.com/Suibian-YY-pro/rdk-x5-smart-inventory-robot
 - Discord thread: https://discord.com/channels/1300358874280230994/1503706103752429618/threads/1506248828523905105
 
 ## Stage 1 Summary
@@ -34,7 +35,7 @@ The board was already flashed before this evidence package was created, so the e
 | Sensor / actuator activity | Done | MIPI camera live YOLO log, microphone WAV |
 | AI task on board | Done | BPU YOLO static image and live YOLO ROS pipeline |
 | Discord post | Done | Thread link above |
-| GitHub repository | Pending public remote | Local repo is ready; needs GitHub remote URL |
+| GitHub repository | Done | https://github.com/Suibian-YY-pro/rdk-x5-smart-inventory-robot |
 
 ## Evidence Files
 
@@ -100,7 +101,6 @@ See:
 - `docs/MAGICBOX_NOTES.md`
 - `docs/STAGE1.md`
 
-## Remaining External Step
+## Remaining Optional Step
 
-Create/push the public GitHub repository and replace `<repo-link>` in the official showcase draft.
-
+Record a short phone video or screen recording if the organizers require video rather than screenshots/logs for Stage 1.
