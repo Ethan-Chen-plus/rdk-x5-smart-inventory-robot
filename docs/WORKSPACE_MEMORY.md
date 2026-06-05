@@ -1,6 +1,6 @@
 # Workspace Memory
 
-Updated: 2026-05-21
+Updated: 2026-06-05
 
 ## Challenge
 
@@ -58,19 +58,18 @@ DISPLAY=:0 XAUTHORITY=/var/run/lightdm/root/:0 xfce4-screenshooter -f -s /tmp/rd
 
 ## Stage 2 Next
 
-Prepare a formal proposal with:
-
-- scenario and measurable goals
-- AI system architecture
-- ROS 2 node graph
-- compute allocation between BPU and CPU
-- BOM
-- week-by-week roadmap
-- risk analysis
-- Feishu Bitable schema
-- real robotic arm integration plan
+- Stage 2 design draft completed and pushed in commit `33ebe70`.
+- Main review entry: `docs/STAGE2_SUBMISSION.md`.
+- Supporting docs:
+  - `docs/ARCHITECTURE.md`
+  - `docs/PROPOSAL.md`
+  - `docs/ROADMAP.md`
+  - `hardware/BOM.md`
+  - `docs/RISK_ANALYSIS.md`
+- Stage 2 package covers scenario, measurable goals, architecture diagrams, ROS 2 node graph, BPU/CPU compute allocation, module table, BOM, roadmap, risk analysis, and real robotic arm safety plan.
+- Discord Stage 2 preview post draft exists inside `docs/STAGE2_SUBMISSION.md`; it has not been posted yet in this memory state.
+- Next practical work: define the Feishu Bitable schema in more detail, choose the exact first robotic arm action, and build a minimal detection-to-inventory script for Stage 3.
 
 ## Security Note
 
 Do not store Discord cookies, Discord tokens, GitHub tokens, Wi-Fi passwords, or account passwords in this repository, skill files, or memory files. Use browser login state and manual 2FA/captcha completion when needed.
-
