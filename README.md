@@ -38,8 +38,12 @@ src/         Source code and scripts.
 ## Stage Notes
 
 - Stage 1 evidence plan: [docs/STAGE1.md](docs/STAGE1.md)
+- Stage 1 submission package: [docs/STAGE1_SUBMISSION.md](docs/STAGE1_SUBMISSION.md)
+- Stage 2 submission package: [docs/STAGE2_SUBMISSION.md](docs/STAGE2_SUBMISSION.md)
 - Project proposal: [docs/PROPOSAL.md](docs/PROPOSAL.md)
+- System architecture: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - Roadmap: [docs/ROADMAP.md](docs/ROADMAP.md)
+- Risk analysis: [docs/RISK_ANALYSIS.md](docs/RISK_ANALYSIS.md)
 - Discord post record: [docs/DISCORD_POST.md](docs/DISCORD_POST.md)
 
 ## Current Status
@@ -53,6 +57,7 @@ src/         Source code and scripts.
 - Magic Box / RDK X5 board Wi-Fi is connected through `wlan0`.
 - Stage 1 BPU YOLO evidence has been captured locally.
 - Magic Box microphone recording evidence has been captured locally.
+- Stage 2 proposal, architecture, roadmap, BOM, and risk analysis drafts are prepared.
 
 ## Important Evidence Note
 
@@ -69,3 +74,17 @@ Current evidence files:
 - `assets/stage1_rdk_desktop.png`
 - `assets/stage1_yolov5_output_image.jpg`
 - `assets/stage1_magicbox_mic_test.wav`
+
+## Stage 2 Design Entry
+
+The main Stage 2 review entry is:
+
+- [docs/STAGE2_SUBMISSION.md](docs/STAGE2_SUBMISSION.md)
+
+Supporting design files:
+
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- [docs/PROPOSAL.md](docs/PROPOSAL.md)
+- [docs/ROADMAP.md](docs/ROADMAP.md)
+- [hardware/BOM.md](hardware/BOM.md)
+- [docs/RISK_ANALYSIS.md](docs/RISK_ANALYSIS.md)
