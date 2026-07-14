@@ -78,3 +78,5 @@ bash scripts/stop_stage3_demo.sh
 The final video should show the RDK X5 hardware, at least 30 seconds of
 continuous overlay, changing `/inventory/state`, microphone activity, benchmark
 evidence, and one safe actuator or robotic-arm action.
+
+Recording plan: [DEMO_VIDEO_SCRIPT.md](DEMO_VIDEO_SCRIPT.md)

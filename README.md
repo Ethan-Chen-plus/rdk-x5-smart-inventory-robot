@@ -43,6 +43,7 @@ src/         Source code and scripts.
 - Stage 3 live prototype: `scripts/start_stage3_demo.sh`
 - Stage 3 submission package: [docs/STAGE3_SUBMISSION.md](docs/STAGE3_SUBMISSION.md)
 - Stage 3 benchmark: [docs/BENCHMARK.md](docs/BENCHMARK.md)
+- Final demo video script: [docs/DEMO_VIDEO_SCRIPT.md](docs/DEMO_VIDEO_SCRIPT.md)
 - Project proposal: [docs/PROPOSAL.md](docs/PROPOSAL.md)
 - System architecture: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - Roadmap: [docs/ROADMAP.md](docs/ROADMAP.md)
