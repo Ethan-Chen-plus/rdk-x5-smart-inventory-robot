@@ -40,6 +40,9 @@ src/         Source code and scripts.
 - Stage 1 evidence plan: [docs/STAGE1.md](docs/STAGE1.md)
 - Stage 1 submission package: [docs/STAGE1_SUBMISSION.md](docs/STAGE1_SUBMISSION.md)
 - Stage 2 submission package: [docs/STAGE2_SUBMISSION.md](docs/STAGE2_SUBMISSION.md)
+- Stage 3 live prototype: `scripts/start_stage3_demo.sh`
+- Stage 3 submission package: [docs/STAGE3_SUBMISSION.md](docs/STAGE3_SUBMISSION.md)
+- Stage 3 benchmark: [docs/BENCHMARK.md](docs/BENCHMARK.md)
 - Project proposal: [docs/PROPOSAL.md](docs/PROPOSAL.md)
 - System architecture: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - Roadmap: [docs/ROADMAP.md](docs/ROADMAP.md)
@@ -58,6 +61,34 @@ src/         Source code and scripts.
 - Stage 1 BPU YOLO evidence has been captured locally.
 - Magic Box microphone recording evidence has been captured locally.
 - Stage 2 proposal, architecture, roadmap, BOM, and risk analysis drafts are prepared.
+- Stage 3 prototype connects live BPU detections to a ROS 2 inventory state node.
+
+## Stage 3 Quick Start
+
+Run on the Magic Box / RDK X5 after copying this repository to
+`/home/sunrise/rdk_inventory_demo`:
+
+```bash
+cd /home/sunrise/rdk_inventory_demo
+bash scripts/start_stage3_demo.sh
+```
+
+Stop only this project's recorded processes:
+
+```bash
+bash scripts/stop_stage3_demo.sh
+```
+
+The launcher starts the live MIPI-camera YOLO pipeline, a CPU microphone
+activity node, and a concurrent ROS 2 inventory tracker. The tracker aligns
+camera and audio messages by ROS receive time. Runtime output is written to:
+
+- `/userdata/magicclaw/logs/yolo.log`
+- `/userdata/magicclaw/inventory/inventory_tracker.log`
+- `/userdata/magicclaw/inventory/audio_activity.log`
+- `/userdata/magicclaw/inventory/state.json`
+- ROS 2 topic `/inventory/state`
+- ROS 2 topic `/audio/activity`
 
 ## Important Evidence Note
 

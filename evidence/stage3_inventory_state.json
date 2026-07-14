@@ -1,0 +1,1 @@
+{"updated_at": "2026-07-14T12:55:20.705228+00:00", "source_topic": "/hobot_dnn_detection", "frames_received": 0, "detector_fps": 0, "item_counts": {}, "detections": [], "audio_rms": 0.00224, "sensor_sync": {"method": "ROS receive-time alignment", "camera_received_at": null, "audio_received_at": 1784033720.6781616, "skew_ms": null}}

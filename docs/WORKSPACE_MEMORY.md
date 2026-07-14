@@ -1,6 +1,6 @@
 # Workspace Memory
 
-Updated: 2026-06-05
+Updated: 2026-07-14
 
 ## Challenge
 
@@ -69,6 +69,22 @@ DISPLAY=:0 XAUTHORITY=/var/run/lightdm/root/:0 xfce4-screenshooter -f -s /tmp/rd
 - Stage 2 package covers scenario, measurable goals, architecture diagrams, ROS 2 node graph, BPU/CPU compute allocation, module table, BOM, roadmap, risk analysis, and real robotic arm safety plan.
 - Discord Stage 2 preview post draft exists inside `docs/STAGE2_SUBMISSION.md`; it has not been posted yet in this memory state.
 - Next practical work: define the Feishu Bitable schema in more detail, choose the exact first robotic arm action, and build a minimal detection-to-inventory script for Stage 3.
+
+## Stage 3 Current State
+
+- Official full-program deadline: 2026-07-15; the official repository does not state a deadline timezone.
+- Board runtime project: `/home/sunrise/rdk_inventory_demo`.
+- Known-good start command: `cd /home/sunrise/rdk_inventory_demo && bash scripts/start_stage3_demo.sh`.
+- Background processes verified on 2026-07-14:
+  - MIPI camera + BPU YOLO: `/userdata/magicclaw/logs/yolo.log`.
+  - Microphone RMS ROS 2 node: `/audio/activity`.
+  - Detection/audio inventory node: `/inventory/state` and `/userdata/magicclaw/inventory/state.json`.
+- Live benchmark over 644 samples: 30.02 smart FPS average, 24.61 ms average BPU inference, 72.27 ms average pipeline latency.
+- Sustained-run thermal state observed: CPU 58.0 C, DDR 59.4 C, about 6.0 GiB memory available.
+- RDK visualization page: `http://192.168.127.10:8000`; WebSocket service listens on port 8080.
+- Stage 3 entry files: `docs/STAGE3_SUBMISSION.md`, `docs/BENCHMARK.md`, `scripts/start_stage3_demo.sh`.
+- Still required before final external submission: put a recognizable object in view and capture non-empty detections, record/upload the 3-7 minute hardware demo, perform one safe actuator/arm action, add media links, update Discord, and update the official showcase PR.
+- Safety: unattended background mode does not command the robotic arm. Use low speed, a clear workspace, and an accessible power stop for the final arm demonstration.
 
 ## Security Note
 
