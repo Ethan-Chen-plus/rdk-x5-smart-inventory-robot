@@ -47,6 +47,41 @@ real robotic arm is integrated through a constrained safety and control layer.
 - TuntunClaw source and tutorial: https://github.com/datawhalechina/every-embodied/tree/main/16-%E4%B8%93%E9%A2%98%E7%BB%84%E9%98%9F%E5%AD%A6%E4%B9%A0/02-OpenClaw%E5%AE%B6%E5%BA%AD%E7%89%A9%E8%B5%84%E5%8A%A9%E6%89%8B/tuntunclaw
 - Completed simulation demo: https://www.bilibili.com/video/BV1roAVzaEeZ
 
+## Completed Real-World Experiment
+
+The real-world experiment validates the same inventory-memory task with an RDK
+X5 Magic Box, a physical robotic arm, two storage areas, a delivery tray, and a
+tablet inventory display. The initial scene contains five Oreo cookies on the
+plate with a low-stock threshold of two, and seven Nestle coffee sticks in the
+basket with a threshold of six. The requested task is to retrieve one Oreo and
+one coffee stick and place both in the delivery tray.
+
+The robot first moves one Oreo from the plate to the delivery tray. Its count
+changes from five to four, which remains above the threshold, so no warning is
+issued. The robot then moves one coffee stick from the basket to the delivery
+tray. Its count changes from seven to six; because the alert condition is
+`quantity <= threshold`, the Magic Box announces that the coffee stock is low
+and needs replenishment. The tablet remains visible during the manipulation so
+the physical action and inventory transition can be checked together.
+
+| Initial physical setup | Oreo retrieval |
+|---|---|
+| ![Initial real-world setup](assets/realworld_setup.jpg) | ![Robot retrieving an Oreo](assets/realworld_oreo_pick.jpg) |
+
+| Coffee retrieval after Oreo count reaches four | Coffee low-stock state at six of six |
+|---|---|
+| ![Robot retrieving a coffee stick](assets/realworld_coffee_pick.jpg) | ![Coffee inventory reaches its threshold](assets/realworld_low_stock_alert.jpg) |
+
+| RDK X5 Magic Box hardware | Magic Box camera view |
+|---|---|
+| ![RDK X5 Magic Box](assets/realworld_magicbox_hardware.jpg) | ![Magic Box camera view of the workspace](assets/realworld_magicbox_view.png) |
+
+The public repository contains the complete TuntunClaw simulation, RDK X5
+runtime evidence, architecture, benchmark, and experiment documentation. The
+physical experiment is published as reproducible system-level evidence; its
+deployment service and robot-control implementation are not included in this
+public source snapshot.
+
 ## Repository Map
 
 ```text
@@ -102,7 +137,7 @@ runtime remains separately reproducible through `scripts/start_stage3_demo.sh`.
 - Stage 2 proposal, architecture, roadmap, BOM, and risk analysis drafts are prepared.
 - Stage 3 prototype connects live BPU detections to a ROS 2 inventory state node.
 - The existing MuJoCo TuntunClaw perception-to-grasp workflow is complete.
-- Final work is integrating the verified RDK X5 perception path with the real-arm demonstration.
+- The physical arm experiment completed one Oreo retrieval and one Nestle coffee retrieval with tablet inventory updates and a threshold-triggered Magic Box voice warning.
 
 ## Stage 3 Quick Start
 
@@ -160,3 +195,8 @@ Supporting design files:
 - [docs/ROADMAP.md](docs/ROADMAP.md)
 - [hardware/BOM.md](hardware/BOM.md)
 - [docs/RISK_ANALYSIS.md](docs/RISK_ANALYSIS.md)
+
+## License
+
+This repository is licensed under the [Apache License 2.0](LICENSE). Third-party
+components and assets retain their original licenses and attribution terms.

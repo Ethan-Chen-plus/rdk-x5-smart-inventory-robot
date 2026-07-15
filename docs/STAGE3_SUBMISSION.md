@@ -59,6 +59,33 @@ processes rather than creating duplicates.
 
 Full measurements: [BENCHMARK.md](BENCHMARK.md)
 
+## Real-World Inventory Task
+
+The completed physical experiment uses a real robotic arm, RDK X5 Magic Box,
+tablet inventory display, one Oreo plate, one Nestle coffee basket, and a
+delivery tray. Initial inventory and alert thresholds are:
+
+| Item | Initial | Threshold | After retrieval | Result |
+|---|---:|---:|---:|---|
+| Oreo cookie | 5 | 2 | 4 | No warning; quantity remains above threshold. |
+| Nestle coffee stick | 7 | 6 | 6 | Low-stock warning; quantity is equal to threshold. |
+
+The task requests one unit of each item. The robot retrieves the Oreo first,
+then retrieves the coffee stick. The tablet shows the inventory transition in
+the same physical shot, and the Magic Box emits the coffee replenishment
+warning after the second delivery. This validates manipulation, persistent
+inventory state, threshold reasoning, UI feedback, and audio feedback as one
+real-world workflow.
+
+Evidence:
+
+- [Initial setup](../assets/realworld_setup.jpg)
+- [Oreo retrieval](../assets/realworld_oreo_pick.jpg)
+- [Coffee retrieval](../assets/realworld_coffee_pick.jpg)
+- [Coffee low-stock state](../assets/realworld_low_stock_alert.jpg)
+- [RDK X5 Magic Box hardware](../assets/realworld_magicbox_hardware.jpg)
+- [Magic Box camera view](../assets/realworld_magicbox_view.png)
+
 ## Safety and Recovery
 
 - The current unattended background run does not command the robotic arm.
@@ -80,9 +107,10 @@ bash scripts/stop_stage3_demo.sh
 
 ## Final Media
 
-- Demo video: pending recording and stable public/unlisted link.
-- Hardware photo: pending final demo setup.
-- Community update: pending final media link.
+- Demo video: recorded, 5 minutes 44 seconds; stable public/unlisted link pending upload.
+- Hardware photo: [RDK X5 Magic Box](../assets/realworld_magicbox_hardware.jpg).
+- Physical setup: [robot, tablet, storage areas, and delivery tray](../assets/realworld_setup.jpg).
+- Community update: pending final video link.
 
 The final video should show the RDK X5 hardware and at least 30 seconds of one
 continuous perception-to-memory-to-grasp sequence: live BPU inference, target
