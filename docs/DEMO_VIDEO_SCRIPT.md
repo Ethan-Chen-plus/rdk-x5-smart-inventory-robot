@@ -69,4 +69,4 @@ bash scripts/stop_stage3_demo.sh
 End with the repository and official showcase PR on screen:
 
 - https://github.com/Ethan-Chen-plus/rdk-x5-smart-inventory-robot
-- https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/pull/1
+- https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/pull/9

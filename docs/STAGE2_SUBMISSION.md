@@ -10,7 +10,7 @@ Updated: 2026-06-05
 - Track: Smart Life Robotics
 - Repository: https://github.com/Ethan-Chen-plus/rdk-x5-smart-inventory-robot
 - Discord thread: https://discord.com/channels/1300358874280230994/1503706103752429618/threads/1506248828523905105
-- Official showcase PR: https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/pull/1
+- Official showcase PR: https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/pull/9
 
 ## Stage 2 Goal
 
@@ -134,7 +134,7 @@ Stage 2 design draft:
 https://github.com/Ethan-Chen-plus/rdk-x5-smart-inventory-robot/blob/master/docs/STAGE2_SUBMISSION.md
 
 Official showcase PR:
-https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/pull/1
+https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/pull/9
 
 Next:
 I will refine the prototype pipeline, benchmark plan, and robotic arm demonstration for Stage 3.

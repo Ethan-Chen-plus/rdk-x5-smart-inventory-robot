@@ -6,7 +6,7 @@
 - Hardware: RDK X5 Magic Box, MIPI camera, microphone
 - Repository: https://github.com/Ethan-Chen-plus/rdk-x5-smart-inventory-robot
 - Final demo video: https://youtu.be/G7VUMQN8TzA
-- Official showcase PR: https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/pull/1
+- Official showcase PR: https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/pull/9
 
 ## End-to-End Prototype
 
