@@ -5,7 +5,15 @@ Updated: 2026-06-05
 
 ## Goal
 
-This project builds an RDK X5-powered smart household inventory robot. The robot uses on-device perception to identify household supplies, maintains inventory state, and coordinates a real robotic arm for safe item interaction or demonstration tasks.
+TuntunClaw RDK X5 is a memory-aware household inventory and manipulation
+assistant. RDK X5 provides on-device perception and multimodal interaction;
+OpenClaw coordinates tasks and memory; the manipulation layer executes and
+verifies safe household actions.
+
+The manipulation workflow has been validated in MuJoCo with VLM + SAM target
+segmentation, GraspNet grasp inference, continuous scene state, and inventory
+memory. Stage 3 connects the verified physical RDK X5 perception pipeline to a
+real robotic arm without presenting unverified hardware actions as complete.
 
 The Stage 2 design goal is to make the final Stage 3 demo executable: every major module has a clear input, output, runtime owner, and test target.
 
@@ -36,6 +44,8 @@ flowchart LR
     Planner --> Safety[Safety Gate]
     Safety --> Arm[Robotic Arm Controller]
     Planner --> UI[Status Output / Logs]
+    Memory[Location + Inventory Memory] --> Planner
+    Arm --> Memory
 ```
 
 ## Runtime Decomposition

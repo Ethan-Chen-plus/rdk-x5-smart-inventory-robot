@@ -1,4 +1,4 @@
-# Stage 3 Submission - Smart Household Inventory Robot
+# Stage 3 Submission - TuntunClaw RDK X5
 
 ## Project
 
@@ -8,6 +8,13 @@
 - Official showcase PR: https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/pull/1
 
 ## End-to-End Prototype
+
+TuntunClaw is designed as one household-service system rather than separate
+vision and arm demos. Its completed MuJoCo implementation provides
+natural-language task dispatch, VLM + SAM segmentation, GraspNet grasp-pose
+inference, continuous scene state, and inventory/location memory. The physical
+RDK X5 prototype below supplies the live BPU perception and Magic Box audio
+path used for the challenge evidence.
 
 The Stage 3 prototype runs three concurrent ROS 2 workloads on the RDK X5:
 
@@ -55,6 +62,8 @@ Full measurements: [BENCHMARK.md](BENCHMARK.md)
 ## Safety and Recovery
 
 - The current unattended background run does not command the robotic arm.
+- The completed MuJoCo grasp workflow is simulation evidence; a real-arm action
+  is only claimed when it is visibly demonstrated in the final video.
 - Any mechanical demonstration must use a fixed low-speed trajectory, a clear
   workspace, and an operator-accessible power stop.
 - Stop all project processes with:
@@ -75,8 +84,10 @@ bash scripts/stop_stage3_demo.sh
 - Hardware photo: pending final demo setup.
 - Community update: pending final media link.
 
-The final video should show the RDK X5 hardware, at least 30 seconds of
-continuous overlay, changing `/inventory/state`, microphone activity, benchmark
-evidence, and one safe actuator or robotic-arm action.
+The final video should show the RDK X5 hardware and at least 30 seconds of one
+continuous perception-to-memory-to-grasp sequence: live BPU inference, target
+visibility or remembered state, changing `/inventory/state`, the arm action,
+and visual confirmation. Microphone activity and benchmark evidence should be
+shown elsewhere in the same 3-7 minute video.
 
 Recording plan: [DEMO_VIDEO_SCRIPT.md](DEMO_VIDEO_SCRIPT.md)

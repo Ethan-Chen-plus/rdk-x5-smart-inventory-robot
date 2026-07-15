@@ -1,6 +1,9 @@
-# RDK X5 Smart Household Inventory Robot
+# TuntunClaw RDK X5
 
-This repository documents an RDK X5-powered smart household inventory assistant with a real robotic arm.
+**TuntunClaw RDK X5** is a memory-aware household inventory and manipulation
+assistant designed around RDK X5, OpenClaw, and a real robotic arm. It combines
+the completed TuntunClaw simulation workflow with on-device BPU perception,
+ROS 2 inventory state, and Magic Box voice interaction.
 
 The project goal is to build a complete smart life robotics workflow:
 
@@ -13,6 +16,7 @@ The project goal is to build a complete smart life robotics workflow:
 
 - Event: Robotics Dream Keeper Challenge
 - Track: Smart Life Robotics
+- Full project name: TuntunClaw RDK X5: A Memory-Aware Household Inventory and Manipulation Assistant
 - Repository: https://github.com/Suibian-YY-pro/rdk-x5-smart-inventory-robot
 - Discord thread: https://discord.com/channels/1300358874280230994/1503706103752429618/threads/1506248828523905105
 - Official repository: https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/tree/develop
@@ -24,6 +28,24 @@ The project goal is to build a complete smart life robotics workflow:
 - Robotics: ROS 2-aware module design for perception, inventory state, task planning, and arm control.
 - Data system: Feishu Bitable for item records and alerts.
 - Documentation: stage evidence, architecture, roadmap, demo video, and showcase PR.
+
+## Completed TuntunClaw Simulation
+
+The TuntunClaw MuJoCo prototype has already demonstrated the full simulated
+household workflow:
+
+- Natural-language household task input and OpenClaw task orchestration.
+- VLM + SAM target understanding and segmentation.
+- GraspNet grasp-pose inference and simulated pick-and-place execution.
+- Continuous tasks without resetting the scene between actions.
+- Object-location and inventory memory with low-stock notification hooks.
+
+The RDK Challenge version brings this system to the physical edge: Magic Box
+provides the camera, microphone, speaker, and BPU inference path, while the
+real robotic arm is integrated through a constrained safety and control layer.
+
+- TuntunClaw source and tutorial: https://github.com/datawhalechina/every-embodied/tree/main/16-%E4%B8%93%E9%A2%98%E7%BB%84%E9%98%9F%E5%AD%A6%E4%B9%A0/02-OpenClaw%E5%AE%B6%E5%BA%AD%E7%89%A9%E8%B5%84%E5%8A%A9%E6%89%8B/tuntunclaw
+- Completed simulation demo: https://www.bilibili.com/video/BV1roAVzaEeZ
 
 ## Repository Map
 
@@ -63,6 +85,8 @@ src/         Source code and scripts.
 - Magic Box microphone recording evidence has been captured locally.
 - Stage 2 proposal, architecture, roadmap, BOM, and risk analysis drafts are prepared.
 - Stage 3 prototype connects live BPU detections to a ROS 2 inventory state node.
+- The existing MuJoCo TuntunClaw perception-to-grasp workflow is complete.
+- Final work is integrating the verified RDK X5 perception path with the real-arm demonstration.
 
 ## Stage 3 Quick Start
 

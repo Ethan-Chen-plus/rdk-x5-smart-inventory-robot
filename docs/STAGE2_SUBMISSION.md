@@ -6,7 +6,7 @@ Updated: 2026-06-05
 ## Participant
 
 - Name: Kewei Chen
-- Project: RDK X5 Smart Household Inventory Robot
+- Project: TuntunClaw RDK X5
 - Track: Smart Life Robotics
 - Repository: https://github.com/Suibian-YY-pro/rdk-x5-smart-inventory-robot
 - Discord thread: https://discord.com/channels/1300358874280230994/1503706103752429618/threads/1506248828523905105
@@ -15,6 +15,13 @@ Updated: 2026-06-05
 ## Stage 2 Goal
 
 Stage 2 turns the Stage 1 RDK X5 bring-up into a full robot design. The planned system uses RDK X5 BPU inference, a camera, inventory state management, optional Feishu Bitable synchronization, and a real robotic arm to demonstrate a smart household inventory assistant.
+
+This design is the physical-edge version of the completed TuntunClaw MuJoCo
+prototype. The simulation already supports OpenClaw orchestration, VLM + SAM
+segmentation, GraspNet grasp inference, continuous manipulation tasks,
+persistent scene state, and inventory/location memory. Stage 3 focuses on
+connecting the verified RDK X5 perception and Magic Box interaction path to the
+real-arm control layer.
 
 ## Deliverable Checklist
 

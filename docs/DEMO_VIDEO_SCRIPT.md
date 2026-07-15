@@ -5,7 +5,7 @@ Target length: 3-5 minutes. Record at 1080p if available.
 ## 0:00-0:25 - Project and Hardware
 
 - Show the RDK X5 Magic Box, MIPI camera, microphone, and demo objects.
-- Say: "This is an RDK X5 smart household inventory robot prototype. It combines BPU vision, ROS 2 inventory state, and microphone activity on the physical board."
+- Say: "This is TuntunClaw RDK X5, a memory-aware household inventory and manipulation assistant. Its completed simulation combines OpenClaw, visual grasp reasoning, persistent household memory, and continuous manipulation; this physical prototype adds RDK X5 BPU perception and Magic Box interaction."
 
 ## 0:25-0:55 - Reproducible Launch
 
@@ -19,11 +19,12 @@ bash scripts/start_stage3_demo.sh
 
 Show that YOLO, `audio_activity`, and `inventory_tracker` are running.
 
-## 0:55-1:45 - Continuous BPU Perception
+## 0:55-1:45 - Continuous Perception, Memory, and Grasp
 
 - Open `http://192.168.127.10:8000` on the connected computer.
 - Place recognizable household objects in front of the camera.
-- Keep the live overlay visible for at least 30 continuous seconds.
+- Keep one uninterrupted 30-45 second sequence showing live inference, target
+  visibility or remembered state, the grasp action, and visual confirmation.
 - Mention the model: `yolo26s_bayese_640x640_nv12` on the RDK X5 BPU.
 
 ## 1:45-2:25 - Multimodal ROS 2 State
@@ -69,4 +70,3 @@ End with the repository and official showcase PR on screen:
 
 - https://github.com/Suibian-YY-pro/rdk-x5-smart-inventory-robot
 - https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/pull/1
-

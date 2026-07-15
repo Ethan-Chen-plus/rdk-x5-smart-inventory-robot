@@ -5,7 +5,7 @@ Updated: 2026-06-05
 
 ## Project Name
 
-RDK X5 Smart Household Inventory Robot
+TuntunClaw RDK X5: A Memory-Aware Household Inventory and Manipulation Assistant
 
 ## Track
 
@@ -15,7 +15,16 @@ Smart Life Robotics
 
 The target scenario is household supply management. Many daily-use items are stored across shelves, drawers, or storage boxes, and users often forget item quantity, storage location, or replenishment timing.
 
-This project uses RDK X5 and a real robotic arm to build a smart household inventory assistant that can perceive items, update inventory records, generate reminders, and demonstrate simple physical interaction with selected supplies.
+This project combines RDK X5, OpenClaw, household memory, and a real robotic arm
+to create TuntunClaw: a smart household assistant that can perceive items,
+update inventory and location records, generate reminders, and perform physical
+interaction with selected supplies.
+
+The MuJoCo prototype is already complete and demonstrates natural-language
+task dispatch, VLM + SAM target segmentation, GraspNet grasp-pose inference,
+continuous pick-and-place tasks, persistent scene state, and inventory updates.
+The challenge implementation adds verified RDK X5 BPU perception and Magic Box
+camera/audio interaction, then connects these capabilities to the physical arm.
 
 The initial demo environment will be a controlled indoor shelf or desktop storage area. The system should work under normal room lighting, with the camera viewing one storage area at a time.
 
@@ -89,6 +98,7 @@ The final demo should show:
 2. Inventory records being updated.
 3. A low-stock or item-location reminder being generated.
 4. A real robotic arm performing a simple interaction related to the detected item.
+5. A continuous perception-to-memory-to-grasp sequence, with the result confirmed by vision and inventory state.
 
 ## Stage 2 Supporting Documents
 
