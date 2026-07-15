@@ -18,7 +18,7 @@ The project goal is to build a complete smart life robotics workflow:
 - Track: Smart Life Robotics
 - Full project name: TuntunClaw RDK X5: A Memory-Aware Household Inventory and Manipulation Assistant
 - Repository: https://github.com/Ethan-Chen-plus/rdk-x5-smart-inventory-robot
-- Final demo video: https://youtu.be/0V7vHJeHVjs
+- Final demo video: https://youtu.be/G7VUMQN8TzA
 - Discord thread: https://discord.com/channels/1300358874280230994/1503706103752429618/threads/1506248828523905105
 - Official repository: https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/tree/develop
 
