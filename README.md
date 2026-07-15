@@ -54,8 +54,24 @@ assets/      Screenshots, diagrams, and small visual evidence.
 demo/        Demo notes and video links.
 docs/        Challenge stage notes, proposal, roadmap, and PR materials.
 hardware/    BOM, wiring notes, and device setup records.
+simulation/  Complete TuntunClaw OpenClaw + MuJoCo simulation source.
 src/         Source code and scripts.
 ```
+
+## Run the Completed Simulation
+
+The complete TuntunClaw source is included at
+[`simulation/tuntunclaw`](simulation/tuntunclaw). It is a pinned source snapshot,
+not a documentation-only link. Follow its dedicated
+[`README.md`](simulation/tuntunclaw/README.md) for environment setup and large
+asset restoration, then start it from that directory:
+
+```powershell
+micromamba run -n vlm_grasp311 python main.py
+```
+
+Open `http://127.0.0.1:8000/` for the simulation UI. The physical RDK X5
+runtime remains separately reproducible through `scripts/start_stage3_demo.sh`.
 
 ## Stage Notes
 
