@@ -18,6 +18,7 @@ The project goal is to build a complete smart life robotics workflow:
 - Track: Smart Life Robotics
 - Full project name: TuntunClaw RDK X5: A Memory-Aware Household Inventory and Manipulation Assistant
 - Repository: https://github.com/Suibian-YY-pro/rdk-x5-smart-inventory-robot
+- Final demo video: https://youtu.be/0V7vHJeHVjs
 - Discord thread: https://discord.com/channels/1300358874280230994/1503706103752429618/threads/1506248828523905105
 - Official repository: https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/tree/develop
 
@@ -48,6 +49,8 @@ real robotic arm is integrated through a constrained safety and control layer.
 - Completed simulation demo: https://www.bilibili.com/video/BV1roAVzaEeZ
 
 ## Completed Real-World Experiment
+
+Final 5-minute 44-second challenge demo: https://youtu.be/0V7vHJeHVjs
 
 The real-world experiment validates the same inventory-memory task with an RDK
 X5 Magic Box, a physical robotic arm, two storage areas, a delivery tray, and a
