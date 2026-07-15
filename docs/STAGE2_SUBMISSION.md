@@ -8,7 +8,7 @@ Updated: 2026-06-05
 - Name: Kewei Chen
 - Project: TuntunClaw RDK X5
 - Track: Smart Life Robotics
-- Repository: https://github.com/Suibian-YY-pro/rdk-x5-smart-inventory-robot
+- Repository: https://github.com/Ethan-Chen-plus/rdk-x5-smart-inventory-robot
 - Discord thread: https://discord.com/channels/1300358874280230994/1503706103752429618/threads/1506248828523905105
 - Official showcase PR: https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/pull/1
 
@@ -125,13 +125,13 @@ Current focus:
 - Reproducible documentation and demo pipeline
 
 Project repository:
-https://github.com/Suibian-YY-pro/rdk-x5-smart-inventory-robot
+https://github.com/Ethan-Chen-plus/rdk-x5-smart-inventory-robot
 
 Stage 1 package:
-https://github.com/Suibian-YY-pro/rdk-x5-smart-inventory-robot/blob/master/docs/STAGE1_SUBMISSION.md
+https://github.com/Ethan-Chen-plus/rdk-x5-smart-inventory-robot/blob/master/docs/STAGE1_SUBMISSION.md
 
 Stage 2 design draft:
-https://github.com/Suibian-YY-pro/rdk-x5-smart-inventory-robot/blob/master/docs/STAGE2_SUBMISSION.md
+https://github.com/Ethan-Chen-plus/rdk-x5-smart-inventory-robot/blob/master/docs/STAGE2_SUBMISSION.md
 
 Official showcase PR:
 https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/pull/1

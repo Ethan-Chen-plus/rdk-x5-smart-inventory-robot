@@ -4,7 +4,7 @@
 
 - Track: Smart Life Robotics
 - Hardware: RDK X5 Magic Box, MIPI camera, microphone
-- Repository: https://github.com/Suibian-YY-pro/rdk-x5-smart-inventory-robot
+- Repository: https://github.com/Ethan-Chen-plus/rdk-x5-smart-inventory-robot
 - Final demo video: https://youtu.be/0V7vHJeHVjs
 - Official showcase PR: https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/pull/1
 

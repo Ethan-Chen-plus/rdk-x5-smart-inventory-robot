@@ -2,8 +2,8 @@
 
 - **Participant:** Kewei Chen
 - **Stage completed:** 1
-- **Repository:** https://github.com/Suibian-YY-pro/rdk-x5-smart-inventory-robot
-- **Demo video:** Stage 1 evidence package: https://github.com/Suibian-YY-pro/rdk-x5-smart-inventory-robot/blob/master/docs/STAGE1_SUBMISSION.md
+- **Repository:** https://github.com/Ethan-Chen-plus/rdk-x5-smart-inventory-robot
+- **Demo video:** Stage 1 evidence package: https://github.com/Ethan-Chen-plus/rdk-x5-smart-inventory-robot/blob/master/docs/STAGE1_SUBMISSION.md
 - **Community post:** https://discord.com/channels/1300358874280230994/1503706103752429618/threads/1506248828523905105
 
 ## Summary
