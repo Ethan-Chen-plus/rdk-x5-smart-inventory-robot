@@ -50,7 +50,7 @@ real robotic arm is integrated through a constrained safety and control layer.
 
 ## Completed Real-World Experiment
 
-Final 5-minute 44-second challenge demo: https://youtu.be/0V7vHJeHVjs
+Final 5-minute 44-second challenge demo: https://youtu.be/G7VUMQN8TzA
 
 The real-world experiment validates the same inventory-memory task with an RDK
 X5 Magic Box, a physical robotic arm, two storage areas, a delivery tray, and a

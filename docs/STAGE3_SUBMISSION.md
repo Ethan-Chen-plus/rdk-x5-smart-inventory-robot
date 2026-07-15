@@ -5,7 +5,7 @@
 - Track: Smart Life Robotics
 - Hardware: RDK X5 Magic Box, MIPI camera, microphone
 - Repository: https://github.com/Ethan-Chen-plus/rdk-x5-smart-inventory-robot
-- Final demo video: https://youtu.be/0V7vHJeHVjs
+- Final demo video: https://youtu.be/G7VUMQN8TzA
 - Official showcase PR: https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/pull/1
 
 ## End-to-End Prototype
@@ -108,7 +108,7 @@ bash scripts/stop_stage3_demo.sh
 
 ## Final Media
 
-- Demo video: [TuntunClaw RDK X5 final demo](https://youtu.be/0V7vHJeHVjs), 5 minutes 44 seconds, public.
+- Demo video: [TuntunClaw RDK X5 final demo](https://youtu.be/G7VUMQN8TzA), 5 minutes 44 seconds, public.
 - Hardware photo: [RDK X5 Magic Box](../assets/realworld_magicbox_hardware.jpg).
 - Physical setup: [robot, tablet, storage areas, and delivery tray](../assets/realworld_setup.jpg).
 - Community update: final post text prepared for the existing challenge thread.
