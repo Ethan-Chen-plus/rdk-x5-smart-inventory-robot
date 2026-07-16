@@ -7,7 +7,7 @@ policy, a ROKAE xMate ER3 Pro arm, persistent inventory, a tablet dashboard,
 and threshold-triggered replenishment warnings.
 
 - Participant: Kewei Chen
-- Final demo: https://youtu.be/G7VUMQN8TzA
+- Final demo: https://youtu.be/mVvQPtZMKm4
 - Discord thread: https://discord.com/channels/1300358874280230994/1503706103752429618/threads/1506248828523905105
 - Showcase PR: https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/pull/9
 
@@ -16,15 +16,18 @@ and threshold-triggered replenishment warnings.
 ```text
 RDK X5 MIPI camera -> BPU perception --------------------+
                                                          |
-two live RGB cameras + 7-joint state -> trained SmolVLA  |
-    -> safety-limited xCoreSDK commands -> ER3 Pro/LMG90 |
-    -> verified gripper close-then-open delivery --------+
+two live RGB cameras + 7-joint state -> trained SmolVLA
+    -> safety-limited xCoreSDK commands -> ER3 Pro/LMG90
+    -> gripper close/release candidate ------------------+
+                                                         |
+RDK fixed-camera tray ROI -> multi-frame occupancy check-+
                                                          v
 SQLite inventory -> SSE tablet dashboard -> threshold decision
                                            -> Magic Box voice warning
 ```
 
-The project team completed SmolVLA fine-tuning and local RTX 3060 deployment.
+The project team completed SmolVLA fine-tuning and deployed the trained policy
+on an NVIDIA RTX PRO 6000 96 GB GPU.
 The real-robot entry point in `smolvla/run_policy.py` executes online policy
 outputs; it does not replay a recorded trajectory. Checkpoint weights are kept
 outside Git because of their size and are selected through `smolvla/config.json`.
@@ -79,6 +82,7 @@ execution, and emergency-stop behavior are in [smolvla/README.md](smolvla/README
 | RDK X5 BPU, ROS 2 detection, microphone | `scripts/start_stage3_demo.sh` |
 | Magic Box ASR/TTS | `scripts/start_inventory_voice.sh` |
 | Persistent inventory, threshold rule, tablet SSE, voice call | `inventory_web/app.py` |
+| RDK tray-occupancy confirmation and key-frame validation | `docs/VISUAL_CONFIRMATION.md` |
 | Recording-to-LeRobot conversion | `smolvla/convert_recordings.py` |
 | SmolVLA fine-tuning | `smolvla/train_smolvla.ps1` |
 | SmolVLA online inference, xCoreSDK arm, LMG90, completion event | `smolvla/run_policy.py` |

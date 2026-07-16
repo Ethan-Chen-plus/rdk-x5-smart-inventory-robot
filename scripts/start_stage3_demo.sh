@@ -19,6 +19,9 @@ PID_FILE="$RUNTIME_DIR/inventory_tracker.pid"
 LOG_FILE="$RUNTIME_DIR/inventory_tracker.log"
 AUDIO_PID_FILE="$RUNTIME_DIR/audio_activity.pid"
 AUDIO_LOG_FILE="$RUNTIME_DIR/audio_activity.log"
+VERIFIER_CONFIG="$PROJECT_DIR/config/rdk_roi_verifier.json"
+VERIFIER_PID_FILE="$RUNTIME_DIR/rdk_roi_verifier.pid"
+VERIFIER_LOG_FILE="$RUNTIME_DIR/rdk_roi_verifier.log"
 
 if [[ -f "$AUDIO_PID_FILE" ]] && kill -0 "$(cat "$AUDIO_PID_FILE")" 2>/dev/null; then
   echo "audio activity already running (pid $(cat "$AUDIO_PID_FILE"))"
@@ -36,6 +39,19 @@ else
     --output "$RUNTIME_DIR/state.json" >>"$LOG_FILE" 2>&1 &
   echo "$!" >"$PID_FILE"
   echo "started inventory tracker (pid $!)"
+fi
+
+if [[ -f "$VERIFIER_CONFIG" ]]; then
+  if [[ -f "$VERIFIER_PID_FILE" ]] && kill -0 "$(cat "$VERIFIER_PID_FILE")" 2>/dev/null; then
+    echo "RDK ROI verifier already running (pid $(cat "$VERIFIER_PID_FILE"))"
+  else
+    nohup python3 "$PROJECT_DIR/src/rdk_roi_verifier_node.py" \
+      --config "$VERIFIER_CONFIG" >>"$VERIFIER_LOG_FILE" 2>&1 &
+    echo "$!" >"$VERIFIER_PID_FILE"
+    echo "started RDK ROI verifier (pid $!)"
+  fi
+else
+  echo "RDK ROI verifier not started: calibrate config/rdk_roi_verifier.json first"
 fi
 
 sudo -n "$CTL" demo status yolo

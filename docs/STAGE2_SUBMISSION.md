@@ -7,7 +7,7 @@
 
 Stage 2 defined an RDK X5-centered household inventory robot. Stage 3 delivered
 the architecture with an explicit host/edge split: RDK X5 runs BPU perception
-and Magic Box speech; the RTX 3060 host runs the trained SmolVLA policy,
+and Magic Box speech; the RTX PRO 6000 96 GB host runs the trained SmolVLA policy,
 xCoreSDK, LMG90 interface, inventory database and tablet service.
 
 ## Deliverables

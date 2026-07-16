@@ -14,7 +14,7 @@ Updated: 2026-07-16
 | USB-RS485 adapter, CH340 | 1 | USB | Windows COM port | LMG-90 control registers `0x9C40/0x9C41` | Generic CH340 adapter |
 | Intel RealSense D435 wrist camera | 1 | USB | USB 3.0 | Wrist RGB training/inference view | Existing laboratory hardware |
 | Orbbec RGB-D top camera | 1 | USB | USB 3.0 | Fixed overhead RGB training/inference view | Existing laboratory hardware |
-| Windows laptop, RTX 3060 Laptop GPU 6 GB | 1 | Manufacturer AC adapter | CUDA, Ethernet/Wi-Fi, USB | SmolVLA local inference, xCoreSDK, inventory server | Existing development laptop |
+| Windows host, NVIDIA RTX PRO 6000 GPU 96 GB | 1 | Host power supply | CUDA, Ethernet/Wi-Fi, USB | SmolVLA local inference, xCoreSDK, inventory server | Existing development workstation |
 | Tablet | 1 | Internal battery/USB charging | Wi-Fi, HTTP/SSE | Live inventory dashboard | Existing tablet |
 | Delivery tray, Oreo plate, coffee basket | 1 each | None | Physical workspace | Controlled lightweight manipulation scene | Demo fixtures |
 | Oreo cookies and Nestle coffee sticks | 5 and 7 | None | Physical objects | Inventory task objects | Retail items |

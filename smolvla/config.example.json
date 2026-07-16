@@ -22,5 +22,7 @@
   "gripper_open_threshold": 70,
   "gripper_closed_threshold": 25,
   "inventory_url": "http://127.0.0.1:8088",
+  "visual_verification_timeout_s": 45,
+  "visual_verification_poll_s": 0.5,
   "item_id": 1
 }

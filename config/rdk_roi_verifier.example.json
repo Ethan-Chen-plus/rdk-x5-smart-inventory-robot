@@ -1,0 +1,13 @@
+{
+  "inventory_url": "http://192.168.127.200:8088",
+  "websocket_url": "ws://127.0.0.1:8080",
+  "filter_prefix": "null/null/null",
+  "empty_reference_image": "/userdata/magicclaw/inventory/empty_tray.jpg",
+  "roi": "100,260,700,260",
+  "polygon": "20,40;650,30;680,220;30,240",
+  "sample_frames": 15,
+  "settle_seconds": 2.0,
+  "max_occupancy_spread": 0.04,
+  "pixel_threshold": 28,
+  "minimum_component_area": 150
+}

@@ -3,7 +3,7 @@
 - Participant: Kewei Chen
 - Track: Smart Life Robotics
 - Repository: https://github.com/Ethan-Chen-plus/rdk-x5-smart-inventory-robot
-- Demo video: https://youtu.be/G7VUMQN8TzA
+- Demo video: https://youtu.be/mVvQPtZMKm4
 - Showcase PR: https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/pull/9
 
 ## Completed End-to-End System
@@ -19,7 +19,8 @@ joint-range and per-step safety checks before xCoreSDK and Modbus execution.
 This path does not replay a recorded trajectory.
 
 After the controller observes a gripper close followed by release, it reports
-the delivery to the inventory API. SQLite commits the quantity, updates the
+a delivery candidate. The RDK fixed camera verifies increased delivery-tray
+occupancy across stable frames before SQLite commits the quantity, updates the
 tablet through SSE, evaluates `quantity <= threshold`, and queues the Magic Box
 voice warning on a new low-stock transition.
 
@@ -56,7 +57,7 @@ safety instructions are in `smolvla/README.md`.
 | TogetheROS | ROS 2 Humble |
 | RDK BPU | Platform 1.3.6, DNN 1.24.5, HBRT 3.15.55.0 |
 | RDK detector | `yolo26s_bayese_640x640_nv12` |
-| Host | Windows 11, Python 3.10, RTX 3060 Laptop 6 GB |
+| Host | Windows 11, Python 3.10, NVIDIA RTX PRO 6000 96 GB |
 | Policy | Fine-tuned SmolVLA, LeRobot 0.6.0, PyTorch 2.5.1 CUDA 12.4 |
 | Arm | ROKAE xMate ER3 Pro, controller 3.2.1, HMI 5.0.13.0411 |
 | Arm SDK | xCoreSDK Python 0.7.0 |

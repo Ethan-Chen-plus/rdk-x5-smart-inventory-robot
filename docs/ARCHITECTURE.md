@@ -13,7 +13,7 @@ flowchart LR
     DET --> RDKSTATE["inventory_tracker_node"]
     AUDIO --> RDKSTATE
 
-    TOP["Orbbec top RGB"] --> VLA["Trained SmolVLA on RTX 3060"]
+    TOP["Orbbec top RGB"] --> VLA["Trained SmolVLA on RTX PRO 6000 96 GB"]
     WRIST["D435 wrist RGB"] --> VLA
     ARMSTATE["ER3 Pro 7-joint state"] --> VLA
     TASK["Language instruction"] --> VLA
@@ -23,8 +23,10 @@ flowchart LR
     XCORE --> ARM["xMate ER3 Pro"]
     MODBUS --> ARM
 
-    ARM --> DONE["Close then open delivery completion"]
-    DONE --> API["Flask inventory API"]
+    ARM --> DONE["Close then open delivery candidate"]
+    DONE --> API["Flask task API"]
+    MIPI --> ROI["Fixed tray ROI multi-frame verifier"]
+    ROI --> API
     API --> DB["SQLite persistent quantities/events"]
     DB --> SSE["SSE tablet dashboard"]
     DB --> RULE["quantity <= threshold"]
@@ -44,6 +46,7 @@ target, while camera inference and speech remain on RDK X5.
 | RDK X5 | Magic Box YOLO demo | MIPI NV12 960x544 | `/hobot_dnn_detection` | 30.02 FPS measured |
 | RDK X5 | `audio_activity_node.py` | ALSA two-channel 16 kHz | `/audio/activity` | 10 Hz |
 | RDK X5 | `inventory_tracker_node.py` | detection + audio topics | `/inventory/state`, atomic JSON | 1 Hz |
+| RDK X5 | `rdk_roi_verifier_node.py` | official camera WebSocket, fixed empty-tray reference | baseline/final task API evidence | 15 stable frames per phase |
 | RDK X5 | ROS 2 `audio_io` | `/tts_text` / microphone | speaker / `/prompt_text` | event-driven |
 | Host | `smolvla/run_policy.py` | two RGB frames, 7 joints, language | 8-D absolute action | configured 4 Hz |
 | Host | xCoreSDK 0.7.0 | seven bounded joint targets | ER3 Pro NRT commands | one command/policy step |
@@ -51,24 +54,27 @@ target, while camera inference and speech remain on RDK X5.
 | Host | `inventory_web/app.py` | robot completion/admin API | SQLite, JSON, SSE, TTS call | event-driven; SSE keepalive 15 s |
 | Tablet | browser `/` | SSE `/api/events` | live quantity/threshold table | immediate on state change |
 
-The two RDK camera/audio topics are fused for edge evidence. The physical
-inventory quantity is not inferred by counting generic YOLO labels. It changes
-only after the manipulation controller observes a model-driven gripper close
-followed by release into the delivery tray. This prevents a failed rollout
-from decrementing stock.
+The physical inventory is not inferred by recounting an occluded source pile.
+The manipulation controller first reports a model-driven gripper close/release
+as a candidate. The RDK fixed camera then compares 10 or more stable frames of
+the delivery-tray ROI against its empty reference. Only a sufficient occupancy
+increase commits one unit. The task ID identifies the requested item; an
+optional two-class YOLO11 detector can add independent Oreo/coffee identity.
 
 ## API Contract
 
 ```http
-POST /api/tasks/retrieval-complete
+POST /api/tasks/retrieval-start
 Content-Type: application/json
 
 {"item_id": 1, "task_id": "rollout-uuid"}
 ```
 
-The server commits one unit to SQLite, evaluates the threshold in the same
-transaction, publishes the new snapshot to all tablet SSE clients, and queues
-the Magic Box voice warning only on a normal-to-low-stock transition.
+The RDK verifier posts a baseline before motion. Close/release then posts to
+`/api/tasks/retrieval-candidate`; the final `/vision-confirm` request contains
+multi-frame destination occupancy and confidence. Only that final transition
+commits one unit to SQLite, evaluates the threshold, publishes tablet SSE, and
+queues the Magic Box voice warning.
 
 ## Compute Allocation and Resource Budget
 
@@ -77,7 +83,7 @@ the Magic Box voice warning only on a normal-to-low-stock transition.
 | YOLO camera inference | RDK X5 Bayes BPU | 30.02 FPS and 24.61 ms mean inference verified; expected 30-70% BPU scheduling occupancy for this single model |
 | Camera decode, ROS 2, JSON logging | RDK X5 8x A55 | expected 15-45% aggregate CPU; observed load average 2.04 with about 6.0 GiB RAM free |
 | Microphone RMS or `audio_io` | RDK X5 CPU/audio DSP | expected 5-20% aggregate CPU; runs mutually exclusively because both own the microphone |
-| SmolVLA inference | RTX 3060 Laptop 6 GB | CUDA FP16; expected 4.5-6.0 GB VRAM and one action chunk per control cycle |
+| SmolVLA inference | NVIDIA RTX PRO 6000 96 GB | CUDA FP16; expected 4.5-6.0 GB VRAM and one action chunk per control cycle |
 | xCoreSDK, Modbus, Flask/SQLite | Windows host CPU | expected below 15% aggregate CPU outside video preprocessing |
 
 Expected percentages are engineering operating ranges, not benchmark claims.

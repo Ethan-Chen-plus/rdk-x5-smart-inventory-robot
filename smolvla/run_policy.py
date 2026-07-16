@@ -200,10 +200,42 @@ def read_observation(cameras, camera_keys, arm: RokaeController) -> dict[str, np
     return observation
 
 
-def notify_inventory(cfg: dict, task_id: str) -> dict:
+def inventory_request(cfg: dict, method: str, path: str, payload: dict | None = None) -> dict:
+    response = requests.request(
+        method,
+        f"{cfg['inventory_url'].rstrip('/')}{path}",
+        json=payload,
+        timeout=5,
+    )
+    response.raise_for_status()
+    return response.json()
+
+
+def wait_for_task_status(cfg: dict, task_id: str, expected: str) -> dict:
+    deadline = time.monotonic() + float(cfg.get("visual_verification_timeout_s", 45))
+    while time.monotonic() < deadline:
+        task = inventory_request(cfg, "GET", f"/api/tasks/{task_id}")
+        if task["status"] == expected:
+            return task
+        if task["status"] == "vision_rejected":
+            raise RuntimeError(f"RDK visual verification rejected the delivery: {task['failure_reason']}")
+        time.sleep(float(cfg.get("visual_verification_poll_s", 0.5)))
+    raise TimeoutError(f"Timed out waiting for task {task_id} to reach {expected}")
+
+
+def start_inventory_task(cfg: dict, task_id: str) -> dict:
+    return inventory_request(
+        cfg,
+        "POST",
+        "/api/tasks/retrieval-start",
+        {"item_id": int(cfg["item_id"]), "task_id": task_id},
+    )
+
+
+def report_delivery_candidate(cfg: dict, task_id: str) -> dict:
     response = requests.post(
-        f"{cfg['inventory_url'].rstrip('/')}/api/tasks/retrieval-complete",
-        json={"item_id": int(cfg["item_id"]), "task_id": task_id},
+        f"{cfg['inventory_url'].rstrip('/')}/api/tasks/retrieval-candidate",
+        json={"task_id": task_id},
         timeout=5,
     )
     response.raise_for_status()
@@ -241,6 +273,10 @@ def main() -> None:
 
     try:
         cameras = open_cameras(cfg)
+        if args.execute:
+            start_inventory_task(cfg, task_id)
+            print(f"Waiting for RDK visual baseline for task {task_id}...")
+            wait_for_task_status(cfg, task_id, "ready_for_arm")
         for step in range(int(cfg["max_steps"])):
             started = time.perf_counter()
             observation = read_observation(cameras, cfg["camera_keys"], arm)
@@ -258,8 +294,13 @@ def main() -> None:
             gripper = float(applied[7])
             close_seen = close_seen or gripper <= float(cfg["gripper_closed_threshold"])
             if close_seen and gripper >= float(cfg["gripper_open_threshold"]):
-                result = notify_inventory(cfg, task_id)
-                print(f"Delivery complete; inventory response: {json.dumps(result, ensure_ascii=False)}")
+                if not args.execute:
+                    print("Dry run observed close then open; no inventory task was created.")
+                    break
+                result = report_delivery_candidate(cfg, task_id)
+                print(f"Arm candidate reported: {json.dumps(result, ensure_ascii=False)}")
+                verified = wait_for_task_status(cfg, task_id, "committed")
+                print(f"RDK vision confirmed delivery: {json.dumps(verified, ensure_ascii=False)}")
                 delivered = True
                 break
             elapsed = time.perf_counter() - started
@@ -272,7 +313,7 @@ def main() -> None:
         for camera in cameras:
             camera.release()
     if not delivered:
-        print("No completed close-then-open delivery was observed; inventory was not changed.")
+        print("No RDK-verified delivery was committed; inventory was not changed.")
 
 
 if __name__ == "__main__":

@@ -23,6 +23,9 @@ BOARD_SPEAK = os.getenv(
 )
 VOICE_ENABLED = os.getenv("RDK_VOICE_ENABLED", "1") == "1"
 VOICE_LANGUAGE = os.getenv("RDK_VOICE_LANGUAGE", "zh").lower()
+VISION_MIN_FRAMES = int(os.getenv("RDK_VISION_MIN_FRAMES", "10"))
+VISION_MIN_CONFIDENCE = float(os.getenv("RDK_VISION_MIN_CONFIDENCE", "0.70"))
+VISION_MIN_OCCUPANCY_INCREASE = float(os.getenv("RDK_VISION_MIN_OCCUPANCY_INCREASE", "0.05"))
 
 INITIAL_ITEMS = [
     (1, "雀巢咖啡", "Nestle coffee", 7, 6, "条", "stick"),
@@ -68,6 +71,20 @@ def init_db() -> None:
                 task_id TEXT PRIMARY KEY,
                 item_id INTEGER NOT NULL,
                 created_at TEXT NOT NULL,
+                FOREIGN KEY(item_id) REFERENCES items(id)
+            );
+            CREATE TABLE IF NOT EXISTS retrieval_tasks (
+                task_id TEXT PRIMARY KEY,
+                item_id INTEGER NOT NULL,
+                status TEXT NOT NULL,
+                baseline_destination_occupancy REAL,
+                after_destination_occupancy REAL,
+                occupancy_increase REAL,
+                frame_count INTEGER NOT NULL DEFAULT 0,
+                confidence REAL,
+                failure_reason TEXT,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
                 FOREIGN KEY(item_id) REFERENCES items(id)
             );
             """
@@ -277,7 +294,46 @@ def adjust_item(item_id: int):
 
 @app.post("/api/tasks/retrieval-complete")
 def retrieval_complete():
-    """Commit inventory only after the robot reports a completed delivery."""
+    """Reject the legacy arm-only completion path."""
+    return jsonify(
+        {
+            "error": "arm completion is only a candidate; RDK visual confirmation is required",
+            "replacement": [
+                "/api/tasks/retrieval-start",
+                "/api/tasks/<task_id>/vision-baseline",
+                "/api/tasks/retrieval-candidate",
+                "/api/tasks/<task_id>/vision-confirm",
+            ],
+        }
+    ), 410
+
+
+def task_payload(row: sqlite3.Row) -> dict:
+    return {
+        "task_id": row["task_id"],
+        "item_id": row["item_id"],
+        "status": row["status"],
+        "baseline_destination_occupancy": row["baseline_destination_occupancy"],
+        "after_destination_occupancy": row["after_destination_occupancy"],
+        "occupancy_increase": row["occupancy_increase"],
+        "frame_count": row["frame_count"],
+        "confidence": row["confidence"],
+        "failure_reason": row["failure_reason"],
+        "created_at": row["created_at"],
+        "updated_at": row["updated_at"],
+    }
+
+
+def get_task(task_id: str) -> sqlite3.Row | None:
+    with closing(connect_db()) as db:
+        return db.execute(
+            "SELECT * FROM retrieval_tasks WHERE task_id = ?", (task_id,)
+        ).fetchone()
+
+
+@app.post("/api/tasks/retrieval-start")
+def retrieval_start():
+    """Create a task and wait for an RDK pre-action visual baseline."""
     body = request.get_json(silent=True) or {}
     try:
         item_id = int(body["item_id"])
@@ -286,21 +342,172 @@ def retrieval_complete():
     task_id = str(body.get("task_id", "untracked"))[:80]
     if not task_id or task_id == "untracked":
         return jsonify({"error": "task_id is required for idempotency"}), 400
-    try:
-        snapshot, alert_triggered, duplicate = apply_delta(
-            item_id, -1, f"smolvla:{task_id}", task_id=task_id
+    now = datetime.now().isoformat(timespec="seconds")
+    with closing(connect_db()) as db:
+        item = db.execute("SELECT id FROM items WHERE id = ?", (item_id,)).fetchone()
+        if item is None:
+            return jsonify({"error": "item not found"}), 404
+        existing = db.execute(
+            "SELECT * FROM retrieval_tasks WHERE task_id = ?", (task_id,)
+        ).fetchone()
+        if existing is not None:
+            if existing["item_id"] != item_id:
+                return jsonify({"error": "task_id already belongs to another item"}), 409
+            return jsonify(task_payload(existing))
+        db.execute(
+            "INSERT INTO retrieval_tasks(task_id, item_id, status, created_at, updated_at) "
+            "VALUES (?, ?, 'awaiting_baseline', ?, ?)",
+            (task_id, item_id, now, now),
         )
-    except KeyError:
-        return jsonify({"error": "item not found"}), 404
-    except ValueError as exc:
-        return jsonify({"error": str(exc)}), 409
+        db.commit()
+    return jsonify(task_payload(get_task(task_id))), 201
+
+
+def parse_vision_observation(body: dict) -> tuple[float, int, float]:
+    destination_occupancy = float(body["destination_occupancy"])
+    frame_count = int(body["frame_count"])
+    confidence = float(body["confidence"])
+    if not 0 <= destination_occupancy <= 1 or frame_count < 0 or not 0 <= confidence <= 1:
+        raise ValueError("occupancy and confidence must be between 0 and 1; frames must be non-negative")
+    return destination_occupancy, frame_count, confidence
+
+
+@app.post("/api/tasks/<task_id>/vision-baseline")
+def vision_baseline(task_id: str):
+    """Record stable RDK tray occupancy before robot motion begins."""
+    body = request.get_json(silent=True) or {}
+    try:
+        destination_occupancy, frame_count, confidence = parse_vision_observation(body)
+    except (KeyError, TypeError, ValueError) as exc:
+        return jsonify({"error": f"invalid visual baseline: {exc}"}), 400
+    if frame_count < VISION_MIN_FRAMES or confidence < VISION_MIN_CONFIDENCE:
+        return jsonify({"error": "visual baseline is not stable enough"}), 422
+    now = datetime.now().isoformat(timespec="seconds")
+    with closing(connect_db()) as db:
+        task = db.execute("SELECT * FROM retrieval_tasks WHERE task_id = ?", (task_id,)).fetchone()
+        if task is None:
+            return jsonify({"error": "task not found"}), 404
+        if task["status"] == "ready_for_arm":
+            return jsonify(task_payload(task))
+        if task["status"] != "awaiting_baseline":
+            return jsonify({"error": f"task is {task['status']}"}), 409
+        db.execute(
+            "UPDATE retrieval_tasks SET status='ready_for_arm', baseline_destination_occupancy=?, "
+            "frame_count=?, confidence=?, updated_at=? WHERE task_id=?",
+            (destination_occupancy, frame_count, confidence, now, task_id),
+        )
+        db.commit()
+    return jsonify(task_payload(get_task(task_id)))
+
+
+@app.post("/api/tasks/retrieval-candidate")
+def retrieval_candidate():
+    """Accept arm close/release as a candidate, never as an inventory commit."""
+    body = request.get_json(silent=True) or {}
+    task_id = str(body.get("task_id", ""))[:80]
+    if not task_id:
+        return jsonify({"error": "task_id is required"}), 400
+    now = datetime.now().isoformat(timespec="seconds")
+    with closing(connect_db()) as db:
+        task = db.execute("SELECT * FROM retrieval_tasks WHERE task_id = ?", (task_id,)).fetchone()
+        if task is None:
+            return jsonify({"error": "task not found"}), 404
+        if task["status"] in ("awaiting_vision", "committed"):
+            return jsonify(task_payload(task))
+        if task["status"] != "ready_for_arm":
+            return jsonify({"error": f"task is {task['status']}"}), 409
+        db.execute(
+            "UPDATE retrieval_tasks SET status='awaiting_vision', updated_at=? WHERE task_id=?",
+            (now, task_id),
+        )
+        db.commit()
+    return jsonify(task_payload(get_task(task_id)))
+
+
+@app.post("/api/tasks/<task_id>/vision-confirm")
+def vision_confirm(task_id: str):
+    """Commit one unit only after stable RDK before/after transfer evidence."""
+    body = request.get_json(silent=True) or {}
+    try:
+        destination_occupancy, frame_count, confidence = parse_vision_observation(body)
+    except (KeyError, TypeError, ValueError) as exc:
+        return jsonify({"error": f"invalid visual confirmation: {exc}"}), 400
+    task = get_task(task_id)
+    if task is None:
+        return jsonify({"error": "task not found"}), 404
+    if task["status"] == "committed":
+        return jsonify({"accepted": True, "duplicate": True, "task": task_payload(task), **inventory_snapshot()})
+    if task["status"] != "awaiting_vision":
+        return jsonify({"error": f"task is {task['status']}"}), 409
+
+    occupancy_increase = destination_occupancy - task["baseline_destination_occupancy"]
+    reason = None
+    if frame_count < VISION_MIN_FRAMES:
+        reason = f"need at least {VISION_MIN_FRAMES} post-action frames"
+    elif confidence < VISION_MIN_CONFIDENCE:
+        reason = f"confidence must be at least {VISION_MIN_CONFIDENCE:.2f}"
+    elif occupancy_increase < VISION_MIN_OCCUPANCY_INCREASE:
+        reason = (
+            f"destination ROI occupancy increased by {occupancy_increase:.4f}; "
+            f"need at least {VISION_MIN_OCCUPANCY_INCREASE:.4f}"
+        )
+
+    now = datetime.now().isoformat(timespec="seconds")
+    if reason:
+        with closing(connect_db()) as db:
+            db.execute(
+                "UPDATE retrieval_tasks SET status='vision_rejected', after_destination_occupancy=?, "
+                "occupancy_increase=?, frame_count=?, confidence=?, failure_reason=?, "
+                "updated_at=? WHERE task_id=?",
+                (destination_occupancy, occupancy_increase, frame_count, confidence, reason, now, task_id),
+            )
+            db.commit()
+        return jsonify({"accepted": False, "reason": reason, "task": task_payload(get_task(task_id))}), 422
+
+    snapshot, alert_triggered, duplicate = apply_delta(
+        task["item_id"], -1, f"rdk-vision:{task_id}", task_id=task_id
+    )
+    with closing(connect_db()) as db:
+        db.execute(
+            "UPDATE retrieval_tasks SET status='committed', after_destination_occupancy=?, "
+            "occupancy_increase=?, frame_count=?, confidence=?, failure_reason=NULL, "
+            "updated_at=? WHERE task_id=?",
+            (destination_occupancy, occupancy_increase, frame_count, confidence, now, task_id),
+        )
+        db.commit()
     return jsonify(
         {
             "accepted": True,
             "duplicate": duplicate,
-            "task_id": task_id,
             "alert_triggered": alert_triggered,
+            "task": task_payload(get_task(task_id)),
             **snapshot,
+        }
+    )
+
+
+@app.get("/api/tasks/<task_id>")
+def task_status(task_id: str):
+    task = get_task(task_id)
+    if task is None:
+        return jsonify({"error": "task not found"}), 404
+    return jsonify(task_payload(task))
+
+
+@app.get("/api/tasks/active")
+def active_tasks():
+    with closing(connect_db()) as db:
+        rows = db.execute(
+            "SELECT retrieval_tasks.*, items.name_en, items.quantity "
+            "FROM retrieval_tasks JOIN items ON items.id = retrieval_tasks.item_id "
+            "WHERE status IN ('awaiting_baseline', 'awaiting_vision') ORDER BY created_at"
+        ).fetchall()
+    return jsonify(
+        {
+            "tasks": [
+                {**task_payload(row), "item_name": row["name_en"], "inventory_quantity": row["quantity"]}
+                for row in rows
+            ]
         }
     )
 
@@ -318,6 +525,7 @@ def reset_demo():
             )
         db.execute("DELETE FROM events")
         db.execute("DELETE FROM task_completions")
+        db.execute("DELETE FROM retrieval_tasks")
         db.commit()
     publish_snapshot()
     return jsonify(inventory_snapshot())

@@ -1,0 +1,13 @@
+{
+  "inventory_url": "http://192.168.127.200:8088",
+  "websocket_url": "ws://127.0.0.1:8080",
+  "filter_prefix": "null/null/null",
+  "empty_reference_image": "/home/sunrise/rdk_inventory_demo/assets/rdk_empty_tray_reference.jpg",
+  "roi": "260,185,200,115",
+  "polygon": "10,30;160,20;190,50;175,105;15,100",
+  "sample_frames": 15,
+  "settle_seconds": 2.0,
+  "max_occupancy_spread": 0.04,
+  "pixel_threshold": 28,
+  "minimum_component_area": 80
+}

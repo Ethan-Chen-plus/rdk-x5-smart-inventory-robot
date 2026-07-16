@@ -18,15 +18,16 @@ without manually editing a spreadsheet.
 - RDK X5 MIPI-camera BPU perception at 30.02 FPS.
 - Magic Box microphone and speaker interaction.
 - Completed OpenClaw + VLM/SAM + GraspNet + MuJoCo simulation workflow.
-- Fine-tuned SmolVLA policy deployed on a local RTX 3060 GPU.
+- Fine-tuned SmolVLA policy deployed on an NVIDIA RTX PRO 6000 96 GB GPU.
 - Online model control of a ROKAE xMate ER3 Pro and Lebai LMG90 gripper.
 - SQLite inventory quantities, thresholds and event history.
 - Live tablet dashboard over LAN HTTP/SSE.
 - Magic Box low-stock voice warning.
 
 The controlled physical scene contains Oreo cookies, Nestle coffee sticks and
-a delivery tray. A successful robot delivery updates inventory only after the
-gripper closes and subsequently releases. Oreo changes `5 -> 4` above its
+a delivery tray. A gripper close/release creates a candidate, and a successful
+delivery updates inventory only after the RDK camera confirms increased target-
+tray occupancy across stable frames. Oreo changes `5 -> 4` above its
 threshold of two. Coffee changes `7 -> 6`, meeting its threshold of six and
 triggering the warning.
 

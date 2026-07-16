@@ -11,7 +11,7 @@ trajectory.
 
 ## Environment
 
-- Windows 11 host with NVIDIA RTX 3060 Laptop GPU (6 GB).
+- Windows 11 host with NVIDIA RTX PRO 6000 GPU (96 GB).
 - Python 3.10, PyTorch 2.5.1 + CUDA 12.4.
 - Hugging Face LeRobot 0.6.0 with SmolVLA extras.
 - ROKAE xCoreSDK Python 0.7.0 (vendor package supplied with the arm).
@@ -63,9 +63,10 @@ python smolvla\run_policy.py --config smolvla\config.json --execute --item-id 2
 
 The policy consumes two live RGB views, current seven-joint state, and the
 language instruction. Every predicted action is checked against the ER3 Pro
-joint limits and limited to 2 degrees per control step. A completed gripper
-close-then-open delivery calls the inventory service exactly once; a failed or
-interrupted rollout does not decrement stock.
+joint limits and limited to 2 degrees per control step. A gripper close followed
+by release creates a delivery candidate. Inventory changes only after the RDK
+fixed camera confirms a stable occupancy increase in the delivery tray; a failed,
+interrupted, or visually rejected rollout does not decrement stock.
 
 ## Stop and Recovery
 

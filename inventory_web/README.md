@@ -42,10 +42,16 @@ Start the board-side ASR/TTS service before starting the web server:
 bash scripts/start_inventory_voice.sh
 ```
 
-Robot software can use the same inventory endpoint as the admin UI:
+Robot software must use the verified task flow. Arm motion alone cannot change
+inventory:
 
 ```bash
-curl -X POST http://LAPTOP_IP:8088/api/items/1/adjust \
+curl -X POST http://LAPTOP_IP:8088/api/tasks/retrieval-start \
   -H 'Content-Type: application/json' \
-  -d '{"delta":-1,"source":"robot"}'
+  -d '{"item_id":1,"task_id":"rollout-uuid"}'
 ```
+
+The RDK verifier records at least 10 stable baseline frames, the arm reports
+`retrieval-candidate`, and the verifier posts the stable post-action occupancy
+to `/api/tasks/<task_id>/vision-confirm`. The legacy `retrieval-complete`
+endpoint returns HTTP 410 so an empty grasp cannot bypass visual confirmation.

@@ -9,7 +9,7 @@ Updated: 2026-07-16
 | Stage 2 | Proposal, architecture, interfaces, compute allocation, BOM, risk plan | Complete |
 | Simulation | OpenClaw, VLM+SAM, GraspNet, MuJoCo manipulation and persistent memory | Complete |
 | Data and policy | Dual-camera robot demonstrations, LeRobot conversion, SmolVLA fine-tuning | Complete |
-| Real-arm deployment | RTX 3060 SmolVLA, xCoreSDK ER3 Pro, LMG90 | Complete |
+| Real-arm deployment | RTX PRO 6000 96 GB SmolVLA, xCoreSDK ER3 Pro, LMG90 | Complete |
 | Inventory workflow | SQLite quantities, thresholds, SSE tablet and Magic Box TTS | Complete |
 | Physical validation | Oreo `5->4`, coffee `7->6`, threshold warning | Complete |
 | Public submission | Repository, final video, Discord update and showcase PR | Complete; PR re-review pending |
