@@ -10,8 +10,8 @@ Updated: 2026-05-19
 | https://github.com/D-Robotics/hobot_dnn | D-Robotics DNN runtime reference for BPU-oriented deployment. |
 | https://github.com/D-Robotics/hobot_mipi_cam | Camera bring-up reference for MIPI camera paths. |
 | https://github.com/D-Robotics/hobot_stereonet | Stereo depth example for RDK X5 with ROS 2 and camera input. Useful if depth perception becomes necessary. |
-| https://github.com/D-Robotics/body_tracking | Visual tracking and robot-control style reference. Useful for later ROS 2 integration patterns. |
-| https://github.com/D-Robotics/xiaozhi-in-rdk | Audio / interaction reference on RDK X5. Useful if voice interaction is added later. |
+| https://github.com/D-Robotics/body_tracking | Visual tracking and robot-control style reference for ROS 2 integration patterns. |
+| https://github.com/D-Robotics/xiaozhi-in-rdk | Audio and interaction reference on RDK X5. |
 
 ## Community RDK X5 Examples
 

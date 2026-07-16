@@ -31,6 +31,18 @@ def main() -> None:
     root = Path(__file__).resolve().parents[1]
     for rel_path in FILES:
         download_file(rel_path, root)
+    checkpoint = root / "temp" / "logs" / "log_rs" / "checkpoint-rs.tar"
+    if not checkpoint.exists():
+        checkpoint_url = os.getenv("GRASPNET_CHECKPOINT_URL")
+        if not checkpoint_url:
+            raise SystemExit(
+                "Missing GraspNet checkpoint at "
+                f"{checkpoint}. Set GRASPNET_CHECKPOINT_URL to your authorized "
+                "checkpoint-rs.tar download URL, then rerun this script."
+            )
+        checkpoint.parent.mkdir(parents=True, exist_ok=True)
+        print(f"Downloading GraspNet checkpoint to {checkpoint}")
+        urllib.request.urlretrieve(checkpoint_url, checkpoint)
     print("Large assets are ready.")
 
 

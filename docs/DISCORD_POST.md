@@ -21,8 +21,7 @@ Hi everyone! I'm Kewei Chen.
 
 My technical background: I am interested in robotics, embodied AI, robot manipulation, and edge AI deployment. I have experience working with real robotic arms, AI-assisted robotics workflows, and project documentation on GitHub.
 
-My robot/AI dream: I plan to design an RDK X5-powered smart household inventory assistant with a real robotic arm. The system will use RDK X5 for on-device AI perception, recognize household supplies, manage inventory records, generate low-stock reminders, and trigger robotic arm actions for simple item interaction, sorting, or demonstration tasks.
+My robot/AI project is an RDK X5-powered smart household inventory assistant with a real robotic arm. The completed system uses RDK X5 for on-device AI perception, manages household inventory records, generates low-stock reminders, and coordinates robotic-arm retrieval demonstrations.
 
 Excited to join the challenge and learn with everyone! #RoboticsDreamKeeper #RDKX5
 ```
-

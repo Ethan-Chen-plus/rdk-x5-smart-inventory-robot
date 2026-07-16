@@ -8,7 +8,10 @@
 
 ## Summary
 
-This project designs an RDK X5-powered smart household inventory assistant with a real robotic arm. The target scenario is smart life robotics: the system will perceive household supplies, maintain inventory records, generate low-stock reminders, and later trigger robotic arm actions for simple item interaction, sorting, or demonstration tasks.
+This archived Stage 1 showcase introduced the RDK X5-powered smart household
+inventory assistant. The completed system perceives household supplies,
+maintains inventory records, generates low-stock reminders, and coordinates a
+real robotic arm for the demonstrated retrieval tasks.
 
 For Stage 1, the Magic Box / RDK X5 board was brought up and verified through SSH, Wi-Fi networking, desktop capture, audio device inspection, microphone recording, MIPI camera operation, and BPU-accelerated YOLO inference. The board runs Ubuntu 22.04.5 on aarch64 and is reachable through `ssh sunrise@192.168.127.10`. Wi-Fi networking was verified with successful public connectivity to GitHub.
 

@@ -65,7 +65,7 @@ source /userdata/magicbox/app/ros_ws/install/local_setup.bash
 python3 -c "import rclpy,ai_msgs; print('RDK ROS Python dependencies OK')"
 ```
 
-## Software and Hardware Versions
+## Hardware and Reproduction Versions
 
 | Component | Version / model |
 |---|---|
@@ -73,8 +73,8 @@ python3 -c "import rclpy,ai_msgs; print('RDK ROS Python dependencies OK')"
 | TogetheROS | ROS 2 Humble |
 | RDK BPU | Platform 1.3.6, DNN 1.24.5, HBRT 3.15.55.0 |
 | RDK detector | `yolo26s_bayese_640x640_nv12` |
-| Host | Windows 11, Python 3.10, NVIDIA RTX PRO 6000 96 GB |
-| Policy | Fine-tuned SmolVLA, LeRobot 0.6.0, PyTorch 2.5.1 CUDA 12.4 |
+| Host | Windows 11, NVIDIA RTX PRO 6000 Blackwell Server Edition 96 GB; public environment uses Python 3.12 |
+| Policy | Fine-tuned SmolVLA, LeRobot 0.6.0; public environment pins PyTorch 2.7.1 CUDA 12.8 wheel |
 | Arm | ROKAE xMate ER3 Pro, controller 3.2.1, HMI 5.0.13.0411 |
 | Arm SDK | xCoreSDK Python 0.7.0 |
 | Gripper | Lebai LMG90, 24 V, RS485/Modbus RTU 115200 8N1 |
@@ -104,14 +104,19 @@ See `docs/BENCHMARK.md` and `evidence/stage3_live_yolo_bpu.txt`.
 
 Checkpoint weights, training recordings, the proprietary xCoreSDK package,
 and its license are external artifacts and are not committed. Their interfaces
-and required paths are documented so another authorized developer can provide
-equivalent artifacts and reproduce the workflow.
+and required paths are documented. `smolvla/collect_submission_evidence.py`
+records the real checkpoint tree hash, dataset counts, Python/PyTorch/CUDA and
+`nvidia-smi` output on the authorized deployment machine.
 
 ## Safety
 
 - Physical execution is opt-in and requires a typed confirmation.
 - Software joint bounds are narrower than the manufacturer limits.
 - Each model action is capped at 2 degrees per control update.
+- At 4 Hz this also caps the commanded joint-target change to 8 degrees/s.
+- The calibrated physical scene is restricted to x=250..650 mm,
+  y=-450..250 mm and z=25..650 mm; the joint-command interface does not claim
+  an independent Cartesian collision monitor.
 - The J5 handheld stop and external emergency stop remain within reach.
 - `Ctrl+C` requests xCoreSDK stop/reset.
 - Servo power remains under RobotAssist/external enable ownership; code never

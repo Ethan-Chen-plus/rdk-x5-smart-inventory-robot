@@ -14,3 +14,4 @@ secrets/
 credentials/
 inventory_web/inventory.db
 inventory_web/__pycache__/
+outputs/

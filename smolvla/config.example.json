@@ -1,6 +1,15 @@
 {
   "checkpoint": "outputs/train/tuntunclaw_smolvla/checkpoints/last/pretrained_model",
-  "task": "Pick the requested household supply and place it in the delivery tray.",
+  "items": {
+    "1": {
+      "name": "Nestle coffee stick",
+      "task": "Pick one Nestle coffee stick from the white basket and place it in the brown delivery tray."
+    },
+    "2": {
+      "name": "Oreo cookie",
+      "task": "Pick one blue Oreo cookie packet from the pink plate and place it in the brown delivery tray."
+    }
+  },
   "robot_ip": "192.168.0.160",
   "xcore_sdk_root": "C:/ROKAE/xcoresdk_python-v0.7.0",
   "camera_indices": [0, 1],
@@ -8,17 +17,26 @@
   "frame_width": 640,
   "frame_height": 480,
   "control_hz": 4.0,
+  "policy_actions_per_observation": 1,
   "max_steps": 240,
   "joint_limits_deg": [
     [-165, 165], [-115, 115], [-165, 165], [-118, 118],
     [-165, 165], [-115, 115], [-355, 355]
   ],
   "max_joint_step_deg": 2.0,
+  "max_joint_velocity_deg_s": 8.0,
   "move_speed": 50.0,
   "move_zone": 0.0,
+  "physical_workspace_mm": {
+    "x": [250, 650],
+    "y": [-450, 250],
+    "z": [25, 650]
+  },
   "gripper_port": "COM5",
   "gripper_slave": 1,
   "gripper_force_percent": 5,
+  "gripper_feedback_timeout_s": 3.0,
+  "gripper_open_tolerance_percent": 12,
   "gripper_open_threshold": 70,
   "gripper_closed_threshold": 25,
   "inventory_url": "http://127.0.0.1:8088",

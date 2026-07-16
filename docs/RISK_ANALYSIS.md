@@ -4,12 +4,13 @@ Updated: 2026-07-16
 
 | Risk | Final status | Implemented control |
 |---|---|---|
-| Generic detector misclassifies household items | Controlled | Task ID supplies identity; fixed tray ROI change confirms transfer; optional custom two-class YOLO11 adds identity evidence |
+| Wrong household item selected | Demo-constrained | `--item-id` selects a distinct SmolVLA prompt and fixed source location; RDK ROI confirms transfer but does not claim SKU recognition |
 | Failed grasp incorrectly decrements stock | Controlled | Close/release is only a candidate; RDK multi-frame tray occupancy must increase before commit |
-| Model predicts unsafe joint target | Controlled | Conservative per-joint bounds and 2-degree maximum change per update |
+| Model predicts unsafe joint target | Controlled | Conservative per-joint bounds, 2-degree/step and 8-degree/s target-slew caps; fixed physical operating box |
 | Unexpected arm motion | Controlled | Dry-run default, explicit `--execute`, typed confirmation, low speed and clear workspace |
 | Servo safety ownership conflict | Controlled | Code treats power as read-only and never calls `setPowerState`; RobotAssist/external enable owns power |
 | Immediate stop required | Controlled | J5 handheld/e-stop in reach; `Ctrl+C` calls xCoreSDK stop/reset |
+| Gripper command not completed | Controlled | Read `0x9C45` actual opening and require `0x9C47 == 1`; incomplete release aborts before inventory commit |
 | Tablet loses network | Recoverable | SQLite remains source of truth; browser reconnects to SSE; admin can inspect REST state |
 | Magic Box TTS unavailable | Recoverable | Inventory transaction and tablet alert complete even when SSH/TTS fails; warning is logged |
 | Microphone conflict | Controlled | RMS node and `audio_io` are not run as simultaneous ALSA owners; voice startup stops RMS sampling |

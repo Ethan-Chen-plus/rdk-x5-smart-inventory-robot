@@ -159,6 +159,12 @@ python scripts/download_large_assets.py
 
 脚本会从 [Datawhale/tuntunclaw-assets](https://huggingface.co/datasets/Datawhale/tuntunclaw-assets) 下载这些文件并恢复到原始路径。如果 Hugging Face 仓库需要鉴权，请先设置 `HF_TOKEN` 或 `HUGGINGFACE_HUB_TOKEN`。
 
+`grasp_process.py` 还需要授权取得的 GraspNet 权重
+`temp/logs/log_rs/checkpoint-rs.tar`。该大文件不随 Git 分发；首次安装时
+设置 `GRASPNET_CHECKPOINT_URL` 后再运行同一下载脚本，脚本会把权重放到
+代码实际读取的位置。未提供权重时脚本会明确退出，不会进入缺失模型的
+半启动状态。
+
 ### 6.3 启动
 
 ```powershell

@@ -27,9 +27,10 @@ July 14, 2026. The unedited runtime log is stored at
 | BPU inference latency | 24.61 ms | 21 ms | 32 ms |
 | End-to-end pipeline latency | 72.27 ms | 62 ms | 86 ms |
 
-During the sustained run, CPU temperature was 58.0 C, DDR temperature was
-59.4 C, load average was 2.04, and approximately 6.0 GiB memory remained
-available.
+In a separate board-status command during the same session, CPU temperature
+was 58.0 C, DDR temperature was 59.4 C, load average was 2.04, and
+approximately 6.0 GiB memory remained available. These four status readings
+are contextual observations; they are not fields in the 644-line BPU log.
 
 ## Concurrent Workloads
 

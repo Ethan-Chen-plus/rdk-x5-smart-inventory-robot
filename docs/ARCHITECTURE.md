@@ -16,7 +16,7 @@ flowchart LR
     TOP["Orbbec top RGB"] --> VLA["Trained SmolVLA on RTX PRO 6000 96 GB"]
     WRIST["D435 wrist RGB"] --> VLA
     ARMSTATE["ER3 Pro 7-joint state"] --> VLA
-    TASK["Language instruction"] --> VLA
+    TASK["CLI-selected item-specific instruction"] --> VLA
     VLA --> GATE["Joint-limit and step safety gate"]
     GATE --> XCORE["ROKAE xCoreSDK 0.7.0"]
     GATE --> MODBUS["LMG90 Modbus RTU"]
@@ -48,9 +48,9 @@ target, while camera inference and speech remain on RDK X5.
 | RDK X5 | `inventory_tracker_node.py` | detection + audio topics | `/inventory/state`, atomic JSON | 1 Hz |
 | RDK X5 | `rdk_roi_verifier_node.py` | official camera WebSocket, fixed empty-tray reference | baseline/final task API evidence | 15 stable frames per phase |
 | RDK X5 | ROS 2 `audio_io` | `/tts_text` / microphone | speaker / `/prompt_text` | event-driven |
-| Host | `smolvla/run_policy.py` | two RGB frames, 7 joints, language | 8-D absolute action | configured 4 Hz |
+| Host | `smolvla/run_policy.py` | two RGB frames, 7 joints, item-specific language | first action from a freshly inferred chunk | target 4 Hz; measured per-step time is logged |
 | Host | xCoreSDK 0.7.0 | seven bounded joint targets | ER3 Pro NRT commands | one command/policy step |
-| Host | LMG90 Modbus | width and force registers | gripper motion | one command/policy step |
+| Host | LMG90 Modbus | width and force registers | motion plus `0x9C45` position and `0x9C47` done feedback | one command/policy step |
 | Host | `inventory_web/app.py` | robot completion/admin API | SQLite, JSON, SSE, TTS call | event-driven; SSE keepalive 15 s |
 | Tablet | browser `/` | SSE `/api/events` | live quantity/threshold table | immediate on state change |
 
@@ -58,8 +58,10 @@ The physical inventory is not inferred by recounting an occluded source pile.
 The manipulation controller first reports a model-driven gripper close/release
 as a candidate. The RDK fixed camera then compares 10 or more stable frames of
 the delivery-tray ROI against its empty reference. Only a sufficient occupancy
-increase commits one unit. The task ID identifies the requested item; an
-optional two-class YOLO11 detector can add independent Oreo/coffee identity.
+increase commits one unit. `-ItemId` selects a different item-specific SmolVLA
+instruction, so coffee and Oreo no longer share a generic prompt. The fixed ROI
+confirms transfer, not SKU classification; the controlled demo uses one source
+location per requested SKU and does not claim general wrong-item detection.
 
 ## API Contract
 
@@ -81,14 +83,15 @@ queues the Magic Box voice warning.
 | Workload | Device | Verified / expected utilization |
 |---|---|---|
 | YOLO camera inference | RDK X5 Bayes BPU | 30.02 FPS and 24.61 ms mean inference verified; expected 30-70% BPU scheduling occupancy for this single model |
-| Camera decode, ROS 2, JSON logging | RDK X5 8x A55 | expected 15-45% aggregate CPU; observed load average 2.04 with about 6.0 GiB RAM free |
+| Camera decode, ROS 2, JSON logging | RDK X5 8x A55 | expected 15-45% aggregate CPU; standard Linux scheduling, no CPU affinity or real-time reservation |
 | Microphone RMS or `audio_io` | RDK X5 CPU/audio DSP | expected 5-20% aggregate CPU; runs mutually exclusively because both own the microphone |
-| SmolVLA inference | NVIDIA RTX PRO 6000 96 GB | CUDA FP16; expected 4.5-6.0 GB VRAM and one action chunk per control cycle |
+| SmolVLA inference | NVIDIA RTX PRO 6000 Blackwell Server Edition 96 GB | public environment: PyTorch 2.7.1 cu128 FP16; queue reset on every observation and only the first newly inferred action is executed |
 | xCoreSDK, Modbus, Flask/SQLite | Windows host CPU | expected below 15% aggregate CPU outside video preprocessing |
 
 Expected percentages are engineering operating ranges, not benchmark claims.
-Measured RDK latency, FPS, temperature, memory, and load are preserved in
-`docs/BENCHMARK.md` and `evidence/stage3_live_yolo_bpu.txt`.
+Measured RDK latency and FPS are preserved in `docs/BENCHMARK.md` and
+`evidence/stage3_live_yolo_bpu.txt`. Temperature/load observations are labeled
+separately because they are not fields in that inference log.
 
 ## Folder Conventions
 
@@ -115,3 +118,23 @@ xCoreSDK binaries/license, credentials, and videos are external artifacts.
 4. `Ctrl+C` calls `robot.stop()` and clears queued motion.
 5. The J5 handheld stop and external emergency stop are the immediate mechanical stop paths.
 6. No project script changes servo power or bypasses the safety chain.
+
+## Trigger Boundary
+
+The submitted physical run is an operator-selected CLI workflow:
+`start_complete_demo.ps1 -ItemId 1|2`. RDK YOLO and microphone topics run as
+parallel edge-AI demonstrations; they do not autonomously start arm motion.
+This boundary is deliberate and avoids claiming a speech-to-arm trigger that
+is not implemented in the public repository.
+
+## Module Failure Modes
+
+| Module | Failure mode | Observable behavior / recovery |
+|---|---|---|
+| RDK YOLO | camera/WebSocket unavailable | board log reports reconnect; no effect on stored inventory |
+| RDK ROI verifier | unstable or insufficient occupancy increase | task becomes `vision_rejected`; no decrement |
+| SmolVLA | inference exception or no close/release | rollout ends without commit; operator stops/repositions scene |
+| xCoreSDK | robot not automatic/powered or command timeout | motion aborts; J5/RobotAssist remains safety owner |
+| LMG90 | Modbus error, no done flag, or incomplete release | exception stops rollout; no delivery candidate is committed |
+| Inventory/Tablet | HTTP or SSE interruption | SQLite remains source of truth; browser reconnects |
+| Magic Box TTS | SSH/audio failure | warning is logged; inventory transaction remains committed |

@@ -9,6 +9,8 @@ $ErrorActionPreference = "Stop"
 
 lerobot-train `
     --policy.path=lerobot/smolvla_base `
+    --policy.chunk_size=50 `
+    --policy.n_action_steps=1 `
     --dataset.repo_id=$DatasetRepo `
     --batch_size=$BatchSize `
     --steps=$Steps `

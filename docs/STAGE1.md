@@ -201,14 +201,8 @@ Microphone evidence:
 assets/stage1_magicbox_mic_test.wav
 ```
 
-### Remaining Gap
+### Stage 1 Closure
 
-Stage 1 core evidence is now functionally complete. Still capture a clean screenshot or terminal recording for submission:
-
-```bash
-ip -br addr
-ip route
-ping -c 4 github.com
-```
-
-Also capture a photo or screen recording of the live YOLO demo if the organizers ask for a visual proof beyond logs and the generated YOLO image.
+Stage 1 evidence was completed with the board/network log, desktop screenshot,
+microphone recording, static YOLO result, and live MIPI-camera BPU log listed in
+`docs/STAGE1_SUBMISSION.md`.

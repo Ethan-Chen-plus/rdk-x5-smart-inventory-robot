@@ -27,7 +27,8 @@ xCoreSDK, LMG90 interface, inventory database and tablet service.
 ## Final Engineering Decisions
 
 1. Generic YOLO detections remain the verified RDK X5 edge-AI benchmark, while
-   trained SmolVLA performs task-conditioned physical manipulation.
+   trained SmolVLA performs task-conditioned physical manipulation. Coffee and
+   Oreo use distinct prompts and fixed source locations.
 2. Inventory decrements only after a completed close-then-open delivery, not
    from unstable frame-by-frame object counts.
 3. SQLite is the source of truth; SSE makes tablet updates immediate and keeps
@@ -37,6 +38,12 @@ xCoreSDK, LMG90 interface, inventory database and tablet service.
    configuration and executable interfaces are public.
 6. Model output is executed online through a bounded safety gate; trajectory
    replay is not part of the submitted real-robot inference path.
+7. RDK YOLO and microphone nodes run as parallel edge-AI demonstrations. The
+   submitted arm run is intentionally started by the operator with `-ItemId`;
+   the public repository does not claim an autonomous speech-to-arm trigger.
+8. RDK processes use ordinary Linux scheduling without CPU affinity or a
+   real-time reservation. xCoreSDK/controller firmware owns low-level motion
+   timing and acceleration/jerk handling.
 
 The exact Stage 3 implementation and reproduction commands are in
 `docs/STAGE3_SUBMISSION.md`.

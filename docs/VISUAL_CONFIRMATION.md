@@ -55,6 +55,11 @@ empty-grasp candidate rejected with zero occupancy increase, and a positive
 delivery committed after the tray occupancy reached 0.1724 with 0.708
 confidence across 15 frames.
 
+This log validates the ROI/API gate directly and therefore uses descriptive
+task IDs. It is not presented as a `run_policy.py` rollout. Physical policy
+runs generate UUID task IDs and join the selected item prompt, control timing,
+gripper feedback and final API result in `outputs/rollouts/<uuid>.jsonl`.
+
 ## Model Selection
 
 Florence-2-base-ft was evaluated on the empty, Oreo-delivered, and coffee-
@@ -63,8 +68,3 @@ Nestle boxes on the empty tray and returned nearly identical boxes for both
 brand prompts. It is therefore not used as the inventory commit gate. SAM alone
 is also unsuitable because it segments prompted regions but does not establish
 item identity.
-
-For independent brand identity, the recommended optional path is a custom
-two-class YOLO11n detector (`oreo_cookie`, `nestle_coffee`) trained on the fixed
-scene and converted with the official RDK X5 Ultralytics YOLO toolchain. The
-ROI occupancy gate remains required even when that detector is enabled.

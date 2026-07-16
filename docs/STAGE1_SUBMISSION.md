@@ -100,7 +100,3 @@ See:
 
 - `docs/MAGICBOX_NOTES.md`
 - `docs/STAGE1.md`
-
-## Remaining Optional Step
-
-Record a short phone video or screen recording if the organizers require video rather than screenshots/logs for Stage 1.

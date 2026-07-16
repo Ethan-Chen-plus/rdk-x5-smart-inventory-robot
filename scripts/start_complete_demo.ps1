@@ -2,6 +2,7 @@ param(
     [ValidateSet(1, 2)][int]$ItemId = 2,
     [string]$Board = "sunrise@192.168.127.10",
     [string]$EnvironmentName = "tuntun-sml",
+    [switch]$ResetDemo,
     [switch]$Execute
 )
 
@@ -20,7 +21,9 @@ $Inventory = Start-Process -FilePath "conda" -ArgumentList @(
 
 try {
     Start-Sleep -Seconds 3
-    Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8088/api/demo/reset" | Out-Null
+    if ($ResetDemo) {
+        Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8088/api/demo/reset" | Out-Null
+    }
     $PolicyArgs = @(
         "run", "-n", $EnvironmentName, "python", "smolvla/run_policy.py",
         "--config", "smolvla/config.json", "--item-id", "$ItemId"

@@ -1,0 +1,12 @@
+{
+  "episodes": {
+    "episode_000000": {
+      "item_id": 1,
+      "task": "Pick one Nestle coffee stick from the white basket and place it in the brown delivery tray."
+    },
+    "episode_000001": {
+      "item_id": 2,
+      "task": "Pick one blue Oreo cookie packet from the pink plate and place it in the brown delivery tray."
+    }
+  }
+}

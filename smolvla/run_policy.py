@@ -8,6 +8,7 @@ import platform
 import sys
 import time
 import uuid
+from datetime import datetime, timezone
 from pathlib import Path
 
 import cv2
@@ -76,8 +77,34 @@ class Lmg90:
         if response != expected:
             raise RuntimeError(f"LMG90 Modbus write failed: {response.hex()}")
 
-    def command(self, width_percent: float) -> None:
-        self.write_register(0x9C40, max(0, min(100, round(width_percent))))
+    def read_register(self, register: int) -> int:
+        body = bytes((self.slave, 0x03)) + register.to_bytes(2, "big") + bytes((0x00, 0x01))
+        frame = body + crc16(body).to_bytes(2, "little")
+        self.serial.reset_input_buffer()
+        self.serial.write(frame)
+        response = self.serial.read(7)
+        if len(response) != 7 or response[:3] != bytes((self.slave, 0x03, 0x02)):
+            raise RuntimeError(f"LMG90 Modbus read failed: {response.hex()}")
+        if int.from_bytes(response[-2:], "little") != crc16(response[:-2]):
+            raise RuntimeError(f"LMG90 Modbus CRC mismatch: {response.hex()}")
+        return int.from_bytes(response[3:5], "big")
+
+    def command(self, width_percent: float, timeout_s: float, open_tolerance: float) -> dict:
+        target = max(0, min(100, round(width_percent)))
+        self.write_register(0x9C40, target)
+        deadline = time.monotonic() + timeout_s
+        time.sleep(0.03)
+        while time.monotonic() < deadline:
+            position = self.read_register(0x9C45)
+            done = self.read_register(0x9C47)
+            if done == 1:
+                if target >= 50 and abs(position - target) > open_tolerance:
+                    raise RuntimeError(
+                        f"LMG90 release incomplete: target={target}, actual={position}"
+                    )
+                return {"target_percent": target, "position_percent": position, "done_flag": done}
+            time.sleep(0.05)
+        raise TimeoutError(f"LMG90 did not complete target {target} within {timeout_s:.1f}s")
 
     def close(self) -> None:
         self.serial.close()
@@ -121,7 +148,7 @@ class RokaeController:
             raise RuntimeError(f"Unable to read seven robot joints: {ec}")
         return joints
 
-    def apply(self, action: np.ndarray) -> np.ndarray:
+    def apply(self, action: np.ndarray) -> tuple[np.ndarray, dict | None]:
         if action.shape[0] < 8:
             raise ValueError(f"Expected 8-D action (7 joints + gripper), got {action.shape}")
         current = self.state()
@@ -135,7 +162,7 @@ class RokaeController:
         gripper_width = float(max(0, min(100, action[7])))
         if not self.execute:
             print(json.dumps({"dry_run_joint_rad": target.tolist(), "gripper_percent": gripper_width}))
-            return np.append(target, gripper_width)
+            return np.append(target, gripper_width), None
 
         ec = {}
         cmd = self.sdk.MoveAbsJCommand(target.tolist(), float(self.cfg["move_speed"]), float(self.cfg["move_zone"]))
@@ -146,7 +173,11 @@ class RokaeController:
         self.robot.moveStart(ec)
         if not ec_ok(ec):
             raise RuntimeError(f"moveStart failed: {ec}")
-        self.gripper.command(gripper_width)
+        gripper_feedback = self.gripper.command(
+            gripper_width,
+            float(self.cfg.get("gripper_feedback_timeout_s", 3.0)),
+            float(self.cfg.get("gripper_open_tolerance_percent", 12)),
+        )
         deadline = time.monotonic() + 5.0
         time.sleep(0.02)
         while time.monotonic() < deadline:
@@ -159,7 +190,7 @@ class RokaeController:
         self.robot.moveReset(ec)
         if not ec_ok(ec):
             raise RuntimeError(f"moveReset after policy step failed: {ec}")
-        return np.append(target, gripper_width)
+        return np.append(target, gripper_width), gripper_feedback
 
     def stop(self) -> None:
         if self.execute:
@@ -242,15 +273,31 @@ def report_delivery_candidate(cfg: dict, task_id: str) -> dict:
     return response.json()
 
 
+def item_task(cfg: dict, item_id: int) -> tuple[str, str]:
+    item = cfg.get("items", {}).get(str(item_id))
+    if not item or not str(item.get("task", "")).strip():
+        raise ValueError(f"No item-specific SmolVLA task is configured for item_id={item_id}")
+    return str(item.get("name", item_id)), str(item["task"]).strip()
+
+
+def append_run_log(path: Path, event: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    row = {"timestamp": datetime.now(timezone.utc).isoformat(), **event}
+    with path.open("a", encoding="utf-8") as stream:
+        stream.write(json.dumps(row, ensure_ascii=False) + "\n")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run the trained TuntunClaw SmolVLA policy on ROKAE xMate ER3 Pro.")
     parser.add_argument("--config", default="smolvla/config.json")
     parser.add_argument("--execute", action="store_true", help="Enable physical motion after safety confirmation.")
     parser.add_argument("--item-id", type=int, default=0, help="Override inventory item ID for this retrieval.")
+    parser.add_argument("--run-log", type=Path, help="JSONL output; defaults to outputs/rollouts/<task-id>.jsonl")
     args = parser.parse_args()
     cfg = load_config(args.config)
     if args.item_id:
         cfg["item_id"] = args.item_id
+    item_name, task_prompt = item_task(cfg, int(cfg["item_id"]))
     if args.execute:
         print("Clear the workspace. Keep the J5 pendant and emergency stop within reach.")
         if input(f"Type {CONFIRMATION!r} to enable model-controlled motion: ").strip() != CONFIRMATION:
@@ -259,6 +306,10 @@ def main() -> None:
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     checkpoint = cfg["checkpoint"]
     policy = SmolVLAPolicy.from_pretrained(checkpoint).to(device).eval()
+    policy.config.n_action_steps = int(cfg.get("policy_actions_per_observation", 1))
+    if policy.config.n_action_steps != 1:
+        raise ValueError("Closed-loop execution requires policy_actions_per_observation=1")
+    policy.reset()
     preprocessor, postprocessor = make_pre_post_processors(
         policy.config,
         checkpoint,
@@ -267,9 +318,28 @@ def main() -> None:
     arm = RokaeController(cfg, args.execute)
     cameras = []
     task_id = str(uuid.uuid4())
+    run_log = args.run_log or Path("outputs") / "rollouts" / f"{task_id}.jsonl"
     close_seen = False
     delivered = False
     period = 1.0 / float(cfg["control_hz"])
+    configured_step = float(cfg["max_joint_step_deg"])
+    velocity_step = float(cfg["max_joint_velocity_deg_s"]) / float(cfg["control_hz"])
+    if configured_step > velocity_step + 1e-9:
+        raise ValueError("max_joint_step_deg exceeds max_joint_velocity_deg_s/control_hz")
+    append_run_log(
+        run_log,
+        {
+            "event": "rollout_start",
+            "task_id": task_id,
+            "item_id": int(cfg["item_id"]),
+            "item_name": item_name,
+            "task_prompt": task_prompt,
+            "checkpoint": checkpoint,
+            "execute": args.execute,
+            "policy_actions_per_observation": policy.config.n_action_steps,
+        },
+    )
+    print(f"task_id={task_id} item={item_name} prompt={task_prompt!r} log={run_log}")
 
     try:
         cameras = open_cameras(cfg)
@@ -280,6 +350,9 @@ def main() -> None:
         for step in range(int(cfg["max_steps"])):
             started = time.perf_counter()
             observation = read_observation(cameras, cfg["camera_keys"], arm)
+            # SmolVLA normally caches 50 actions. Resetting here forces a fresh
+            # chunk from the current images/state; only its first action is used.
+            policy.reset()
             action = predict_action(
                 observation,
                 policy,
@@ -287,10 +360,10 @@ def main() -> None:
                 preprocessor,
                 postprocessor,
                 use_amp=device.type == "cuda",
-                task=cfg["task"],
+                task=task_prompt,
                 robot_type="rokae_xmate_er3_pro_lmg90",
             ).squeeze(0).cpu().numpy()
-            applied = arm.apply(action)
+            applied, gripper_feedback = arm.apply(action)
             gripper = float(applied[7])
             close_seen = close_seen or gripper <= float(cfg["gripper_closed_threshold"])
             if close_seen and gripper >= float(cfg["gripper_open_threshold"]):
@@ -301,9 +374,29 @@ def main() -> None:
                 print(f"Arm candidate reported: {json.dumps(result, ensure_ascii=False)}")
                 verified = wait_for_task_status(cfg, task_id, "committed")
                 print(f"RDK vision confirmed delivery: {json.dumps(verified, ensure_ascii=False)}")
+                append_run_log(
+                    run_log,
+                    {
+                        "event": "delivery_committed",
+                        "task_id": task_id,
+                        "item_id": int(cfg["item_id"]),
+                        "gripper_feedback": gripper_feedback,
+                        "verification": verified,
+                    },
+                )
                 delivered = True
                 break
             elapsed = time.perf_counter() - started
+            append_run_log(
+                run_log,
+                {
+                    "event": "control_step",
+                    "task_id": task_id,
+                    "step": step + 1,
+                    "elapsed_ms": round(elapsed * 1000, 3),
+                    "gripper_feedback": gripper_feedback,
+                },
+            )
             print(f"step={step + 1} inference_and_control={elapsed * 1000:.1f}ms")
             time.sleep(max(0.0, period - elapsed))
     except KeyboardInterrupt:
@@ -314,6 +407,7 @@ def main() -> None:
             camera.release()
     if not delivered:
         print("No RDK-verified delivery was committed; inventory was not changed.")
+        append_run_log(run_log, {"event": "rollout_end_without_commit", "task_id": task_id})
 
 
 if __name__ == "__main__":
