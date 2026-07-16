@@ -51,6 +51,23 @@ Copy-Item smolvla/config.example.json smolvla/config.json
 # Edit checkpoint, xcore_sdk_root, cameras, COM port, and item_id.
 ```
 
+The submitted direct-link topology uses the board at `192.168.127.10/24` and
+the Windows host at `192.168.127.200/24`. If your host address differs, update
+`inventory_url` in `config/rdk_roi_verifier.json`. Configure SSH public-key
+login because the asynchronous Magic Box voice call uses `BatchMode=yes`:
+
+```powershell
+ssh sunrise@192.168.127.10 "true"
+```
+
+The Magic Box image used for the submission provides Python 3.10.12, OpenCV
+4.11.0, NumPy 1.26.4, WebSockets 15.0.1, TogetheROS Humble, `rclpy`, and
+`ai_msgs`. Verify these vendor-image dependencies before launch:
+
+```powershell
+ssh sunrise@192.168.127.10 "python3 -c 'import cv2,numpy,websockets; print(cv2.__version__,numpy.__version__,websockets.__version__)'"
+```
+
 Copy the repository to the board once:
 
 ```powershell
@@ -95,6 +112,9 @@ RDK X5 sustained 30.02 FPS over 644 samples with 24.61 ms average BPU
 inference latency. See [docs/BENCHMARK.md](docs/BENCHMARK.md) and the raw log in
 `evidence/stage3_live_yolo_bpu.txt`.
 
+The live delivery verifier log in `evidence/stage3_rdk_roi_verifier.txt` shows
+both an empty-grasp rejection and a visually confirmed positive delivery.
+
 | Initial setup | Oreo retrieval |
 |---|---|
 | ![Initial setup](assets/realworld_setup.jpg) | ![Oreo retrieval](assets/realworld_oreo_pick.jpg) |
@@ -118,6 +138,8 @@ The completed MuJoCo system includes OpenClaw task planning, VLM + SAM object
 understanding, GraspNet pose inference, continuous pick-and-place, persistent
 scene state, location memory, inventory memory, and replenishment reminders.
 Its source snapshot is included under `simulation/tuntunclaw/`.
+The simulation frontend's mock mode is only a standalone UI preview; launching
+`simulation/tuntunclaw/main.py` connects the implemented simulation backend.
 
 ## License
 

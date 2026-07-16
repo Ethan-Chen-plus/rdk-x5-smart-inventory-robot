@@ -13,8 +13,10 @@
 你可以直接在浏览器里打开 `index.html`，也可以通过仓库根目录的 `main.py`
 启动一个本地 FastAPI 服务后访问网页。
 
-默认状态是 mock 模式。以后要接真实后端时，可以通过顶部的 `API` 按钮设置后端基址。
-前端预期会调用：
+直接打开静态 `index.html` 时默认进入 mock 预览模式，便于在没有 MuJoCo
+环境的机器上检查界面。完整仿真并不使用该预览数据：通过仓库根目录的
+`main.py` 启动 FastAPI 服务后，在顶部 `API` 按钮中设置后端基址即可连接
+已经实现的 OpenClaw、VLM/SAM、GraspNet 和 MuJoCo 工作流。前端调用：
 
 - `POST /api/command`
 - `GET /api/session/:id`

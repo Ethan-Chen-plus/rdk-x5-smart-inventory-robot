@@ -12,9 +12,9 @@ TuntunClaw combines the completed MuJoCo inventory-manipulation system with a
 real RDK X5 Magic Box, trained SmolVLA policy, ROKAE xMate ER3 Pro, LMG90
 gripper, persistent inventory service, tablet UI, and voice warning.
 
-The project team completed SmolVLA fine-tuning and deployment on the local RTX
-3060 GPU. During real execution, two live RGB views, current seven-joint state,
-and a language instruction feed SmolVLA. Online model actions pass through
+The project team completed SmolVLA fine-tuning and deployment on an NVIDIA RTX
+PRO 6000 GPU with 96 GB memory. During real execution, two live RGB views,
+current seven-joint state, and a language instruction feed SmolVLA. Online model actions pass through
 joint-range and per-step safety checks before xCoreSDK and Modbus execution.
 This path does not replay a recorded trajectory.
 
@@ -48,6 +48,22 @@ powershell -ExecutionPolicy Bypass -File scripts/start_complete_demo.ps1 -ItemId
 
 Use `-ItemId 1` for coffee. Full dependencies, model training, inference and
 safety instructions are in `smolvla/README.md`.
+
+The calibrated RDK verifier uses `config/rdk_roi_verifier.json`. Its
+`inventory_url` must point to the Windows host on the direct board network; the
+submitted setup uses `192.168.127.200:8088`. Magic Box speech is invoked through
+non-interactive SSH, so public-key login must succeed before launch.
+
+The submitted Magic Box image provides Python 3.10.12, OpenCV 4.11.0, NumPy
+1.26.4, WebSockets 15.0.1, TogetheROS Humble, `rclpy`, and `ai_msgs`. Verify the
+board environment without replacing the vendor ROS packages:
+
+```bash
+python3 -c "import cv2,numpy,websockets; print(cv2.__version__, numpy.__version__, websockets.__version__)"
+source /opt/tros/humble/setup.bash
+source /userdata/magicbox/app/ros_ws/install/local_setup.bash
+python3 -c "import rclpy,ai_msgs; print('RDK ROS Python dependencies OK')"
+```
 
 ## Software and Hardware Versions
 
@@ -83,6 +99,8 @@ See `docs/BENCHMARK.md` and `evidence/stage3_live_yolo_bpu.txt`.
 - Actual architecture and rates: `docs/ARCHITECTURE.md`
 - Final BOM and stop procedure: `hardware/BOM.md`
 - Design-to-delivery mapping: `docs/TRACEABILITY.md`
+- Live empty-grasp rejection and positive delivery log:
+  `evidence/stage3_rdk_roi_verifier.txt`
 
 Checkpoint weights, training recordings, the proprietary xCoreSDK package,
 and its license are external artifacts and are not committed. Their interfaces

@@ -49,6 +49,12 @@ images above are not used by the live verifier. `scripts/start_stage3_demo.sh`
 starts the verifier with the other RDK services. The example config remains
 available for a different camera pose.
 
+The live RDK verifier evidence is preserved in
+`evidence/stage3_rdk_roi_verifier.txt`. It records both required outcomes: an
+empty-grasp candidate rejected with zero occupancy increase, and a positive
+delivery committed after the tray occupancy reached 0.1724 with 0.708
+confidence across 15 frames.
+
 ## Model Selection
 
 Florence-2-base-ft was evaluated on the empty, Oreo-delivered, and coffee-

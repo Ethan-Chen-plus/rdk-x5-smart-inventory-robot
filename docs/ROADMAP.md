@@ -13,20 +13,19 @@ Updated: 2026-07-16
 | Inventory workflow | SQLite quantities, thresholds, SSE tablet and Magic Box TTS | Complete |
 | Physical validation | Oreo `5->4`, coffee `7->6`, threshold warning | Complete |
 | Public submission | Repository, final video, Discord update and showcase PR | Complete; PR re-review pending |
-| International review | English voice-over video | In progress following reviewer request |
+| International review | English voice-over and reviewed English subtitles | Complete |
 
-## Final Review Work
+## Review Status
 
-- Publish the English voice-over replacement video.
-- Replace the video URL in README, Stage 3 document, showcase file and PR.
-- Ask the reviewer to re-review the reproducible engineering package.
-- Add the exact collaborator checkpoint identifier/checksum and training summary
-  when those small metadata values are available; weights remain external.
+- English final video: https://youtu.be/mVvQPtZMKm4
+- The public repository and showcase branch contain the reproducible interfaces,
+  configuration, launch commands, tests, and hardware evidence.
+- Checkpoint weights, training recordings, and the proprietary xCoreSDK package
+  remain external artifacts as documented in `smolvla/README.md`.
+- Official PR re-review is pending maintainer approval.
 
 ## Award-Oriented Follow-Through
 
 - Preserve raw benchmark evidence and reproducible setup instructions.
 - Publish a concise RDK X5 + SmolVLA integration tutorial after judging.
 - Keep answering relevant technical questions in the Discord community.
-- Add a ten-rollout success table only after the same policy/checkpoint and
-  physical setup have been evaluated; do not estimate this metric.

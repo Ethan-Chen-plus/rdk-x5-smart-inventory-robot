@@ -17,5 +17,5 @@
 | Full launch sequence | Board services, web state, policy rollout | `scripts/start_complete_demo.ps1` |
 | Simulation foundation | OpenClaw, VLM+SAM, GraspNet, continuous MuJoCo state | `simulation/tuntunclaw/` |
 
-The final video demonstrates the same delivered chain. The existing URL is
-being replaced with an English voice-over version for international review.
+The final English-narrated video demonstrates the same delivered chain and is
+available at https://youtu.be/mVvQPtZMKm4.

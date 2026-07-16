@@ -49,14 +49,10 @@ Show `docs/BENCHMARK.md` and mention:
 
 ## 2:55-3:25 - Safe Physical Action
 
-- Perform one low-speed, fixed-workspace robotic-arm or available actuator
-  action.
+- Show the completed low-speed ROKAE xMate ER3 Pro retrieval with the LMG90
+  gripper in the fixed tabletop workspace.
 - Keep hands outside the motion area.
 - State the speed/workspace limit and show the accessible power stop.
-
-If the robotic arm cannot be connected in time, show a safe onboard visual
-actuator action and state clearly that arm integration is the next hardware
-step. Do not claim an arm action that is not shown.
 
 ## 3:25-3:45 - Safe Shutdown and Links
 
