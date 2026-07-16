@@ -156,6 +156,9 @@ class RokaeController:
             time.sleep(0.02)
         else:
             raise TimeoutError("ROKAE command did not return to idle within 5 seconds")
+        self.robot.moveReset(ec)
+        if not ec_ok(ec):
+            raise RuntimeError(f"moveReset after policy step failed: {ec}")
         return np.append(target, gripper_width)
 
     def stop(self) -> None:
