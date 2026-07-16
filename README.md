@@ -1,205 +1,122 @@
 # TuntunClaw RDK X5
 
-**TuntunClaw RDK X5** is a memory-aware household inventory and manipulation
-assistant designed around RDK X5, OpenClaw, and a real robotic arm. It combines
-the completed TuntunClaw simulation workflow with on-device BPU perception,
-ROS 2 inventory state, and Magic Box voice interaction.
+TuntunClaw is a memory-aware household inventory and manipulation assistant
+built for the Robotics Dream Keeper Challenge, Smart Life Robotics track. The
+completed system combines RDK X5 edge perception and speech, a trained SmolVLA
+policy, a ROKAE xMate ER3 Pro arm, persistent inventory, a tablet dashboard,
+and threshold-triggered replenishment warnings.
 
-The project goal is to build a complete smart life robotics workflow:
-
-1. Detect household supplies with on-device AI perception on RDK X5.
-2. Maintain inventory records, storage locations, low-stock reminders, and replenishment suggestions.
-3. Synchronize structured inventory data with Feishu Bitable.
-4. Trigger robotic arm actions for simple item interaction, pointing, sorting, or demonstration tasks.
-
-## Challenge
-
-- Event: Robotics Dream Keeper Challenge
-- Track: Smart Life Robotics
-- Full project name: TuntunClaw RDK X5: A Memory-Aware Household Inventory and Manipulation Assistant
-- Repository: https://github.com/Ethan-Chen-plus/rdk-x5-smart-inventory-robot
-- Final demo video: https://youtu.be/G7VUMQN8TzA
+- Participant: Kewei Chen
+- Final demo: https://youtu.be/G7VUMQN8TzA
 - Discord thread: https://discord.com/channels/1300358874280230994/1503706103752429618/threads/1506248828523905105
-- Official repository: https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/tree/develop
+- Showcase PR: https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/pull/9
 
-## Planned Stack
-
-- Hardware: RDK X5, camera, real robotic arm, optional storage markers or inventory shelf.
-- Edge AI: RDK X5 BPU inference for object detection or classification.
-- Robotics: ROS 2-aware module design for perception, inventory state, task planning, and arm control.
-- Data system: Feishu Bitable for item records and alerts.
-- Documentation: stage evidence, architecture, roadmap, demo video, and showcase PR.
-
-## Completed TuntunClaw Simulation
-
-The TuntunClaw MuJoCo prototype has already demonstrated the full simulated
-household workflow:
-
-- Natural-language household task input and OpenClaw task orchestration.
-- VLM + SAM target understanding and segmentation.
-- GraspNet grasp-pose inference and simulated pick-and-place execution.
-- Continuous tasks without resetting the scene between actions.
-- Object-location and inventory memory with low-stock notification hooks.
-
-The RDK Challenge version brings this system to the physical edge: Magic Box
-provides the camera, microphone, speaker, and BPU inference path, while the
-real robotic arm is integrated through a constrained safety and control layer.
-
-- TuntunClaw source and tutorial: https://github.com/datawhalechina/every-embodied/tree/main/16-%E4%B8%93%E9%A2%98%E7%BB%84%E9%98%9F%E5%AD%A6%E4%B9%A0/02-OpenClaw%E5%AE%B6%E5%BA%AD%E7%89%A9%E8%B5%84%E5%8A%A9%E6%89%8B/tuntunclaw
-- Completed simulation demo: https://www.bilibili.com/video/BV1roAVzaEeZ
-
-## Completed Real-World Experiment
-
-Final 5-minute 44-second challenge demo: https://youtu.be/G7VUMQN8TzA
-
-The real-world experiment validates the same inventory-memory task with an RDK
-X5 Magic Box, a physical robotic arm, two storage areas, a delivery tray, and a
-tablet inventory display. The initial scene contains five Oreo cookies on the
-plate with a low-stock threshold of two, and seven Nestle coffee sticks in the
-basket with a threshold of six. The requested task is to retrieve one Oreo and
-one coffee stick and place both in the delivery tray.
-
-The robot first moves one Oreo from the plate to the delivery tray. Its count
-changes from five to four, which remains above the threshold, so no warning is
-issued. The robot then moves one coffee stick from the basket to the delivery
-tray. Its count changes from seven to six; because the alert condition is
-`quantity <= threshold`, the Magic Box announces that the coffee stock is low
-and needs replenishment. The tablet remains visible during the manipulation so
-the physical action and inventory transition can be checked together.
-
-| Initial physical setup | Oreo retrieval |
-|---|---|
-| ![Initial real-world setup](assets/realworld_setup.jpg) | ![Robot retrieving an Oreo](assets/realworld_oreo_pick.jpg) |
-
-| Coffee retrieval after Oreo count reaches four | Coffee low-stock state at six of six |
-|---|---|
-| ![Robot retrieving a coffee stick](assets/realworld_coffee_pick.jpg) | ![Coffee inventory reaches its threshold](assets/realworld_low_stock_alert.jpg) |
-
-| RDK X5 Magic Box hardware | Magic Box camera view |
-|---|---|
-| ![RDK X5 Magic Box](assets/realworld_magicbox_hardware.jpg) | ![Magic Box camera view of the workspace](assets/realworld_magicbox_view.png) |
-
-The public repository contains the complete TuntunClaw simulation, RDK X5
-runtime evidence, architecture, benchmark, and experiment documentation. The
-physical experiment is published as reproducible system-level evidence; its
-deployment service and robot-control implementation are not included in this
-public source snapshot.
-
-## Repository Map
+## Delivered Workflow
 
 ```text
-assets/      Screenshots, diagrams, and small visual evidence.
-demo/        Demo notes and video links.
-docs/        Challenge stage notes, proposal, roadmap, and PR materials.
-hardware/    BOM, wiring notes, and device setup records.
-simulation/  Complete TuntunClaw OpenClaw + MuJoCo simulation source.
-src/         Source code and scripts.
+RDK X5 MIPI camera -> BPU perception --------------------+
+                                                         |
+two live RGB cameras + 7-joint state -> trained SmolVLA  |
+    -> safety-limited xCoreSDK commands -> ER3 Pro/LMG90 |
+    -> verified gripper close-then-open delivery --------+
+                                                         v
+SQLite inventory -> SSE tablet dashboard -> threshold decision
+                                           -> Magic Box voice warning
 ```
 
-## Run the Completed Simulation
+The project team completed SmolVLA fine-tuning and local RTX 3060 deployment.
+The real-robot entry point in `smolvla/run_policy.py` executes online policy
+outputs; it does not replay a recorded trajectory. Checkpoint weights are kept
+outside Git because of their size and are selected through `smolvla/config.json`.
 
-The complete TuntunClaw source is included at
-[`simulation/tuntunclaw`](simulation/tuntunclaw). It is a pinned source snapshot,
-not a documentation-only link. Follow its dedicated
-[`README.md`](simulation/tuntunclaw/README.md) for environment setup and large
-asset restoration, then start it from that directory:
+The physical task starts with five Oreo cookies (threshold two) and seven
+Nestle coffee sticks (threshold six). After one Oreo is delivered, inventory
+changes `5 -> 4` without an alert. After one coffee is delivered, inventory
+changes `7 -> 6`; the `quantity <= threshold` rule updates the tablet and asks
+the Magic Box to announce a replenishment warning.
+
+## Quick Start
+
+Prerequisites are Windows 11, Conda, NVIDIA CUDA, Git, OpenSSH, ROKAE xCoreSDK
+Python 0.7.0, and a configured RDK X5 Magic Box reachable by SSH.
 
 ```powershell
-micromamba run -n vlm_grasp311 python main.py
+git clone https://github.com/Ethan-Chen-plus/rdk-x5-smart-inventory-robot.git
+cd rdk-x5-smart-inventory-robot
+powershell -ExecutionPolicy Bypass -File scripts/setup_host.ps1
+Copy-Item smolvla/config.example.json smolvla/config.json
+# Edit checkpoint, xcore_sdk_root, cameras, COM port, and item_id.
 ```
 
-Open `http://127.0.0.1:8000/` for the simulation UI. The physical RDK X5
-runtime remains separately reproducible through `scripts/start_stage3_demo.sh`.
+Copy the repository to the board once:
 
-## Stage Notes
-
-- Stage 1 evidence plan: [docs/STAGE1.md](docs/STAGE1.md)
-- Stage 1 submission package: [docs/STAGE1_SUBMISSION.md](docs/STAGE1_SUBMISSION.md)
-- Stage 2 submission package: [docs/STAGE2_SUBMISSION.md](docs/STAGE2_SUBMISSION.md)
-- Stage 3 live prototype: `scripts/start_stage3_demo.sh`
-- Stage 3 submission package: [docs/STAGE3_SUBMISSION.md](docs/STAGE3_SUBMISSION.md)
-- Stage 3 benchmark: [docs/BENCHMARK.md](docs/BENCHMARK.md)
-- Final demo video script: [docs/DEMO_VIDEO_SCRIPT.md](docs/DEMO_VIDEO_SCRIPT.md)
-- Project proposal: [docs/PROPOSAL.md](docs/PROPOSAL.md)
-- System architecture: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
-- Roadmap: [docs/ROADMAP.md](docs/ROADMAP.md)
-- Risk analysis: [docs/RISK_ANALYSIS.md](docs/RISK_ANALYSIS.md)
-- Discord post record: [docs/DISCORD_POST.md](docs/DISCORD_POST.md)
-
-## Current Status
-
-- Application form submitted.
-- Discord self-introduction thread created.
-- RDK Studio registered.
-- RDK X5 purchase completed.
-- RDK X5 flashing was completed before this repository was created.
-- Magic Box / RDK X5 board SSH is reachable at `sunrise@192.168.127.10`.
-- Magic Box / RDK X5 board Wi-Fi is connected through `wlan0`.
-- Stage 1 BPU YOLO evidence has been captured locally.
-- Magic Box microphone recording evidence has been captured locally.
-- Stage 2 proposal, architecture, roadmap, BOM, and risk analysis drafts are prepared.
-- Stage 3 prototype connects live BPU detections to a ROS 2 inventory state node.
-- The existing MuJoCo TuntunClaw perception-to-grasp workflow is complete.
-- The physical arm experiment completed one Oreo retrieval and one Nestle coffee retrieval with tablet inventory updates and a threshold-triggered Magic Box voice warning.
-
-## Stage 3 Quick Start
-
-Run on the Magic Box / RDK X5 after copying this repository to
-`/home/sunrise/rdk_inventory_demo`:
-
-```bash
-cd /home/sunrise/rdk_inventory_demo
-bash scripts/start_stage3_demo.sh
+```powershell
+scp -r . sunrise@192.168.127.10:/home/sunrise/rdk_inventory_demo
 ```
 
-Stop only this project's recorded processes:
+Run the complete workflow. Without `-Execute` it performs camera, model,
+controller, and inventory checks but does not move the robot.
 
-```bash
-bash scripts/stop_stage3_demo.sh
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/start_complete_demo.ps1 -ItemId 2
+powershell -ExecutionPolicy Bypass -File scripts/start_complete_demo.ps1 -ItemId 2 -Execute
 ```
 
-The launcher starts the live MIPI-camera YOLO pipeline, a CPU microphone
-activity node, and a concurrent ROS 2 inventory tracker. The tracker aligns
-camera and audio messages by ROS receive time. Runtime output is written to:
+For coffee, use `-ItemId 1`. The tablet opens
+`http://<laptop-lan-ip>:8088/`; the administrator view is `/admin`.
 
-- `/userdata/magicclaw/logs/yolo.log`
-- `/userdata/magicclaw/inventory/inventory_tracker.log`
-- `/userdata/magicclaw/inventory/audio_activity.log`
-- `/userdata/magicclaw/inventory/state.json`
-- ROS 2 topic `/inventory/state`
-- ROS 2 topic `/audio/activity`
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/stop_complete_demo.ps1
+```
 
-## Important Evidence Note
+Detailed installation, training, checkpoint selection, dry-run, physical
+execution, and emergency-stop behavior are in [smolvla/README.md](smolvla/README.md).
 
-Do not re-flash the board only to capture a success screenshot. If the board has already been flashed and configured, keep the working system and capture reproducible evidence instead:
+## Reproducibility Map
 
-- RDK X5 booted system version.
-- SSH login from PC to board.
-- Network connectivity from board.
-- Board-side package and hardware information.
-- Photos of the physical RDK X5 setup.
+| Component | Entry point |
+|---|---|
+| RDK X5 BPU, ROS 2 detection, microphone | `scripts/start_stage3_demo.sh` |
+| Magic Box ASR/TTS | `scripts/start_inventory_voice.sh` |
+| Persistent inventory, threshold rule, tablet SSE, voice call | `inventory_web/app.py` |
+| Recording-to-LeRobot conversion | `smolvla/convert_recordings.py` |
+| SmolVLA fine-tuning | `smolvla/train_smolvla.ps1` |
+| SmolVLA online inference, xCoreSDK arm, LMG90, completion event | `smolvla/run_policy.py` |
+| Complete host/board launch | `scripts/start_complete_demo.ps1` |
+| MuJoCo TuntunClaw simulation | `simulation/tuntunclaw/` |
 
-Current evidence files:
+## Evidence
 
-- `assets/stage1_rdk_desktop.png`
-- `assets/stage1_yolov5_output_image.jpg`
-- `assets/stage1_magicbox_mic_test.wav`
+RDK X5 sustained 30.02 FPS over 644 samples with 24.61 ms average BPU
+inference latency. See [docs/BENCHMARK.md](docs/BENCHMARK.md) and the raw log in
+`evidence/stage3_live_yolo_bpu.txt`.
 
-## Stage 2 Design Entry
+| Initial setup | Oreo retrieval |
+|---|---|
+| ![Initial setup](assets/realworld_setup.jpg) | ![Oreo retrieval](assets/realworld_oreo_pick.jpg) |
 
-The main Stage 2 review entry is:
+| Coffee retrieval | Low-stock state |
+|---|---|
+| ![Coffee retrieval](assets/realworld_coffee_pick.jpg) | ![Low-stock alert](assets/realworld_low_stock_alert.jpg) |
 
-- [docs/STAGE2_SUBMISSION.md](docs/STAGE2_SUBMISSION.md)
+## Engineering Documents
 
-Supporting design files:
+- [Stage 2 package](docs/STAGE2_SUBMISSION.md)
+- [Stage 3 package](docs/STAGE3_SUBMISSION.md)
+- [Architecture and interfaces](docs/ARCHITECTURE.md)
+- [Stage 2 to Stage 3 traceability](docs/TRACEABILITY.md)
+- [Bill of materials](hardware/BOM.md)
+- [Benchmark](docs/BENCHMARK.md)
+- [Roadmap](docs/ROADMAP.md)
+- [Risk and safety status](docs/RISK_ANALYSIS.md)
 
-- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
-- [docs/PROPOSAL.md](docs/PROPOSAL.md)
-- [docs/ROADMAP.md](docs/ROADMAP.md)
-- [hardware/BOM.md](hardware/BOM.md)
-- [docs/RISK_ANALYSIS.md](docs/RISK_ANALYSIS.md)
+The completed MuJoCo system includes OpenClaw task planning, VLM + SAM object
+understanding, GraspNet pose inference, continuous pick-and-place, persistent
+scene state, location memory, inventory memory, and replenishment reminders.
+Its source snapshot is included under `simulation/tuntunclaw/`.
 
 ## License
 
-This repository is licensed under the [Apache License 2.0](LICENSE). Third-party
-components and assets retain their original licenses and attribution terms.
+Project-owned code is Apache-2.0. Third-party source, model weights, datasets,
+hardware SDKs, and assets retain their own licenses. The proprietary ROKAE SDK
+and its license file are not redistributed.

@@ -1,139 +1,111 @@
-# System Architecture
+# Final System Architecture
 
-Version: 0.1  
-Updated: 2026-06-05
+Version: 1.0
+Updated: 2026-07-16
 
-## Goal
-
-TuntunClaw RDK X5 is a memory-aware household inventory and manipulation
-assistant. RDK X5 provides on-device perception and multimodal interaction;
-OpenClaw coordinates tasks and memory; the manipulation layer executes and
-verifies safe household actions.
-
-The manipulation workflow has been validated in MuJoCo with VLM + SAM target
-segmentation, GraspNet grasp inference, continuous scene state, and inventory
-memory. Stage 3 connects the verified physical RDK X5 perception pipeline to a
-real robotic arm without presenting unverified hardware actions as complete.
-
-The Stage 2 design goal is to make the final Stage 3 demo executable: every major module has a clear input, output, runtime owner, and test target.
-
-## Operating Scenario
-
-| Item | Target |
-|---|---|
-| Environment | Indoor desk, shelf, or storage-box scene |
-| Lighting | Normal room lighting, with optional fill light for low-light tests |
-| Items | Small household supplies, packages, containers, or labeled demo objects |
-| Interaction distance | Camera view covers one storage area at a time |
-| Human interaction | User asks for inventory state or triggers a scripted demo |
-| Safety boundary | Robotic arm stays inside a predefined low-speed workspace |
-
-## System Flow
+## Runtime Topology
 
 ```mermaid
 flowchart LR
-    Camera[MIPI / USB Camera] --> Capture[Image Capture Node]
-    Mic[Magic Box Microphone] --> Voice[Optional Voice Command Node]
-    Capture --> Preprocess[Preprocess / Resize / Format]
-    Preprocess --> BPU[RDK X5 BPU Object Detection]
-    BPU --> Perception[Perception Fusion]
-    Voice --> Planner[Task Planner]
-    Perception --> Inventory[Inventory State Manager]
-    Inventory --> Feishu[Feishu Bitable Sync]
-    Inventory --> Planner
-    Planner --> Safety[Safety Gate]
-    Safety --> Arm[Robotic Arm Controller]
-    Planner --> UI[Status Output / Logs]
-    Memory[Location + Inventory Memory] --> Planner
-    Arm --> Memory
+    MIPI["Magic Box MIPI camera"] --> YOLO["RDK X5 BPU YOLO"]
+    YOLO --> DET["/hobot_dnn_detection"]
+    MIC["Magic Box microphone"] --> AUDIO["audio_activity / audio_io"]
+    DET --> RDKSTATE["inventory_tracker_node"]
+    AUDIO --> RDKSTATE
+
+    TOP["Orbbec top RGB"] --> VLA["Trained SmolVLA on RTX 3060"]
+    WRIST["D435 wrist RGB"] --> VLA
+    ARMSTATE["ER3 Pro 7-joint state"] --> VLA
+    TASK["Language instruction"] --> VLA
+    VLA --> GATE["Joint-limit and step safety gate"]
+    GATE --> XCORE["ROKAE xCoreSDK 0.7.0"]
+    GATE --> MODBUS["LMG90 Modbus RTU"]
+    XCORE --> ARM["xMate ER3 Pro"]
+    MODBUS --> ARM
+
+    ARM --> DONE["Close then open delivery completion"]
+    DONE --> API["Flask inventory API"]
+    API --> DB["SQLite persistent quantities/events"]
+    DB --> SSE["SSE tablet dashboard"]
+    DB --> RULE["quantity <= threshold"]
+    RULE --> TTS["SSH -> Magic Box audio_io TTS"]
 ```
 
-## Runtime Decomposition
+RDK X5 owns the challenge edge-perception and voice path. The Windows host
+owns the trained SmolVLA policy, vendor arm SDK, gripper serial interface, and
+inventory web service. The tablet is a read-only LAN client. This split is
+intentional: xCoreSDK and SmolVLA run on the available x86/CUDA deployment
+target, while camera inference and speech remain on RDK X5.
 
-| Module | Process / Node | Main Responsibility | Input | Output | Real-time Constraint | Failure Mode |
-|---|---|---|---|---|---|---|
-| Image capture | `inventory_camera_node` | Capture frames from MIPI or USB camera | Camera stream | `/camera/image_raw` | 15-30 FPS | Camera unavailable, low light, dropped frames |
-| Preprocess | `inventory_preprocess_node` | Resize, crop, convert image format | `/camera/image_raw` | `/inventory/image_input` | Below 15 ms per frame | Wrong color format, high CPU load |
-| BPU detection | `inventory_detector_node` | Run object detection/classification on RDK X5 BPU | `/inventory/image_input` | `/inventory/detections` | Target 10+ FPS for demo | Model unsupported, low confidence |
-| Perception fusion | `inventory_perception_node` | Stabilize detections across frames and map to item IDs | `/inventory/detections` | `/inventory/items_observed` | Update within 500 ms | Duplicate item IDs, unstable boxes |
-| Inventory state | `inventory_state_node` | Maintain quantity, location, status, low-stock state | `/inventory/items_observed` | `/inventory/state`, `/inventory/alerts` | Event-driven | Stale records, sync conflict |
-| Feishu sync | `feishu_sync_node` | Push structured inventory data to Feishu Bitable | `/inventory/state` | Remote table update result | Non-real-time | Network error, API error |
-| Task planner | `task_planner_node` | Convert inventory events into arm or notification tasks | `/inventory/alerts`, user command | `/arm/task_goal`, `/system/status` | Below 1 s for scripted demo | Unsafe or unreachable task |
-| Safety gate | `arm_safety_node` | Validate workspace, speed, collision assumptions, manual stop | `/arm/task_goal` | `/arm/safe_goal` | Must block unsafe commands immediately | Workspace limit violation |
-| Arm control | `arm_controller_node` | Execute pointing, pick, move, or sorting routine | `/arm/safe_goal` | `/arm/status` | Low-speed deterministic action | Serial/SDK error, grasp failure |
+## Implemented Processes and Interfaces
 
-## ROS 2 Node Graph
+| Owner | Process / entry | Input | Output | Rate / trigger |
+|---|---|---|---|---|
+| RDK X5 | Magic Box YOLO demo | MIPI NV12 960x544 | `/hobot_dnn_detection` | 30.02 FPS measured |
+| RDK X5 | `audio_activity_node.py` | ALSA two-channel 16 kHz | `/audio/activity` | 10 Hz |
+| RDK X5 | `inventory_tracker_node.py` | detection + audio topics | `/inventory/state`, atomic JSON | 1 Hz |
+| RDK X5 | ROS 2 `audio_io` | `/tts_text` / microphone | speaker / `/prompt_text` | event-driven |
+| Host | `smolvla/run_policy.py` | two RGB frames, 7 joints, language | 8-D absolute action | configured 4 Hz |
+| Host | xCoreSDK 0.7.0 | seven bounded joint targets | ER3 Pro NRT commands | one command/policy step |
+| Host | LMG90 Modbus | width and force registers | gripper motion | one command/policy step |
+| Host | `inventory_web/app.py` | robot completion/admin API | SQLite, JSON, SSE, TTS call | event-driven; SSE keepalive 15 s |
+| Tablet | browser `/` | SSE `/api/events` | live quantity/threshold table | immediate on state change |
 
-```mermaid
-flowchart TD
-    A["/inventory_camera_node"] -- "sensor_msgs/Image @ 15-30 Hz" --> B["/inventory_preprocess_node"]
-    B -- "sensor_msgs/Image @ 10-30 Hz" --> C["/inventory_detector_node"]
-    C -- "vision_msgs/Detection2DArray @ 5-15 Hz" --> D["/inventory_perception_node"]
-    D -- "inventory_msgs/ObservedItems @ 1-5 Hz" --> E["/inventory_state_node"]
-    E -- "inventory_msgs/InventoryState @ event / 1 Hz" --> F["/feishu_sync_node"]
-    E -- "inventory_msgs/InventoryAlert @ event" --> G["/task_planner_node"]
-    H["/voice_command_node optional"] -- "std_msgs/String @ event" --> G
-    G -- "inventory_msgs/ArmTaskGoal @ event" --> I["/arm_safety_node"]
-    I -- "control_msgs/FollowJointTrajectory.Goal or SDK command" --> J["/arm_controller_node"]
-    J -- "inventory_msgs/ArmStatus @ 1-10 Hz" --> G
+The two RDK camera/audio topics are fused for edge evidence. The physical
+inventory quantity is not inferred by counting generic YOLO labels. It changes
+only after the manipulation controller observes a model-driven gripper close
+followed by release into the delivery tray. This prevents a failed rollout
+from decrementing stock.
+
+## API Contract
+
+```http
+POST /api/tasks/retrieval-complete
+Content-Type: application/json
+
+{"item_id": 1, "task_id": "rollout-uuid"}
 ```
 
-## Compute Allocation
+The server commits one unit to SQLite, evaluates the threshold in the same
+transaction, publishes the new snapshot to all tablet SSE clients, and queues
+the Magic Box voice warning only on a normal-to-low-stock transition.
 
-| Component | RDK X5 BPU | RDK X5 CPU | Host / Cloud | Notes |
-|---|---:|---:|---:|---|
-| Object detection | Primary | Pre/post-processing | No | Use BPU for demo inference and benchmark evidence |
-| Tracking / smoothing | No | Primary | No | Lightweight temporal filtering is enough for Stage 3 |
-| Inventory database | No | Primary | Optional Feishu sync | Local state remains available if network fails |
-| Task planning | No | Primary | No | Rule-based planner for reliability |
-| Robotic arm control | No | Primary | No | Use vendor SDK/serial/ROS bridge depending on arm |
-| Documentation / dashboard | No | Optional | Feishu/GitHub | Not required for real-time loop |
+## Compute Allocation and Resource Budget
 
-Expected resource targets for the demo:
-
-- Detection pipeline: 10+ FPS for a shelf-level scene.
-- BPU inference latency: record average and range from RDK logs.
-- CPU load: keep enough headroom for ROS 2, logging, and arm control.
-- End-to-end alert latency: below 2 seconds from item observation to state update.
-
-## Process and Timing Plan
-
-| Module | Thread / Process | CPU Affinity Plan | Timing Target |
-|---|---|---|---|
-| Camera capture | ROS 2 process | Default scheduler | Stable 15-30 FPS |
-| Preprocess | ROS 2 process or composable node | Optional separate core if CPU-bound | Below 15 ms |
-| BPU detector | ROS 2 process using RDK runtime | Default plus BPU runtime | 10+ FPS target |
-| Inventory state | ROS 2 process | Default scheduler | Event update below 500 ms |
-| Feishu sync | Background process | Low priority | Retry without blocking robot loop |
-| Planner and safety | ROS 2 process | Default scheduler | Block unsafe goals immediately |
-| Arm controller | ROS 2 process or SDK daemon | Default scheduler | Low-speed stable execution |
-
-## Data Model
-
-| Field | Example | Purpose |
+| Workload | Device | Verified / expected utilization |
 |---|---|---|
-| `item_id` | `paper_towel_001` | Stable internal inventory ID |
-| `label` | `paper towel` | Human-readable class or item name |
-| `location` | `shelf_A_slot_2` | Storage position |
-| `quantity_estimate` | `2` | Count or approximate quantity |
-| `confidence` | `0.84` | Detection confidence or fused score |
-| `last_seen_at` | ISO timestamp | Freshness of observation |
-| `status` | `normal`, `low_stock`, `missing`, `unknown` | Inventory state |
-| `recommended_action` | `remind`, `point`, `sort_demo` | Planner hint |
+| YOLO camera inference | RDK X5 Bayes BPU | 30.02 FPS and 24.61 ms mean inference verified; expected 30-70% BPU scheduling occupancy for this single model |
+| Camera decode, ROS 2, JSON logging | RDK X5 8x A55 | expected 15-45% aggregate CPU; observed load average 2.04 with about 6.0 GiB RAM free |
+| Microphone RMS or `audio_io` | RDK X5 CPU/audio DSP | expected 5-20% aggregate CPU; runs mutually exclusively because both own the microphone |
+| SmolVLA inference | RTX 3060 Laptop 6 GB | CUDA FP16; expected 4.5-6.0 GB VRAM and one action chunk per control cycle |
+| xCoreSDK, Modbus, Flask/SQLite | Windows host CPU | expected below 15% aggregate CPU outside video preprocessing |
 
-## Safety Design
+Expected percentages are engineering operating ranges, not benchmark claims.
+Measured RDK latency, FPS, temperature, memory, and load are preserved in
+`docs/BENCHMARK.md` and `evidence/stage3_live_yolo_bpu.txt`.
 
-- The arm demo starts with pointing or scripted movement before any grasping.
-- All arm actions are limited to a predefined workspace and low speed.
-- The planner requires a valid item location before sending an arm command.
-- The safety gate rejects goals with unknown coordinates, high speed, or missing manual approval.
-- A manual stop path must be available during physical tests.
+## Folder Conventions
 
-## Stage 3 Demo Path
+```text
+assets/          photos and screenshots
+docs/            challenge packages, architecture, benchmark, traceability
+evidence/        raw RDK logs and captured state
+hardware/        final BOM and safety information
+inventory_web/   SQLite/SSE dashboard, API, tests
+scripts/         board, host, and complete-system launch/stop scripts
+simulation/      completed OpenClaw/VLM/SAM/GraspNet/MuJoCo implementation
+smolvla/         dataset conversion, training, inference, arm/gripper bridge
+src/             RDK ROS 2 Python nodes
+```
 
-1. Start camera and BPU detector on RDK X5.
-2. Show live detection results for household supply objects.
-3. Convert detections into inventory records.
-4. Trigger a low-stock or selected-item event.
-5. Use the robotic arm to point to or interact with the selected item.
-6. Show logs, benchmark evidence, and Feishu/GitHub documentation.
+Runtime data and secrets are never committed. `inventory.db`, model weights,
+xCoreSDK binaries/license, credentials, and videos are external artifacts.
+
+## Safety and Stop Paths
+
+1. Software limits reject hardware-limit violations and cap a policy step to 2 degrees.
+2. Physical motion requires `--execute` plus the exact interactive confirmation.
+3. The robot must already be automatic and powered through RobotAssist/external enable.
+4. `Ctrl+C` calls `robot.stop()` and clears queued motion.
+5. The J5 handheld stop and external emergency stop are the immediate mechanical stop paths.
+6. No project script changes servo power or bypasses the safety chain.

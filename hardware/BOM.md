@@ -1,34 +1,33 @@
-# Bill of Materials
+# Final Bill of Materials
 
-Version: 0.2
-Updated: 2026-06-05
+Version: 1.0
+Updated: 2026-07-16
 
-| Item | Qty | Status | Interface / Requirement | Notes |
-|---|---:|---|---|---|
-| RDK X5 | 1 | Purchased | Main edge AI computer | Purchase invoice should be sent to Lisa by email if not already sent. |
-| Magic Box carrier / enclosure | 1 | Available | Speaker, microphone, camera access | Used for Stage 1 evidence and future interaction demo. |
-| MIPI camera | 1 | Available | MIPI camera pipeline | Verified with live YOLO evidence. |
-| Microphone | 1 | Available | Magic Box audio input | Verified with WAV recording evidence. |
-| Speaker | 1 | Available | Magic Box audio output | Optional user feedback channel. |
-| Robotic arm | 1 | Available / selected for Stage 3 | SDK, serial, or ROS bridge | Use a real robotic arm for pointing or lightweight item interaction. |
-| Arm power supply | 1 | TBD | Match robotic arm voltage/current | Keep independent power if arm current is high. |
-| Demo shelf / storage area | 1 | Planned | Stable physical scene | Desktop shelf or labeled storage boxes. |
-| Demo objects | Several | Planned | Household supply mock items | Use light, safe, repeatable items. |
-| Object labels / markers | Several | Optional | Printed labels or QR/AprilTag fallback | Useful if class detection is unstable. |
-| Fill light | 1 | Optional | USB or external light | Improves detection repeatability under poor lighting. |
-| Emergency stop / power switch | 1 | Planned | Physical stop path | Required for safe arm testing. |
+| Part | Qty | Power | Interface | Final use | Supplier / specification |
+|---|---:|---|---|---|---|
+| D-Robotics RDK X5 8 GB in Magic Box | 1 | 5 V DC, 5 A, USB-C | MIPI CSI, USB, Wi-Fi/Ethernet, audio | 10 TOPS BPU perception, ROS 2, microphone and speaker | [Magic Box specification](https://developer.d-robotics.cc/magicbox_doc/en/magicbox) |
+| Integrated Magic Box MIPI camera | 1 | From Magic Box | MIPI CSI | 960x544 NV12 live BPU stream | Magic Box assembly |
+| Integrated Magic Box microphone and speaker | 1 set | From Magic Box | ALSA / ROS 2 `audio_io` | Voice input and low-stock TTS | Magic Box assembly |
+| ROKAE xMate ER3 Pro | 1 | Dedicated ROKAE controller mains supply | Controller Ethernet, `192.168.0.160`; xCoreSDK 0.7.0 | Seven-axis item retrieval | [ER3 Pro hardware manual](https://static.rokae.com/Downloads/Manual/xMate%20ER3%20Pro%20Hardware%20Installation%20Manual.pdf) |
+| ROKAE controller, J5 pendant and external enable/e-stop box | 1 set | Supplied with arm | Ethernet and hardwired safety chain | Motion control, mode selection, servo enable, manual/e-stop | Supplied with ER3 Pro |
+| Lebai LMG-90 electric gripper | 1 | 24 V DC | USB-RS485, Modbus RTU, 115200 8N1, slave 1 | 0-90 mm grasp/release; 10-35 N rated force | [LMG-90 specification](https://www.lebai.ltd/en/products/lmg-90/) |
+| USB-RS485 adapter, CH340 | 1 | USB | Windows COM port | LMG-90 control registers `0x9C40/0x9C41` | Generic CH340 adapter |
+| Intel RealSense D435 wrist camera | 1 | USB | USB 3.0 | Wrist RGB training/inference view | Existing laboratory hardware |
+| Orbbec RGB-D top camera | 1 | USB | USB 3.0 | Fixed overhead RGB training/inference view | Existing laboratory hardware |
+| Windows laptop, RTX 3060 Laptop GPU 6 GB | 1 | Manufacturer AC adapter | CUDA, Ethernet/Wi-Fi, USB | SmolVLA local inference, xCoreSDK, inventory server | Existing development laptop |
+| Tablet | 1 | Internal battery/USB charging | Wi-Fi, HTTP/SSE | Live inventory dashboard | Existing tablet |
+| Delivery tray, Oreo plate, coffee basket | 1 each | None | Physical workspace | Controlled lightweight manipulation scene | Demo fixtures |
+| Oreo cookies and Nestle coffee sticks | 5 and 7 | None | Physical objects | Inventory task objects | Retail items |
 
-## Stage 3 Minimum Hardware Set
+## Arm Limits and Safety
 
-- RDK X5 / Magic Box.
-- Camera.
-- Real robotic arm.
-- Safe demo objects.
-- Fixed demo workspace.
-- Reliable power for both board and arm.
+The ER3 Pro is a seven-axis, 3 kg payload, 1010 mm reach collaborative arm. Its
+hardware joint ranges are approximately `±170, ±120, ±170, ±120, ±170, ±120,
+±360` degrees. The public policy configuration uses narrower software limits
+of `±165, ±115, ±165, ±118, ±165, ±115, ±355` degrees, caps each model update
+to 2 degrees, and uses low-speed NRT joint commands.
 
-## Notes
-
-- The first physical action should be pointing or a scripted low-speed movement.
-- Grasping should only be attempted after workspace limits and manual stop behavior are verified.
-- If the arm integration is delayed, the fallback demo should still connect BPU perception to inventory state and a safe pointing routine.
+The J5 handheld stop and external emergency-stop/enable box remain reachable
+during every run. Servo power is controlled only through the physical safety
+chain or RobotAssist. Project code never calls xCoreSDK
+`setPowerState(True/False)`.

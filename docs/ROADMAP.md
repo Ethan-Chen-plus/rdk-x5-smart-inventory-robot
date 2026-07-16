@@ -1,67 +1,32 @@
-# Roadmap
+# Roadmap and Completion Status
 
-Version: 0.2
-Updated: 2026-06-05
+Updated: 2026-07-16
 
-## May 19 - May 31
-
-- Finish registration and Discord self-introduction.
-- Create repository structure.
-- Collect existing RDK X5 purchase and setup records.
-- Prepare Stage 1 evidence capture plan.
-
-## Stage 1: June 1 - June 10
-
-- Capture board boot, OS version, network, and SSH evidence. Done.
-- Bring up camera or another sensor/actuator. Done: MIPI camera, microphone.
-- Run one on-device AI demo on RDK X5. Done: BPU YOLO static image and live MIPI pipeline.
-- Update Discord thread with Stage 1 progress. Done.
-- Confirm whether the organizer needs any additional screenshot or video before June 10.
-
-## Stage 2: June 11 - June 25
-
-- Finalize system architecture in `docs/ARCHITECTURE.md`.
-- Define ROS 2 node graph and module interfaces.
-- Prepare BOM and risk analysis.
-- Document Feishu Bitable schema and robotic arm interface.
-- Publish Stage 2 summary in the Discord thread.
-- Update the official showcase PR with Stage 2 links if the organizers expect the same PR to evolve.
-
-### Stage 2 Milestones
-
-| Date | Milestone | Output |
+| Phase | Result | Status |
 |---|---|---|
-| 2026-06-11 | Stage 2 opens | Stage 2 package linked in repo |
-| 2026-06-15 | Architecture freeze | Module table, ROS 2 graph, compute allocation |
-| 2026-06-18 | Inventory schema | Item state fields and Feishu sync plan |
-| 2026-06-21 | Arm action plan | Pointing or lightweight interaction path selected |
-| 2026-06-25 | Stage 2 close | Discord update and GitHub docs complete |
+| Registration | Form, Discord thread, RDK Studio and X5 purchase | Complete |
+| Stage 1 | Board, SSH, Wi-Fi, desktop, MIPI camera, microphone, BPU YOLO | Complete |
+| Stage 2 | Proposal, architecture, interfaces, compute allocation, BOM, risk plan | Complete |
+| Simulation | OpenClaw, VLM+SAM, GraspNet, MuJoCo manipulation and persistent memory | Complete |
+| Data and policy | Dual-camera robot demonstrations, LeRobot conversion, SmolVLA fine-tuning | Complete |
+| Real-arm deployment | RTX 3060 SmolVLA, xCoreSDK ER3 Pro, LMG90 | Complete |
+| Inventory workflow | SQLite quantities, thresholds, SSE tablet and Magic Box TTS | Complete |
+| Physical validation | Oreo `5->4`, coffee `7->6`, threshold warning | Complete |
+| Public submission | Repository, final video, Discord update and showcase PR | Complete; PR re-review pending |
+| International review | English voice-over video | In progress following reviewer request |
 
-## Stage 3: June 26 - July 15
+## Final Review Work
 
-- Integrate perception, inventory state, Feishu sync, and robotic arm demo.
-- Add benchmark evidence for on-device inference.
-- Record final demo video.
-- Prepare official showcase PR under `projects/`.
+- Publish the English voice-over replacement video.
+- Replace the video URL in README, Stage 3 document, showcase file and PR.
+- Ask the reviewer to re-review the reproducible engineering package.
+- Add the exact collaborator checkpoint identifier/checksum and training summary
+  when those small metadata values are available; weights remain external.
 
-### Stage 3 Milestones
+## Award-Oriented Follow-Through
 
-| Date | Milestone | Output |
-|---|---|---|
-| 2026-06-30 | Minimal end-to-end loop | Detection updates inventory state |
-| 2026-07-04 | Arm routine demo | Safe pointing or scripted movement |
-| 2026-07-07 | Benchmark evidence | FPS, BPU latency, logs, screenshots |
-| 2026-07-10 | Video script and rehearsal | 3-7 minute demo plan |
-| 2026-07-15 | Final submission | Demo video, repo, docs, Discord post, PR update |
-
-## Awards / Closing: July 23
-
-- Keep repository and Discord thread updated.
-- Prepare a short project summary for community sharing.
-
-## Award-Oriented Stretch Goals
-
-- Publish at least 8 external posts with RDK Challenge keywords and official links for RDK Advocate / TOP Voice eligibility.
-- Add a reproducible launch script or command sequence.
-- Include a benchmark table in the final Stage 3 submission.
-- Answer or summarize useful technical issues in Discord to improve community contribution score.
+- Preserve raw benchmark evidence and reproducible setup instructions.
+- Publish a concise RDK X5 + SmolVLA integration tutorial after judging.
+- Keep answering relevant technical questions in the Discord community.
+- Add a ten-rollout success table only after the same policy/checkpoint and
+  physical setup have been evaluated; do not estimate this metric.

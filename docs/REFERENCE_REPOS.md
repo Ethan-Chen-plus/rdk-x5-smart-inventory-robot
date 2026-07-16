@@ -29,6 +29,7 @@ Updated: 2026-05-19
 | https://github.com/elephantrobotics/mycobot_ros | ROS package for myCobot robots. Useful as a reference if the real arm is myCobot-like. |
 | https://github.com/ros-planning/moveit2 | Standard ROS 2 manipulation framework. Useful for Stage 2 architecture, even if Stage 3 uses a simpler control path. |
 | https://github.com/ros2/ros2 | Core ROS 2 ecosystem reference. |
+| https://github.com/huggingface/lerobot | LeRobot 0.6.0 and SmolVLA training/deployment reference used by the final physical system. |
 
 ## Inventory / App References
 
@@ -44,8 +45,8 @@ For Stage 1, start from:
 2. `WSJ261126/RDK-X5-YOLOv5-Deploy`
 3. `D-Robotics/hobot_mipi_cam` or a USB camera path depending on the camera hardware
 
-For Stage 2-3, use:
+For the delivered Stage 2-3 system, the main references are:
 
 1. `WSJ261126/RDK-X5-YOLO-Robot` for an RDK X5 + ROS 2 + manipulation reference.
-2. `moveit2` or the specific robotic arm SDK only if the arm integration needs planning rather than simple scripted motion.
-
+2. `huggingface/lerobot` for SmolVLA fine-tuning and online policy inference.
+3. ROKAE xCoreSDK 0.7.0 for the final ER3 Pro control interface. The vendor SDK itself is not redistributed.

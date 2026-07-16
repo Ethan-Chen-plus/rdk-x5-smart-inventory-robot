@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>囤囤钳库存管理</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="admin-page">
+  <header class="admin-header">
+    <div>
+      <div class="eyebrow">TUNTUNCLAW CONTROL</div>
+      <h1>库存管理台</h1>
+    </div>
+    <a class="display-link" href="/" target="_blank">打开展示屏</a>
+  </header>
+
+  <main class="admin-main">
+    <div class="admin-summary">
+      <div><span>库存项目</span><strong id="itemCount">2</strong></div>
+      <div><span>告警项目</span><strong id="alertCount">0</strong></div>
+      <button id="voiceTest" type="button">测试开发板语音</button>
+    </div>
+    <section>
+      <div class="section-title"><h2>物品与库存</h2><span id="adminConnection">实时连接中</span></div>
+      <div id="adminItems" class="admin-items"></div>
+    </section>
+  </main>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="{{ url_for('static', filename='admin.js') }}"></script>
+</body>
+</html>

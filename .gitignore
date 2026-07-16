@@ -12,4 +12,5 @@ __pycache__/
 *.rar
 secrets/
 credentials/
-
+inventory_web/inventory.db
+inventory_web/__pycache__/

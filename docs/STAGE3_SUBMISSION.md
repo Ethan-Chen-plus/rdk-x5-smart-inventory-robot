@@ -1,122 +1,99 @@
-# Stage 3 Submission - TuntunClaw RDK X5
+# Stage 3 Final Submission - TuntunClaw RDK X5
 
-## Project
-
+- Participant: Kewei Chen
 - Track: Smart Life Robotics
-- Hardware: RDK X5 Magic Box, MIPI camera, microphone
 - Repository: https://github.com/Ethan-Chen-plus/rdk-x5-smart-inventory-robot
-- Final demo video: https://youtu.be/G7VUMQN8TzA
-- Official showcase PR: https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/pull/9
+- Demo video: https://youtu.be/G7VUMQN8TzA
+- Showcase PR: https://github.com/D-Robotics/Robotics-Dream-Keeper-Challenge/pull/9
 
-## End-to-End Prototype
+## Completed End-to-End System
 
-TuntunClaw is designed as one household-service system rather than separate
-vision and arm demos. Its completed MuJoCo implementation provides
-natural-language task dispatch, VLM + SAM segmentation, GraspNet grasp-pose
-inference, continuous scene state, and inventory/location memory. The physical
-RDK X5 prototype below supplies the live BPU perception and Magic Box audio
-path used for the challenge evidence.
+TuntunClaw combines the completed MuJoCo inventory-manipulation system with a
+real RDK X5 Magic Box, trained SmolVLA policy, ROKAE xMate ER3 Pro, LMG90
+gripper, persistent inventory service, tablet UI, and voice warning.
 
-The Stage 3 prototype runs three concurrent ROS 2 workloads on the RDK X5:
+The project team completed SmolVLA fine-tuning and deployment on the local RTX
+3060 GPU. During real execution, two live RGB views, current seven-joint state,
+and a language instruction feed SmolVLA. Online model actions pass through
+joint-range and per-step safety checks before xCoreSDK and Modbus execution.
+This path does not replay a recorded trajectory.
 
-```text
-MIPI camera -> BPU YOLO -> /hobot_dnn_detection --+
-                                                    +-> inventory_tracker -> /inventory/state + JSON
-microphone -> audio_activity -> /audio/activity ---+
-```
+After the controller observes a gripper close followed by release, it reports
+the delivery to the inventory API. SQLite commits the quantity, updates the
+tablet through SSE, evaluates `quantity <= threshold`, and queues the Magic Box
+voice warning on a new low-stock transition.
 
-The BPU performs continuous object detection. The CPU handles microphone RMS,
-inventory aggregation, sensor receive-time alignment, ROS 2 publication, and
-atomic JSON persistence.
-
-## Quick Start
-
-Copy the repository to `/home/sunrise/rdk_inventory_demo`, then run:
-
-```bash
-cd /home/sunrise/rdk_inventory_demo
-bash scripts/start_stage3_demo.sh
-```
-
-Verify:
-
-```bash
-cat /userdata/magicclaw/inventory/state.json
-tail -f /userdata/magicclaw/logs/yolo.log
-```
-
-The launcher is idempotent: it reuses healthy YOLO, audio, and inventory
-processes rather than creating duplicates.
-
-## Verified Results
-
-- Live MIPI camera input at approximately 30 FPS.
-- BPU-accelerated `yolo26s_bayese_640x640_nv12` inference.
-- Average BPU inference latency: 24.61 ms over 644 samples.
-- ROS 2 detection topic: `/hobot_dnn_detection`.
-- ROS 2 audio topic: `/audio/activity`.
-- ROS 2 fused inventory topic: `/inventory/state`.
-- Persistent state: `/userdata/magicclaw/inventory/state.json`.
-
-Full measurements: [BENCHMARK.md](BENCHMARK.md)
-
-## Real-World Inventory Task
-
-The completed physical experiment uses a real robotic arm, RDK X5 Magic Box,
-tablet inventory display, one Oreo plate, one Nestle coffee basket, and a
-delivery tray. Initial inventory and alert thresholds are:
-
-| Item | Initial | Threshold | After retrieval | Result |
+| Item | Initial | Threshold | Final | Outcome |
 |---|---:|---:|---:|---|
-| Oreo cookie | 5 | 2 | 4 | No warning; quantity remains above threshold. |
-| Nestle coffee stick | 7 | 6 | 6 | Low-stock warning; quantity is equal to threshold. |
+| Oreo cookie | 5 | 2 | 4 | No warning |
+| Nestle coffee stick | 7 | 6 | 6 | Tablet alert and Magic Box replenishment warning |
 
-The task requests one unit of each item. The robot retrieves the Oreo first,
-then retrieves the coffee stick. The tablet shows the inventory transition in
-the same physical shot, and the Magic Box emits the coffee replenishment
-warning after the second delivery. This validates manipulation, persistent
-inventory state, threshold reasoning, UI feedback, and audio feedback as one
-real-world workflow.
+## Clone, Install, Launch
 
-Evidence:
+```powershell
+git clone https://github.com/Ethan-Chen-plus/rdk-x5-smart-inventory-robot.git
+cd rdk-x5-smart-inventory-robot
+powershell -ExecutionPolicy Bypass -File scripts/setup_host.ps1
+Copy-Item smolvla/config.example.json smolvla/config.json
+# Set trained checkpoint, xCoreSDK root, camera indices and LMG90 COM port.
+scp -r . sunrise@192.168.127.10:/home/sunrise/rdk_inventory_demo
 
-- [Initial setup](../assets/realworld_setup.jpg)
-- [Oreo retrieval](../assets/realworld_oreo_pick.jpg)
-- [Coffee retrieval](../assets/realworld_coffee_pick.jpg)
-- [Coffee low-stock state](../assets/realworld_low_stock_alert.jpg)
-- [RDK X5 Magic Box hardware](../assets/realworld_magicbox_hardware.jpg)
-- [Magic Box camera view](../assets/realworld_magicbox_view.png)
+# Safe integration check: no robot motion.
+powershell -ExecutionPolicy Bypass -File scripts/start_complete_demo.ps1 -ItemId 2
 
-## Safety and Recovery
-
-- The current unattended background run does not command the robotic arm.
-- The completed MuJoCo grasp workflow is simulation evidence; a real-arm action
-  is only claimed when it is visibly demonstrated in the final video.
-- Any mechanical demonstration must use a fixed low-speed trajectory, a clear
-  workspace, and an operator-accessible power stop.
-- Stop all project processes with:
-
-```bash
-bash scripts/stop_stage3_demo.sh
+# Complete demonstrated workflow with explicit safety confirmation.
+powershell -ExecutionPolicy Bypass -File scripts/start_complete_demo.ps1 -ItemId 2 -Execute
 ```
 
-- The stop script terminates auxiliary nodes using only their recorded PID files
-  under `/userdata/magicclaw/inventory/`, then stops the YOLO process group with
-  the Magic Box controller.
-- Local JSON remains the source of truth if an external inventory service is
-  unavailable.
+Use `-ItemId 1` for coffee. Full dependencies, model training, inference and
+safety instructions are in `smolvla/README.md`.
 
-## Final Media
+## Software and Hardware Versions
 
-- Demo video: [TuntunClaw RDK X5 final demo](https://youtu.be/G7VUMQN8TzA), 5 minutes 44 seconds, public.
-- Hardware photo: [RDK X5 Magic Box](../assets/realworld_magicbox_hardware.jpg).
-- Physical setup: [robot, tablet, storage areas, and delivery tray](../assets/realworld_setup.jpg).
-- Community update: final post text prepared for the existing challenge thread.
+| Component | Version / model |
+|---|---|
+| RDK X5 / Magic Box | Ubuntu 22.04.5 LTS, aarch64, 8 GB |
+| TogetheROS | ROS 2 Humble |
+| RDK BPU | Platform 1.3.6, DNN 1.24.5, HBRT 3.15.55.0 |
+| RDK detector | `yolo26s_bayese_640x640_nv12` |
+| Host | Windows 11, Python 3.10, RTX 3060 Laptop 6 GB |
+| Policy | Fine-tuned SmolVLA, LeRobot 0.6.0, PyTorch 2.5.1 CUDA 12.4 |
+| Arm | ROKAE xMate ER3 Pro, controller 3.2.1, HMI 5.0.13.0411 |
+| Arm SDK | xCoreSDK Python 0.7.0 |
+| Gripper | Lebai LMG90, 24 V, RS485/Modbus RTU 115200 8N1 |
+| Inventory | Flask, SQLite, HTTP JSON, SSE |
 
-The final video should show the RDK X5 hardware and at least 30 seconds of one
-continuous perception-to-memory-to-grasp sequence: live BPU inference, target
-visibility or remembered state, changing `/inventory/state`, the arm action,
-and visual confirmation. Microphone activity and benchmark evidence should be
-shown elsewhere in the same 3-7 minute video.
+## Verified RDK Results
 
-Recording plan: [DEMO_VIDEO_SCRIPT.md](DEMO_VIDEO_SCRIPT.md)
+- 644 consecutive runtime samples.
+- 30.02 FPS average MIPI input and BPU output.
+- 24.61 ms average BPU inference; 21-32 ms range.
+- 72.27 ms average end-to-end perception latency.
+- CPU temperature 58.0 C, DDR temperature 59.4 C, load average 2.04.
+
+See `docs/BENCHMARK.md` and `evidence/stage3_live_yolo_bpu.txt`.
+
+## Reproducible Components
+
+- Model data conversion, training, deployment: `smolvla/`
+- Actual arm and gripper entry point: `smolvla/run_policy.py`
+- Quantity transitions, threshold, tablet, voice: `inventory_web/`
+- Full launch/stop: `scripts/start_complete_demo.ps1`, `scripts/stop_complete_demo.ps1`
+- Actual architecture and rates: `docs/ARCHITECTURE.md`
+- Final BOM and stop procedure: `hardware/BOM.md`
+- Design-to-delivery mapping: `docs/TRACEABILITY.md`
+
+Checkpoint weights, training recordings, the proprietary xCoreSDK package,
+and its license are external artifacts and are not committed. Their interfaces
+and required paths are documented so another authorized developer can provide
+equivalent artifacts and reproduce the workflow.
+
+## Safety
+
+- Physical execution is opt-in and requires a typed confirmation.
+- Software joint bounds are narrower than the manufacturer limits.
+- Each model action is capped at 2 degrees per control update.
+- The J5 handheld stop and external emergency stop remain within reach.
+- `Ctrl+C` requests xCoreSDK stop/reset.
+- Servo power remains under RobotAssist/external enable ownership; code never
+  calls `setPowerState(True/False)`.

@@ -1,109 +1,49 @@
-# Project Proposal
+# Project Proposal and Delivered Outcome
 
-Version: 0.2
-Updated: 2026-06-05
+Updated: 2026-07-16
 
-## Project Name
+## Project
 
-TuntunClaw RDK X5: A Memory-Aware Household Inventory and Manipulation Assistant
+**TuntunClaw RDK X5: A Memory-Aware Household Inventory and Manipulation
+Assistant**, Smart Life Robotics track.
 
-## Track
+Household supplies are distributed across shelves, baskets and drawers, making
+quantity, location and replenishment easy to forget. TuntunClaw combines edge
+AI, language-conditioned manipulation, persistent memory and multimodal
+feedback so a user can request an item, receive it, and see inventory update
+without manually editing a spreadsheet.
 
-Smart Life Robotics
+## Delivered Capabilities
 
-## Scenario
+- RDK X5 MIPI-camera BPU perception at 30.02 FPS.
+- Magic Box microphone and speaker interaction.
+- Completed OpenClaw + VLM/SAM + GraspNet + MuJoCo simulation workflow.
+- Fine-tuned SmolVLA policy deployed on a local RTX 3060 GPU.
+- Online model control of a ROKAE xMate ER3 Pro and Lebai LMG90 gripper.
+- SQLite inventory quantities, thresholds and event history.
+- Live tablet dashboard over LAN HTTP/SSE.
+- Magic Box low-stock voice warning.
 
-The target scenario is household supply management. Many daily-use items are stored across shelves, drawers, or storage boxes, and users often forget item quantity, storage location, or replenishment timing.
+The controlled physical scene contains Oreo cookies, Nestle coffee sticks and
+a delivery tray. A successful robot delivery updates inventory only after the
+gripper closes and subsequently releases. Oreo changes `5 -> 4` above its
+threshold of two. Coffee changes `7 -> 6`, meeting its threshold of six and
+triggering the warning.
 
-This project combines RDK X5, OpenClaw, household memory, and a real robotic arm
-to create TuntunClaw: a smart household assistant that can perceive items,
-update inventory and location records, generate reminders, and perform physical
-interaction with selected supplies.
+## Design Rationale
 
-The MuJoCo prototype is already complete and demonstrates natural-language
-task dispatch, VLM + SAM target segmentation, GraspNet grasp-pose inference,
-continuous pick-and-place tasks, persistent scene state, and inventory updates.
-The challenge implementation adds verified RDK X5 BPU perception and Magic Box
-camera/audio interaction, then connects these capabilities to the physical arm.
+RDK X5 owns edge perception and speech. The x86/CUDA laptop runs SmolVLA and
+the vendor arm SDK because those dependencies target the available Windows GPU
+environment. SQLite is the local source of truth so the demonstration does not
+depend on cloud connectivity. The model checkpoint and proprietary xCoreSDK
+remain external artifacts, while all project-owned conversion, training,
+deployment, inventory and orchestration code is public.
 
-The initial demo environment will be a controlled indoor shelf or desktop storage area. The system should work under normal room lighting, with the camera viewing one storage area at a time.
+The innovation is the completed physical workflow rather than a standalone
+detector: perception, language-conditioned action, safe manipulation,
+persistent state, tablet feedback and voice notification are coordinated as
+one household task.
 
-## User
-
-The target users are home users, makers, and robotics learners who want a practical smart home robotics prototype.
-
-The primary user interaction mode is inventory checking and task confirmation. The robot should be able to report what it sees, what is missing or low-stock, and what physical action it plans to perform.
-
-## Core AI Capabilities
-
-- Visual recognition of household supplies.
-- Temporal smoothing for more stable item observations.
-- Inventory state update and low-stock detection.
-- Structured synchronization with Feishu Bitable.
-- Task decision logic for notifications and robotic arm actions.
-
-## Robotic Arm Integration
-
-A real robotic arm will be introduced for physical interaction. The first prototype will focus on safe, simple actions:
-
-- Point to a selected item.
-- Pick or move lightweight demo objects.
-- Sort items into predefined areas.
-- Execute scripted demonstrations under speed and workspace limits.
-
-## RDK X5 Role
-
-RDK X5 will act as the edge AI computing unit:
-
-- Run on-device object detection or classification.
-- Provide perception results to the inventory and task modules.
-- Support later ROS 2-aware integration with the robotic arm control layer.
-
-Target measurable goals:
-
-- 10+ FPS detection pipeline for the final demo scene.
-- Below 2 seconds from item observation to inventory state update.
-- At least one repeatable real-arm action linked to the detected or selected item.
-- Public documentation with setup evidence, benchmark logs, and a demo video.
-
-## Initial Architecture
-
-```mermaid
-flowchart LR
-    Camera[Camera] --> Perception[RDK X5 Vision Inference]
-    Perception --> Inventory[Inventory State Manager]
-    Inventory --> Feishu[Feishu Bitable Sync]
-    Inventory --> Planner[Task Planner]
-    Planner --> Arm[Robotic Arm Controller]
-    Planner --> Notify[User Notification]
-```
-
-Full architecture details are documented in [ARCHITECTURE.md](ARCHITECTURE.md).
-
-## Innovation / Differentiation
-
-The project is designed as a complete robot workflow rather than a single vision demo. It links RDK X5 BPU inference to inventory records, decision logic, and real robotic arm movement:
-
-```text
-camera -> BPU inference -> inventory state -> task planner -> safety gate -> robotic arm action
-```
-
-This creates a stronger smart-life robotics story: the robot is not only recognizing objects, but also maintaining household memory and acting in the physical environment.
-
-## Expected Demo
-
-The final demo should show:
-
-1. RDK X5 detecting or classifying household items.
-2. Inventory records being updated.
-3. A low-stock or item-location reminder being generated.
-4. A real robotic arm performing a simple interaction related to the detected item.
-5. A continuous perception-to-memory-to-grasp sequence, with the result confirmed by vision and inventory state.
-
-## Stage 2 Supporting Documents
-
-- Stage 2 submission package: [STAGE2_SUBMISSION.md](STAGE2_SUBMISSION.md)
-- Architecture and ROS 2 graph: [ARCHITECTURE.md](ARCHITECTURE.md)
-- Roadmap: [ROADMAP.md](ROADMAP.md)
-- Risk analysis: [RISK_ANALYSIS.md](RISK_ANALYSIS.md)
-- BOM: [../hardware/BOM.md](../hardware/BOM.md)
+See [ARCHITECTURE.md](ARCHITECTURE.md),
+[TRACEABILITY.md](TRACEABILITY.md), and
+[STAGE3_SUBMISSION.md](STAGE3_SUBMISSION.md).
